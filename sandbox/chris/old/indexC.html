@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <title>SolarP App</title>
+
+        <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.9/js/esri/css/esri.css">
+        <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.9/js/dojo/dijit/themes/tundra/tundra.css">
+
+        <style type='text/css'>
+            html, body, #map {
+                font-family: sans-serif;
+                height: 100%;
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+			
+			#umnLogo
+			  {
+					position:absolute;
+					bottom:8px;
+					right:80px;
+					z-index:100; 
+					width:50px;
+					
+			  } 
+
+            #header {
+                height: 92px;
+                overflow: auto;
+                padding: 0.5em;
+                color: #B8B8B8;
+                background-color: #000000;
+            }
+
+            #search {
+                display: block;
+                position: absolute;
+                background: #ff7400;
+                z-index: 3;
+                top: 20px;
+                left: 65px;
+            }
+
+            #r {
+                display: block;
+                position: absolute;
+                padding-left: 20px;
+                padding-right: 20px;
+                padding-top:5px;
+                padding-bottom:5px;
+                line-height:120%;
+                border: 2px solid #8b8b8b;
+                border-color:white;
+                border-radius: 0 25px 0 25px;
+                background-color: #474343;
+                z-index: 3;
+                top: 55px;
+                left: 66px;
+                font-family: "TrebuchetMS";
+                font-size: 18px;
+                color:#ffffff;
+            }
+			
+			#utilLink {
+                display: block;
+				  position: absolute;
+                padding-left: 20px;
+                padding-right: 20px;
+                padding-top:5px;
+                padding-bottom:5px;
+                line-height:120%;
+                border: 2px solid #8b8b8b;
+                border-color:white;
+                border-radius: 0 25px 0 25px;
+                background-color: #474343;
+                z-index: 3;
+                top: 205px;
+                left: 66px;
+                font-family: "TrebuchetMS";
+                font-size: 16px;
+                color:#ff7400;
+            }
+			
+			a {
+				 font-family: "TrebuchetMS";
+               font-size: 16px;
+                color:#ff7400;
+			}
+			
+			a:hover {
+				color:#F65D23;
+					
+			}
+			
+			#utilInfo {
+                display: block;
+				position: absolute;
+                padding-left: 20px;
+                padding-right: 20px;
+                padding-top:5px;
+                padding-bottom:5px;
+                line-height:120%;
+                border: 2px solid #8b8b8b;
+                border-color:white;
+                border-radius: 0 25px 0 25px;
+                background-color: #474343;
+                z-index: 3;
+                top: 205px;
+                left: 66px;
+                font-family: "TrebuchetMS";
+                font-size: 18px;
+                color:#ffffff;
+            }
+			
+            #HomeButton {
+                position: absolute;
+                top: 87px;
+                left: 20px;
+                z-index: 50;
+            }
+            
+            #currentLoc {
+                background: rgba(102,102,102,0.8) url('http://js.arcgis.com/3.9/js/esri/dijit/images/locate.png') 50% 50% no-repeat;
+                width: 30px;
+                height: 30px; 
+                padding: 2px;
+                border-radius: 5px;  
+                cursor: pointer;
+                position: absolute;
+                top: 124px;
+                left: 20px;
+                z-index: 50;
+            }
+
+            #HelpMe {
+                position: absolute;
+                top: 160px;
+                left: 20px;
+                width: 30px;
+                height: 30px;
+                z-index:50;
+                background-color: #ffffff;
+                font-size: 18px;
+                font-weight:bold;
+                font-family: TrebuchetMS,arial;
+                width: 30px;
+                height: 30px; 
+                padding: 2px;
+                border-radius: 5px;  
+                cursor: pointer;
+                position: absolute;
+                background: rgba(102,102,102,0.8);
+                text-align: center;
+                display: table-cell;
+                color: white;
+                line-height: 30px;
+            }
+
+            #BasemapToggle {
+                position: absolute;
+                top: 196px;
+                left: 20px;
+                z-index:50;
+            }
+
+            #LogoBackground {
+                position: absolute;
+                width: 100px;
+                height: 30px;
+                margin: 0px auto;
+                background: #ff7400;
+                bottom:5px;
+                right: 70px;
+                border:2px solid;
+                border-color:black;
+                border-radius:25px;
+            }
+            #Logo {
+                position: absolute;
+                font-size:20px;
+                font-family:"TrebuchetMS";
+                font-style:italic;
+                vertical-align:middle;
+                z-index: 50;
+                left:10px;
+                color:#474343;
+                font-weight:bold;
+            }
+            #LogoImage {
+                content:url(http://placehold.it/350x150);
+                position: absolute;
+                bottom: 10px;
+                left: 10px;
+                z-index: 50;
+            }
+
+
+            #SplashScreen {
+                overflow:auto;
+                display:none;
+                position:absolute;
+                padding:20px;
+                top:60px;
+                left:65px;
+                margin-right: 15px;
+                z-index:51;
+                font-family:TrebuchetMS, arial;
+                color:white;
+                /*color:#A6A6A6;*/
+                border: 3px;
+                border-style:solid;
+                border-color:white;
+                border-radius: 0 40px 0px 40px;
+                background: #474343;
+                max-height: calc(100% - 120px);
+                max-width: 550px;
+                line-height: 30px;
+            }
+
+            #closeSplash {
+                cursor: pointer;
+            }
+			
+			#badData {
+                cursor: pointer;
+            }
+
+            #closeSplash:hover {
+                text-decoration: underline;
+            }
+
+
+            #website {
+                position:relative;
+                z-index:55;
+                max-width:200px;
+                font-family:"TrebuchetMS";
+                float:right;
+                text-align:right;
+                vertical-align:bottom;
+                font-size:15px;
+                color:white;
+            }
+            
+            #colorRamp{
+                position:relative;
+                bottom:-13px;
+                left:10px;
+                z-index:55;
+                max-width:250px;
+                vertical-align:bottom;
+                float:left;
+                font-family:"TrebuchetMS";
+                font-size:15px;
+                color:white;
+            }
+           
+
+            .basemapImage {
+                width: 30px !important;
+                height: 30px !important;
+                border-radius: 5px !important;
+            }
+
+            .basemapTitle {
+                display: none !important;
+            }
+
+        </style>
+    </head>
+    <body class="tundra">
+
+        <div id="SplashScreen"><h3>WELCOME</h3>
+        
+            <p>Tap anywhere on this map of Minnesota to view solar radiation per square meter, or tap the 
+            <img src="http://www.tc.umn.edu/~walz0053/gis/icons/locate_button.jpg" height="30px"/> icon to measure insolation at your current location.
+            </p>
+            <div id="colorRamp">
+            <strong>LEGEND:</strong>
+            <img src="http://www.tc.umn.edu/~walz0053/gis/icons/ramp_v2.png" style="padding-top:8px;max-width:250px;"/><br />
+           
+            </div>
+            <div id="website">
+                <p><strong>LEARN MORE:</strong><br />
+                <a href="http://solarp.uspatial.umn.edu" style="color:#ff7400">solarp.uspatial.umn.edu</a>
+                </p>
+                
+                <p>
+                <br />
+                <span id='closeSplash'>(X) CLOSE</span>
+                </p>
+            </div>
+            
+        </div>
+
+        <div id="search"></div>
+        <div id="r"></div>
+        <div id="HomeButton"></div>
+        <div id='currentLoc'>&nbsp;</div>
+        <div id="BasemapToggle"></div>
+        <div id="HelpMe">?</div>
+
+        <div id="map" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
+        <img src="images/UMN_M_white.gif" alt="University of Minnesota" id="umnLogo" />
+        
+        </div>
+        
+        
+
+        <script type='text/javascript' src='http://code.jquery.com/jquery-2.0.2.js'></script>
+        <script type='text/javascript' src="http://js.arcgis.com/3.9/"></script>
+        <script type='text/javascript'>
+        var layer;
+        var layerflag = 0;
+		var utilLinkFlag = 0;
+            $(window).load(function(){
+                require([
+                    "esri/map",
+
+                    "esri/layers/ArcGISTiledMapServiceLayer",
+                    "esri/layers/ImageServiceParameters",
+                    "esri/layers/ArcGISImageServiceLayer",
+
+                    "esri/toolbars/draw",
+                    "esri/graphic",
+                    "esri/geometry/Point",
+
+                    "esri/symbols/SimpleMarkerSymbol",
+                    "esri/symbols/SimpleLineSymbol",
+                    "esri/symbols/SimpleFillSymbol",
+
+                    "esri/geometry/screenUtils",
+                    "esri/urlUtils",
+                    "esri/config",
+                    "esri/request",
+
+                    "esri/dijit/Geocoder",
+                    "esri/dijit/HomeButton",
+                    "esri/dijit/LocateButton",
+
+                    "dojo/parser",
+                    "dojo/dom",
+                    "dojo/dom-construct",
+                    "dojo/query",
+                    "dojo/_base/Color",
+
+                    "dojo/on",
+                    "dojo/dom-class",
+                    "dojo/_base/json",
+                    "dijit/registry",
+
+                    "esri/tasks/query",
+                    "esri/tasks/QueryTask",
+                    "esri/config",
+                    "esri/dijit/BasemapToggle",
+					"esri/InfoTemplate",
+
+                    "dijit/layout/BorderContainer", "dijit/layout/ContentPane",
+                    "dijit/form/Button", "dojo/domReady!"], function (
+                        Map,
+                        Tiled, ImageServiceParameters, ArcGISImageServiceLayer,
+                        Draw, Graphic, Point,
+                        SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol,
+                        screenUtils, urlUtils, esriConfig, esriRequest,
+                        Geocoder, HomeButton, LocateButton,
+                        parser, dom, domConstruct, query, Color,
+                    on, domClass, dojoJson, registry, Query, QueryTask, esriConfig, BasemapToggle, InfoTemplate) {
+
+                parser.parse();
+				
+                $('#SplashScreen').show();
+				//$('#utilLink').hide()
+				//$('#utilInfo').hide()
+				$('#r').hide()
+               
+                $('#closeSplash').on('click',function(){
+                    $('#r').fadeToggle('fast');
+                    $("#SplashScreen").fadeToggle('fast');
+										
+                });
+
+                $('#map').on('click',function(){
+                    $('#SplashScreen').hide();
+					
+                });
+				
+				$('#utilLink').on('click',function(){
+					$('#utilLink').fadeToggle('fast');
+					$('#utilInfo').slideDown();
+                    //$('#utilInfo').fadeToggle('fast');
+                  										
+                });
+				
+				$('#utilInfo').on('click',function(){
+					$('#utilLink').fadeToggle('slow');
+					$('#utilInfo').slideUp();
+                    //$('#utilInfo').fadeToggle('fast');
+                  										
+                });
+				
+				$('#badData').on('click',function(){
+				
+			        console.log("Email click handled!");
+					//var email = "cmartin616@gmail.com";
+					//var subject = "Test";
+					//var body = "Double Test, dude";
+					//document.write("<a href=\"mailto:"+ email +"\?subject="+ subject +"\&body="+ body +"\"send me an email</a>");
+					//document.write("<form name="form" action=\"mailto:"+ email +"\?subject="+ subject +"\&body="+ body +"\" method=\"post\" enctype=\"text/plain\"></form>");
+					//<form name="form" action=\"mailto:"+ email +"\?subject="+ subject +"\&body="+ body +"\" method=\"post\" enctype=\"text/plain\"></form>") ;
+				 	//<form name="form" action=\"mailto:"+ email +"\?subject="+ subject +"\&body="+ body +"\" method=\"post\" enctype=\"text/plain\"></form>");
+				});
+                
+               
+                esriConfig.defaults.map.basemaps.solar = {
+                    baseMapLayers: [
+                        /*{ 
+                            id : 'solar_layer',
+                            opacity: 1,
+                            isReference: true,
+                            visibility: true,
+                            url: "http://geog-201458220.ad.umn.edu:6080/arcgis/rest/services/hen_ram_solar2/MapServer/"
+                            url: "http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/MN_Solar_Map_Web/MapServer/"
+                        },*/
+                        {
+                            id: 'places',
+                            opacity: 1,
+                            visibility: true,
+							   showAttribution:false,
+                            url: 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/'
+                        }
+                    ],
+                    title: "Solar"
+                };
+
+                var map = new Map("map", {
+                    basemap: "solar",
+                    center: [-93.243322, 44.971795],
+					  showAttribution:false,
+                    zoom: 13
+                });
+                
+                //layer = new esri.layers.ArcGISDynamicMapServiceLayer("http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/MN_Solar_Map_Web/MapServer/");
+                //map.addLayer(layer);
+				
+				
+				
+				var params = new ImageServiceParameters();
+				
+				// 6-18-2014 Added direct call to raster function because default was unreliable
+				var rasterFunction = new esri.layers.RasterFunction();
+				rasterFunction.functionName = "solarColorRamp";
+				rasterFunction.variableName = "Raster";
+				params.renderingRule = rasterFunction;
+				params.noData = 0;
+				var layer = new ArcGISImageServiceLayer("http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/SolarP_ISv2/ImageServer", {
+				  imageServiceParameters: params,
+				  showAttribution: false,
+				  opacity: 1.0
+				});
+				map.addLayer(layer);
+                
+                var toggle = new BasemapToggle({
+                    map: map,
+                    basemap: "hybrid",
+                    basemaps: {
+                        solar: {
+                            label: "Solar",
+                            // TODO: Copy image to a real server
+                            url: "http://stuporglue.github.io/solar_scripts/web/dev/solar_square.png"
+                        }, hybrid: {
+                            label: "Aerial",
+                            url: "http://js.arcgis.com/3.7/js/esri/dijit/images/basemaps/hybrid.jpg"
+                        }
+                    }
+                }, "BasemapToggle");
+                toggle.startup();
+
+
+                var home = new HomeButton({
+
+                    map: map,
+                    visible: true,
+                    showPointer: true,
+
+                    scale: null,
+                    geolocationOptions: {
+                        maximumAge: 0,
+                        timeout: 15000,
+                        enableHighAccuracy: true
+                    }
+
+                }, "HomeButton");
+                home.startup();
+
+                map.on("load", createToolbar);
+
+
+
+                    // Address search Geolocator
+
+                    var geocoder = new Geocoder({
+                        map: map,
+                        arcgisGeocoder: {
+                            placeholder: "Find a place"
+                        }
+                    }, dom.byId("search"));
+                    geocoder.startup();
+
+
+
+                    //Current Location Button
+
+                    var testSymbol = new esri.symbol.PictureMarkerSymbol({
+                        "angle":0,
+                        "xoffset":0,
+                        "yoffset":12,
+                        "type":"esriPMS",
+                        "url":"http://static.arcgis.com/images/Symbols/Basic/GreenStickpin.png",
+                        "contentType":"image/png",
+                        "width":30,
+                        "height":30
+                        /*"angle": 0,
+                        "xoffset": 0,
+                        "yoffset": 12,
+                        "type": "esriPMS",
+                        "url": "http://static.arcgis.com/images/Symbols/Basic/BlueStickpin.png",
+                        "contentType": "image/png",
+                        "width": 24,
+                        "height": 24*/
+                    });
+
+                    geoLocate = new LocateButton({
+                        map: map,
+                        highlightLocation: true,
+                        symbol: testSymbol,
+                        scale:2000
+                    }, "LocateButton");
+                    geoLocate.startup();
+
+
+
+                    //Solar and DSM Tiles
+
+                    var params = new ImageServiceParameters();
+                    params.noData = 0;
+
+                    //DSM layer for visualization and query  ***TO TOGGLE***
+                    /*var dsmServiceLayer = new ArcGISImageServiceLayer("http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/MN_DSM/ImageServer", {
+                        imageServiceParameters: params,
+                        opacity: 0.75
+                        });
+                        map.addLayer(dsmServiceLayer);*/
+
+                        //Hennepin Ramsey visualization
+                        //var tiled = new Tiled("http://geog-201458220.ad.umn.edu:6080/arcgis/rest/services/hen_ram_solar2/MapServer/");
+                            //map.addLayer(tiled);
+
+                            //Final query layer
+                            //var solarServiceLayer = new ArcGISImageServiceLayer("http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/MN_Solar/ImageServer", {
+                                //    imageServiceParameters: params,
+                                //    opacity: 0.75
+                //});
+                //map.addLayer(solarServiceLayer);
+
+                //Final visualization layer  ***TO TOGGLE**
+                //var test_solar = new Tiled("http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/test/MapServer/");
+                    //map.addLayer(test_solar);
+
+
+
+
+
+
+                    // Polygon button controls
+
+                    // loop through all dijits, connect onClick event
+                    // listeners for buttons to activate drawing tools
+                    registry.forEach(function (d) {
+                        // d is a reference to a dijit
+                        // could be a layout container or a button
+                        if (d.declaredClass === "dijit.form.Button") {
+                            d.on("click", activateTool);
+                        }
+                    });
+
+                    $("#r").hide();
+
+                    $("#clearPoly").click(function () {
+                        map.graphics.clear();
+                    });
+
+                    $('#BasemapToggle').on('click',function(){
+                        if(layerflag==0){
+                            layer.hide();
+                            layerflag=1;
+                            }
+                        else{
+                            layer.show();
+                            layerflag=0;
+                        }
+                    
+                    });
+
+                    $("#HelpMe").click(function () {
+                        $("#r").fadeToggle('fast');
+                        $("#SplashScreen").fadeToggle('fast');
+                    });
+
+                    $("#currentLoc").click(function () {
+                        if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(zoomToLocation, locationError);
+                            //watchId = navigator.geolocation.watchPosition(showLocation, locationError);
+                        } else {
+                            alert("Browser doesn't support Geolocation. Visit http://caniuse.com to see browser support for the Geolocation API.");
+                        }
+                    });
+
+                    function locationError(error) {
+                        //error occurred so stop watchPosition
+                        if (navigator.geolocation) {
+                            navigator.geolocation.clearWatch(watchId);
+                        }
+                        switch (error.code) {
+                            case error.PERMISSION_DENIED:
+                                alert("Location not provided");
+                                break;
+
+                            case error.POSITION_UNAVAILABLE:
+                                alert("Current location not available");
+                                break;
+
+                            case error.TIMEOUT:
+                                alert("Timeout");
+                                break;
+
+                            default:
+                                alert("unknown error");
+                                break;
+                        }
+                    }
+
+                    function zoomToLocation(location) {
+                        var pt = new Point(location.coords.longitude, location.coords.latitude);
+                        //alert("X: " + location.coords.longitude + "  Y: " + location.coords.latitude);
+
+                        addGraphic(pt);
+                        map.centerAndZoom(pt, 15);
+
+                        pointSolar(location.coords.longitude, location.coords.latitude, 4326);
+                    }
+
+                    function showLocation(location) {
+                        //zoom to the users location and add a graphic
+                        var pt = new Point(location.coords.longitude, location.coords.latitude);
+
+                        if (!graphic) {
+                            addGraphic(pt);
+                        } else { // move the graphic if it already exists
+                            graphic.setGeometry(pt);
+                        }
+                        map.centerAt(pt);
+                    }
+
+                    function addGraphic(pt) {
+                        //var symbol = new SimpleMarkerSymbol(
+                            //SimpleMarkerSymbol.STYLE_CIRCLE,
+                            //12,
+                            //new SimpleLineSymbol(
+                                //SimpleLineSymbol.STYLE_SOLID,
+                                //new Color([210, 105, 30, 0.5]),
+                        //8),
+                        //new Color([210, 105, 30, 0.9]));
+                        graphic = new Graphic(pt, testSymbol);
+                        map.graphics.add(graphic);
+                    }
+
+
+                    function activateTool() {
+                        $("#r").hide();
+
+                        var tool = this.label.toUpperCase().replace(/ /g, "_");
+                        toolbar.activate(Draw[tool]);
+                        //map.hideZoomSlider();
+                    }
+
+                    function createToolbar(themap) {
+					
+                        toolbar = new Draw(map);
+                        toolbar.on("draw-end", addToMap);
+                    }
+
+                    function addToMap(evt) {
+                        var symbol;
+                        toolbar.deactivate();
+                        //map.showZoomSlider();
+                        switch (evt.geometry.type) {
+                            case "point":
+                            case "multipoint":
+                                symbol = new SimpleMarkerSymbol();
+                                break;
+                            case "polyline":
+                                symbol = new SimpleLineSymbol();
+                                break;
+                            default:
+                                symbol = new SimpleFillSymbol();
+                                break;
+                        }
+
+                        var graphic = new Graphic(evt.geometry, symbol);
+                        map.graphics.add(graphic);
+                    }
+
+
+
+                    // Currently Unused - Can be used to call EUSA and pixelQuery
+                    function pixelClickHandler(e) {
+                        pointSolar(e.mapPoint.x, e.mapPoint.y, 102100);
+                    }
+
+                    // Click on map to query image service
+                    var clicky = map.on("click", pixelQuery);  //for new
+                    //var clicky = map.on("click", pixelClickHandler);  //for old
+
+                    // Query technique, not yet working
+
+                    function pixelQuery(e) {
+						utilLinkflag = 0
+                        var query = new Query();
+                        //var queryTask = new QueryTask("http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/MN_DSM/ImageServer/identify");
+                            //var queryTask = new QueryTask("http://geog-201458220.ad.umn.edu:6080/arcgis/rest/services/hen_ram_solar2/MapServer/identify");
+                        //var queryTask = new QueryTask("http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/MN_Solar/ImageServer/identify");
+							var queryTask = new QueryTask("http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/SolarP_IS/ImageServer/identify");
+							console.log(e.mapPoint);
+
+							query.geometry = e.mapPoint;
+							query.geometryType = "esriGeometryPoint";
+
+							query.mosaicRule = "";
+							//query.pixelSize = 1;
+							query.sr = 102100;
+							query.imageDisplay = 1;
+							query.tolerance = 1;
+							query.returnGeometry = false;
+							query.returnZ = false;
+							query.returnM = false;
+
+							query.f = "pjson";
+
+
+							//Execute task
+							queryTask.execute(query, function (results) {
+								
+								console.log(results.value);
+								var val = results.value;
+								var v = val / 1000 / 365;
+								var y = val / 1000;
+								  var quality = 0;
+								switch (true){
+									case (v>2.7):
+										quality = "Optimal";
+										break;
+									case (v<1.7):
+										quality = "Poor";
+										break;
+									default:
+										quality = "Good";
+								}
+								
+								var result = "<H3><strong>INSOLATION (kWh/m<sup>2</sup>)</strong></H3><p>Total per Year: " + y.toFixed(2) + "<br />Avg per Day: " + v.toFixed(2)+" (" + quality + ")</p>";
+								//$('#r').innerHTML = result;
+								
+								document.getElementById('r').innerHTML = result;
+								$("#r").show();
+								//if(utilLinkFlag==0){
+									//console.log('Caught Flag = 0');
+									//$("#utilLink").show();
+									//utilLinkFlag=1;
+									//}
+                        				
+										
+
+                             });
+							 
+							 
+							 
+						  var query = new Query();
+                        var queryTask = new QueryTask("http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/Eusa/MapServer/0");
+                        console.log(e.mapPoint);
+                        query.geometry = e.mapPoint;
+                        query.geometryType = "esriGeometryPoint";
+                        query.outFields = ["*"];
+                        query.spatialRelationship = query.SPATIAL_REL_INTERSECTS;
+                        query.mosaicRule = "";
+                        query.sr = 102100;
+                        query.imageDisplay = 1;
+                        query.tolerance = 1;
+                        query.returnGeometry = true;
+                        query.returnZ = false;
+                        query.returnM = false;
+                
+                        query.f = "pjson";
+
+
+                        //Execute task
+                        queryTask.execute(query, function (results) {
+								 console.log(results.features[0]);
+                            fullname = results.features[0].attributes["FULL_NAME"];
+								city = results.features[0].attributes["CITY"];
+								street = results.features[0].attributes["STREET"];
+								phone = results.features[0].attributes["PHONE"];
+								website = results.features[0].attributes["WEBSITE"];
+								elec_comp = results.features[0].attributes["ELEC_COMP"];
+								zip = results.features[0].attributes["ZIP"];
+							
+								var result = "<p><b>Utility Service Provider:   </b><br />" + fullname + "<br />" + street + "<br />" + city + ", MN " + zip + "<br />" + phone + "<br /><a target='_blank' href='http://" + website + "'>" + website + "</a></p><p><a href='http://www.dsireusa.org/solar/incentives/index.cfm?re=1&ee=1&spv=1&st=0&srp=0&state=MN' target='_blank'>MN Incentives/Policies for Solar</a></p>";
+   
+                            document.getElementById('r').innerHTML = document.getElementById('r').innerHTML + "<hr />" + result;
+                
+                        });
+
+							 
+							 
+							 
+							 
+                                    
+                                    // removes all previous graphics (previous click)
+                                    map.graphics.clear();
+                                    
+                                    // This is the point someone clicks
+                                    var point = e.mapPoint;
+                                    
+                                    // The draw symbol is the same as the other functions
+                                    var symbol = testSymbol;
+                                    
+                                    //  This sets a new graphic using the clicked point and the symbol
+                                    var graphic = new Graphic(point, symbol);
+                                    
+                                    //  Adds graphic
+                                    map.graphics.add(graphic);
+                                    
+                                    //  Centers map at point
+                                    //map.centerAt(point);
+									
+									
+									
+                    }
+					
+					// Click on map to query image service
+    				//var clicky = map.on("click", eusaQuery);
+					
+					// EUSA query
+					
+					function eusaQuery(e){
+						console.log("EUSA Click Handled!");
+					    //var infoTemplate = new InfoTemplate("${ELEC_COMP}", "<b>Name:   </b><br>&nbsp;&nbsp;&nbsp;&nbsp;${FULL_NAME}<br><br><b>Address:  </b><br>&nbsp;&nbsp;&nbsp;&nbsp;${STREET}<br>          &nbsp;&nbsp;&nbsp;&nbsp;${CITY},   ${STATE}  ${ZIP}<br><br><b>Phone Number:  </b><br>&nbsp;&nbsp;&nbsp;&nbsp;${PHONE:NumberFormat}<br><br><b>Website:  </b><br>&nbsp;&nbsp;&nbsp;&nbsp;<a href= ${WEBSITE}>${ELEC_COMP}</a>");
+ 
+                        var query = new Query();
+                        var queryTask = new QueryTask("http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/Eusa/MapServer/0");
+                        console.log(e.mapPoint);
+                        query.geometry = e.mapPoint;
+                        query.geometryType = "esriGeometryPoint";
+                        query.outFields = ["*"];
+                        query.spatialRelationship = query.SPATIAL_REL_INTERSECTS;
+                        query.mosaicRule = "";
+                        query.sr = 102100;
+                        query.imageDisplay = 1;
+                        query.tolerance = 1;
+                        query.returnGeometry = true;
+                        query.returnZ = false;
+                        query.returnM = false;
+                
+                        query.f = "pjson";
+
+
+                        //Execute task
+                        queryTask.execute(query, function (results) {
+								 console.log(results.features[0]);
+                            fullname = results.features[0].attributes["FULL_NAME"];
+								city = results.features[0].attributes["CITY"];
+								street = results.features[0].attributes["STREET"];
+								phone = results.features[0].attributes["PHONE"];
+								website = results.features[0].attributes["WEBSITE"];
+								elec_comp = results.features[0].attributes["ELEC_COMP"];
+								zip = results.features[0].attributes["ZIP"];
+							
+								var result = "<p><b>Utility Service Provider:   </b><br />" + fullname + "<br />" + street + "<br />" + city + ", MN " + zip + "<br />" + phone + "<br /><a target='_blank' href='http://" + website + "'>" + website + "</a></p><p><a href='http://www.dsireusa.org/solar/incentives/index.cfm?re=1&ee=1&spv=1&st=0&srp=0&state=MN' target='_blank'>MN Incentives/Policies for Solar</a></p>";
+   
+                            document.getElementById('r').innerHTML = document.getElementById('r').innerHTML + "<hr />" + result;
+                
+                        });
+                
+					}
+					         
+                    });
+            });
+        </script>
+    </body>
+</html>
