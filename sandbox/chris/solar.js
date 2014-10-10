@@ -15,6 +15,8 @@ $(window).load(function () {
         "esri/symbols/SimpleMarkerSymbol",
         "esri/symbols/SimpleLineSymbol",
         "esri/symbols/SimpleFillSymbol",
+		
+		"esri/SpatialReference",
 
         "esri/geometry/screenUtils",
         "esri/urlUtils",
@@ -47,6 +49,7 @@ $(window).load(function () {
     Tiled, ImageServiceParameters, ArcGISImageServiceLayer,
     Draw, Graphic, Point,
     SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol,
+	SpatialReference,
     screenUtils, urlUtils, esriConfig, esriRequest,
     Geocoder, HomeButton, LocateButton,
     parser, dom, domConstruct, query, Color,
@@ -285,15 +288,6 @@ $(window).load(function () {
                         document.getElementById('r').innerHTML = result;
                         $("#r").fadeIn('slow');
 		}
-		
-		
-		map.on("click",solarMonth);
-		
-		function solarMonth(evt){
-		    x = evt.mapPoint['x'];
-			y = evt.mapPoint['y'];
-			console.log('X = ' + x + '     Y = ' + y);
-			};
 
         // Click on map to query solar imageservice, bare earth county layer, and utility service area layer
         var clicky = map.on("click", pixelQuery);
@@ -438,7 +432,31 @@ $(window).load(function () {
             var graphic = new Graphic(point, pinSymbol);
             map.graphics.add(graphic);
 
-        }
+        };
+		
+		// beginning of solarGP tool
+		map.on("click",solarGPTool);
+		
+		var gp = new esri.tasks.Geoprocessor("http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/SolarPointQuery/GPServer/SolarPointQuery");
+				
+		function solarGPTool(evt){
+		    x = evt.mapPoint['x'];
+			y = evt.mapPoint['y'];
+			//tile = query...
+			tile = 'test';
+			executeGP(x,y, tile);
+			};
+		
+		function executeGP(x, y, tile){
+			var params = {"x":x, "y":y, "tile":tile};
+			console.log(params['x'] + ' ' + params['y'] + ' ' + params['tile']);
+			//gp.execute(params, displayResults);
+			}
+			
+		function displayResults(results, messages) {
+			//do something with the results
+			var features = results[0].value.features;
+			};
 
     });
 });
