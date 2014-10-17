@@ -1,11 +1,11 @@
 <?php include ("lib/function_library.php"); 
 
-if($_REQUEST['c'] != "") {
+if($_REQUEST['lat'] != "") {
 
-	$to = "solarp@umn.edu";
+	$to = "andywalz@gmail.com";
 	$to_name = "Bad Data Czar";
 	$subject = "Bad Data Notification";
-	$body = "<br>This location needs to be reprocessed: " . $_REQUEST['c'] . "<br><br>" . $_REQUEST['notes']. "<br>";
+	$body = "<br>This location needs to be reprocessed: <a href='http://solar.maps.umn.edu/app/index.html?lat=" . $_REQUEST['lat'] . "&long=" . htmlentities($_REQUEST['long']) ."'>" . $_REQUEST['lat'] . ", " . $_REQUEST['long'] . "</a><br><br>" . $_REQUEST['notes']. "<br>";
 	$replytoaddress = $_REQUEST['email'];
 	$fromname = $_REQUEST['name'];
 
@@ -20,6 +20,8 @@ if($_REQUEST['c'] != "") {
 	}
 }
 
+$x = htmlentities($_REQUEST['x']);
+$y = htmlentities($_REQUEST['y']);
 
 ?>
 
@@ -47,7 +49,7 @@ if($_REQUEST['c'] != "") {
   
 <!-- START OUR CONTENT -->
 <h3>You have indicated that there is a problem with the following location:<br>
-<?php echo htmlentities($_REQUEST['coords']); ?></h3>
+<a href="/app/index.html?lat=<?php echo $y; ?>&long=<?php echo $x; ?>"><?php echo $y .", ". $x; ?></a></h3>
 <p>&nbsp;</p>
 <?php if($msg != ""){ 
 
@@ -70,7 +72,8 @@ if($_REQUEST['c'] != "") {
       <textarea name="notes" id="notes"></textarea>
     </p>
     <p>
-    <input type="hidden" name="c" id="c" value="<?php echo htmlentities($_REQUEST['coords']); ?>">
+    <input type="hidden" name="lat" id="lat" value="<?php echo $y; ?>">
+    <input type="hidden" name="long" id="long" value="<?php echo $x; ?>">
       <input type="submit" name="submit" id="submit" value="Submit" onClick="javascript:document.getElementById('submit').value = '******* Sending now. Thank You! *******';">
     </p>
     </form>
