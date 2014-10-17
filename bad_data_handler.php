@@ -2,7 +2,7 @@
 
 if($_REQUEST['lat'] != "") {
 
-	$to = "andywalz@gmail.com";
+	$to = "solarp@umn.edu";
 	$to_name = "Bad Data Czar";
 	$subject = "Bad Data Notification";
 	$body = "<br>This location needs to be reprocessed: <a href='http://solar.maps.umn.edu/app/index.html?lat=" . $_REQUEST['lat'] . "&long=" . htmlentities($_REQUEST['long']) ."'>" . $_REQUEST['lat'] . ", " . $_REQUEST['long'] . "</a><br><br>" . $_REQUEST['notes']. "<br>";
