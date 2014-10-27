@@ -11,7 +11,7 @@
 
   <title>Methods | Minnesota Solar Suitability Analysis</title>
   
-  <?php include_once("assets/nav/header.php"); ?>
+  <?php include_once("assets/nav/header.php");?>
   
 </head>
 
@@ -22,10 +22,8 @@
   <!-- START OUR CONTENT -->
 
 <div class="boundingbox">
-  <div class="container">
-    
-
-    <div class="row" style="margin-top:15px" class="test">
+  <div class="container-full">
+    <div class="row" style="margin-top:15px">
       <div class="col-md-3" style="margin-top:0px">
         <div class="topleft2Column">
           <ul class="nav nav-tabs nav-stacked">
@@ -35,7 +33,7 @@
             <a href="#methods_lidar" data-toggle="tab"><li>LiDAR Data</li></a>
 
             <a href="#methods_dsm" data-toggle="tab"><li>Digital Surface Model
-            (DSM)</li></a>
+            </li></a>
                
             <a href="#methods_solar" data-toggle="tab"><li>Solar Radiation
             Analysis</li></a>
@@ -74,7 +72,7 @@
                 <br>
 				<br>
                 <a class="top">^^ TOP ^^</a>
-				<a class="changePage" href="#methods_lidar" data-toggle="tab">NEXT &gt&gt</a>
+				<a class="changePage" href="#methods_lidar" data-toggle="tab">NEXT &gt;&gt;</a>
 
               </div>
 				
@@ -119,9 +117,9 @@
                 <p>LiDAR Point Cloud of UMN East Bank Campus</p>
 
                 <br>
-				<a class="changePage" href="#methods" data-toggle="tab">&lt&lt PREVIOUS</a>
+				<a class="changePage" href="#methods" data-toggle="tab">&lt;&lt; PREVIOUS</a>
                 <a class="top">^^ TOP ^^</a>
-				<a class="changePage" href="#methods_dsm" data-toggle="tab">NEXT &gt&gt </a>
+				<a class="changePage" href="#methods_dsm" data-toggle="tab">NEXT &gt;&gt; </a>
               </div>
 				
               <div class="tab-pane" id="methods_dsm">  
@@ -157,9 +155,9 @@
                 <br>
 				<br>
 				<br>
-				<a class="changePage" href="#methods_lidar" data-toggle="tab">&lt &lt PREVIOUS</a>
+				<a class="changePage" href="#methods_lidar" data-toggle="tab">&lt; &lt; PREVIOUS</a>
                 <a class="top">^^ TOP ^^</a>
-				<a class="changePage" href="#methods_solar" data-toggle="tab">NEXT &gt&gt </a>
+				<a class="changePage" href="#methods_solar" data-toggle="tab">NEXT &gt;&gt; </a>
  
               </div>  
 				
@@ -239,9 +237,9 @@
                 preffered?</em></p>
               
                 <br>
-				<a class="changePage" href="#methods_dsm" data-toggle="tab">&lt &lt PREVIOUS</a>
+				<a class="changePage" href="#methods_dsm" data-toggle="tab">&lt; &lt; PREVIOUS</a>
                 <a class="top">^^ TOP ^^</a>
-				<a class="changePage" href="#methods_parallel" data-toggle="tab">NEXT &gt &gt </a>
+				<a class="changePage" href="#methods_parallel" data-toggle="tab">NEXT &gt; &gt; </a>
 
               </div>
 				
@@ -282,7 +280,14 @@
                 processing time for each job. The processing size chosen was 1
                 square kilometer, which resulted in a total of 220,165
                 individual jobs for the state of Minnesota.</p><br>
-                <br>
+                <p>
+				The below animation is symbolized based on the time stamp of a tiles completion.</p>
+				<div id="cartoDBIframe">
+			 	  <iframe src="http://flatrockgeo.cartodb.com/viz/59939d30-49bb-11e4-9d4e-0e4fddd5de28/embed_map"></iframe>
+				</div>
+				
+				<br>
+				<br>
                 <img alt="tile_overlay" border="0" height="520" src=
                 "assets/img/tile_overlay_with_tiles_70pct.jpg" width="556"><br>
                 <em>Data tiling structure with DSM processing extents (red) and
@@ -318,7 +323,7 @@
                 "assets/img/Parallell_DSM_Creation.png" width="600"><br>
                 <br>
   				<br>
-				<a class="changePage" href="#methods_solar" data-toggle="tab">&lt &lt PREVIOUS</a>
+				<a class="changePage" href="#methods_solar" data-toggle="tab">&lt; &lt; PREVIOUS</a>
                 <a class="top">^^ TOP ^^</a>
               </div>
             </div>
@@ -331,8 +336,12 @@
 	
 	
 	<!-- END OF BOUNDING BOX -->
-	  
+<script>$('.top').click(function(){console.log("SAW YOUR CLICK"); window.scrollTo(0,0); return false;});</script>
+<script>$('.changePage').click(function(){console.log("SAW YOUR CLICK"); window.scrollTo(0,0); return true;});</script> 
+
+ 
 <!-- BEGIN UofM FOOTER -->
 <?php include_once ("assets/nav/footer.php");?>
+
 </body>
 </html>

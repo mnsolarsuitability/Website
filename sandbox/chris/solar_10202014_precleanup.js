@@ -83,38 +83,6 @@ $(window).load(function () {
         var offset = parseInt(windHeight) - parseInt(footerHeight);
         $('#bottomBar').css('top',offset);
     }
-	
-	function buttonClassRemove(){
-	    $("#solarButton").removeClass("activeButton");
-		$("#aerialButton").removeClass("activeButton");
-		$("#streetButton").removeClass("activeButton");
-	};
-	
-	$("#solarButton").on('click',function(){
-	    buttonClassRemove();
-		$(this).addClass("activeButton");
-		toggleBasemapView();
-		solarLayer.show();
-		});
-	
-	$("#aerialButton").on('click',function(){
-	    buttonClassRemove();
-		$(this).addClass("activeButton");
-		toggleBasemapView();
-		aerialLayer.show();
-		});
-	
-	$("#streetButton").on('click',function(){
-	    buttonClassRemove();
-		$(this).addClass("activeButton");
-		toggleBasemapView();
-		streetLayer.show();
-		});
-		
-	$("#resultsButton").on('click',function(){
-	  console.log('Results Button');
-	  $('#r').toggle();
-	  });
 		
     function establishMapCenter() {
         if (navigator.geolocation) {
@@ -175,11 +143,74 @@ $(window).load(function () {
 		
 		windowWidth = getWindowWidth();
 		console.log(windowWidth);
+	
+
 		
+		//Establish center from current location:
+		/*function establishMapCenter() {
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(function (pos) {
+				crd = pos.coords;
+
+				console.log('Your current position is:');
+				console.log('Latitude : ' + crd.latitude);
+				console.log('Longitude: ' + crd.longitude);
+				console.log('More or less ' + crd.accuracy + ' meters.');
+				center = [crd.longitude, crd.latitude];
+
+				createMap(center);
+
+			}, locationError);
+        } else {
+            alert("Browser doesn't support Geolocation. Visit http://caniuse.com to see browser support for the Geolocation API.");
+            // Blegen center
+            center = [-93.243322, 44.971795];
+            createMap(center);
+        }
+		};
+		
+		function createMap(center){
+			console.log(center);
+			
+			// Setup solar imageservice layer
+			map = new Map("map", {
+				basemap: "solar",
+				// test solar tile center
+				center:center,
+				zoom: 15,
+				showAttribution: false,
+				//zoom: 13
+			});
+			};
+		
+		mapCenter = establishMapCenter();
+		//console.log(mapCenter);*/
+
 		if ($('#r').is(':empty')){
+		  //document.getElementById('r').innerHTML += '<br>General Message:\
+		  //<br><br>&nbsp;&nbsp;&nbsp;&nbsp;Please click on the map to query a location.<br><br>';
 		  $('#rTab').hide();
 		  $('#r').hide();
         };
+
+        // Show splashscreen when app loads
+        /*$('#SplashScreen').show();
+		//$('#SplashScreen').toggle('slide');
+        $('#r').hide();
+		$('.tableCanvas').hide();*/
+
+        // Close spashscreen when x or map is clicked
+        /*$('#closeSplash').on('click', function () {
+            //$("#SplashScreen").fadeOut('slow');
+			$("#SplashScreen").toggle('slide');
+			$('.sideNav').fadeIn('fast');
+        });*/
+		
+		/*$('#SplashScreen').on('click', function () {
+            //$("#SplashScreen").fadeOut('slow');
+			$("#SplashScreen").toggle('slide');
+			$('.sideNav').fadeIn('fast');
+        });*/
 		
         $('#map').on('click', function () {
 			$('#r.selector:hidden').toggle('slide');
@@ -208,17 +239,33 @@ $(window).load(function () {
 		
 		function moveTab(){
 		    document.getElementById("rTab").style.left = 0;
+			//document.getElementById("rTab").style.margin-left = -30;
 		}
 		
 		$('#rTab').on('click', function () {
 			if ($('#r').is(':hidden')){
 			    $('#r').toggle( "slide" );
 				};
+			/*if ($('#SplashScreen').is(':visible')){
+			    console.log('SAW SPLASH');
+			    $('#SplashScreen').fadeOut('fast');
+              //display === "none"
+			  
+            }else if ($('.tableCanvas').is(':visible')){
+			    console.log('SAW CANVAS');
+			    $('.tableCanvas').fadeOut('fast');
+			};*/
+			//$('.sideNav').fadeOut('fast');
+		    //$("#splashTab").fadeOut('fast');
+			//$("#rTab").fadeOut('fast');
         });
 		
 		$('#statsTab').on('click', function () {
+		    //$("#splashTab").fadeOut('fast');
+			//$("#rTab").fadeOut('fast');
 			displayResults();
 			$('r').fadeOut('fast');
+			//$('.sideNav').fadeOut('fast');
         });
 		
 		$('.tableCanvas').on('click', function () {
@@ -358,6 +405,24 @@ $(window).load(function () {
 			$("#SplashScreen").toggle();
 		});
 		
+		$('#solarRadio').on('click', function(){
+		    console.log('Saw solar button click!');
+		    toggleBasemapView();
+			solarLayer.show();
+			});
+			
+		$('#aerialRadio').on('click', function(){
+		    console.log('Saw aerial button click!');
+		    toggleBasemapView();
+			aerialLayer.show();
+			});
+			
+		$('#streetRadio').on('click', function(){
+		    console.log('Saw street button click!');
+		    toggleBasemapView();
+			streetLayer.show();
+			});
+			
 		// Create aerial layer and load hidden
 		var aerialLayer = new Tiled("http://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer");
 		aerialLayer.hide();
@@ -737,37 +802,24 @@ $(window).load(function () {
 			var insolValue=[insolResults[0],insolResults[1],insolResults[2],insolResults[3],insolResults[4],insolResults[5],insolResults[6],insolResults[7],insolResults[8],insolResults[9],insolResults[10],insolResults[11]];
 			var insolValueCorrected=[];
 			console.log(insolValue);
-			total = 0
+			
 			for (var i = 0; i < 12; i++){
 				console.log(i);
 				switch(i){
 					case 11:
 						console.log('Case 11: ');
 						console.log(insolValue[i])
-						total += (insolValue[i]/1000);
-						console.log('Total: '+ total);
 						break;
 					case 0:
 						console.log('Case 0: ');
 						console.log(insolValue[i]-insolValue[11])
-						total += ((insolValue[i]-insolValue[11])/1000);
-						console.log('Total: '+ total);
 						break;
 					default:
-						
-						
-						console.log('Default '+insolValue[i]+' : ')
-						console.log('i+1     '+insolValue[i+1]);
-						console.log('i+     '+insolValue[i]);
-						console.log('diff' + insolValue[i+1]-insolValue[i])
-						total += ((insolValue[i+1]-insolValue[i])/1000);
-						console.log('Total: '+ total);
+						console.log('Default: ')
+						console.log(insolValue[i+1]-insolValue[i])
 						break;
 						};
 				};
-			
-			console.log(typeof(total));
-			console.log(total);
 			
 				/*holder = i-sum;
 				insolValueCorrected.push(holder)
@@ -891,7 +943,41 @@ $(window).load(function () {
 				endTime = new Date().getTime();
 				console.log("Solar point processing took: " + ((endTime - startTime)*0.001) + " seconds.")
 			}
+			
+			
+			/* HORIZONTAL CHART */
+			
+			/*var data = [8975.94105812,
+			            12108.8676865,
+			            17092.4509886,
+			            24006.0040045,
+			            32594.6587952,
+			            42222.140888,
+			            52101.1554818,
+			            61411.39743,
+			            69474.4444047,
+			            75771.1787041,
+			            80049.2088783,
+			            5823.04305296];
 
+			
+
+            var x = d3.scale.linear()
+              .domain([0, d3.max(data)])
+              .range([0, 420]);
+	
+            d3.select(".chart")
+            .selectAll("div")
+            .data(data)
+            .enter().append("div")
+            .style("width", function(d) { return x(d) + "px"; })
+            .text(function(d) { return d; });
+			
+			$('.tableCanvas').show();
+			var endTime = new Date().getTime();
+			console.log("Solar point processing took: " + (endTime - startTime) + "ms.");*/
+			
+			
 			};
 
     });

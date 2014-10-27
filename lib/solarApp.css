@@ -179,3 +179,74 @@ a:hover {
 .basemapTitle {
 	display: none !important;
 }
+
+.chart div {
+  font: 10px sans-serif;
+  background-color: steelblue;
+  text-align: right;
+  padding: 3px;
+  margin: 1px;
+  color: black;
+  z-index:1;
+}
+
+.chart rect {
+  fill: #ff7400;
+}
+
+.chart rect:hover {
+  fill: orangered ;
+}
+
+.chart text {
+  fill: white;
+  font: 10px sans-serif;
+  text-anchor: end;
+}
+ 
+ .tableCanvas{
+ position:fixed;
+ top:60px;
+ left:400px;
+ z-index:100;
+  }
+  
+  #root{
+  padding-top:40px;
+ background: #474343;
+ z-index:100;
+ border: 3px;
+	border-style: solid;
+	border-color: white;
+	border-radius: 0 40px 0px 40px;
+  }
+  
+  .d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+  z-index:500;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}

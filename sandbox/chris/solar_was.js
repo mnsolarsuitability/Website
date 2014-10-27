@@ -42,9 +42,6 @@ $(window).load(function () {
         "esri/tasks/QueryTask",
         "esri/dijit/BasemapToggle",
         "esri/InfoTemplate",
-		
-		"esri/geometry/webMercatorUtils",
-		"esri/tasks/GeometryService",
 
         "dijit/layout/BorderContainer", "dijit/layout/ContentPane",
         "dijit/form/Button", "dojo/domReady!"], function (
@@ -56,215 +53,28 @@ $(window).load(function () {
     screenUtils, urlUtils, esriConfig, esriRequest,
     Geocoder, HomeButton, LocateButton,
     parser, dom, domConstruct, query, Color,
-    on, domClass, dojoJson, registry, Query, QueryTask, BasemapToggle, InfoTemplate,
-	webMercatorUtils, GeometryService) {
+    on, domClass, dojoJson, registry, Query, QueryTask, BasemapToggle, InfoTemplate) {
 
         parser.parse();
-		var layer;
-		var layerflag = 0;
-	
-	$('#root').hide();
-	$('#layerTest1').hide();
-	$('#layerTest2').hide();
-	$('#layerTest3').hide();
-	
-	$(function(){
-        $(window).resize(function(){
-            placeFooter();
+		 var layer;
+		 var layerflag = 0;
+
+        // Show splashscreen when app loads
+        $('#SplashScreen').show();
+        $('#r').hide();
+		$('.tableCanvas').hide();
+
+        // Close spashscreen when x or map is clicked
+        $('#closeSplash').on('click', function () {
+            $("#SplashScreen").fadeOut('slow');
         });
-        placeFooter();
-        // hide it before it's positioned
-        $('#bottomBar').css('display','inline');
-    });
-
-    function placeFooter() {  
-        var windHeight = $(window).height();
-        var footerHeight = $('#bottomBar').height();
-        var offset = parseInt(windHeight) - parseInt(footerHeight);
-        $('#bottomBar').css('top',offset);
-    }
-	
-	function buttonClassRemove(){
-	    $("#solarButton").removeClass("activeButton");
-		$("#aerialButton").removeClass("activeButton");
-		$("#streetButton").removeClass("activeButton");
-	};
-	
-	$("#solarButton").on('click',function(){
-	    buttonClassRemove();
-		$(this).addClass("activeButton");
-		toggleBasemapView();
-		solarLayer.show();
-		});
-	
-	$("#aerialButton").on('click',function(){
-	    buttonClassRemove();
-		$(this).addClass("activeButton");
-		toggleBasemapView();
-		aerialLayer.show();
-		});
-	
-	$("#streetButton").on('click',function(){
-	    buttonClassRemove();
-		$(this).addClass("activeButton");
-		toggleBasemapView();
-		streetLayer.show();
-		});
-		
-	$("#resultsButton").on('click',function(){
-	  console.log('Results Button');
-	  $('#r').toggle();
-	  });
-		
-    function establishMapCenter() {
-        if (navigator.geolocation) {
- 
-			navigator.geolocation.getCurrentPosition(function (pos) {
-				var crd = pos.coords;
-				console.log('Your current position is:');
-				console.log('Latitude : ' + crd.latitude);
-				console.log('Longitude: ' + crd.longitude);
-				console.log('More or less ' + crd.accuracy + ' meters.');
-				var center = [crd.longitude, crd.latitude];
-				createMap(center);
-			});
-
-		} else {
-			alert("Browser doesn't support Geolocation.");
-			var center = [-90.243322, 40.971795];
-			//createMap(center);
-		}
-}
-
-		function createMap(centerPoint) {
-			//console.log(center + ' seems to work');
-
-			map = new Map("map", {
-				basemap: "solar",
-				//test solar tile center
-				center: centerPoint,
-				//center: [-95.4175, 44.6169],
-				zoom: 12,
-				// Blegen center
-				//center: [-93.243322, 44.971795],
-				showAttribution: false,
-				
-				});
-		}
-
-		establishMapCenter()
-
-		// Creates sticky bottom nav/footer bar
-		function getWindowWidth() {
-			var windowWidth = 0;
-			if (typeof(window.innerWidth) == 'number') {
-				windowWidth = window.innerWidth;
-			}
-			else {
-				if (document.documentElement && document.documentElement.clientWidth) {
-					windowWidth = document.documentElement.clientWidth;
-				}
-				else {
-					if (document.body && document.body.clientWidth) {
-						windowWidth = document.body.clientWidth;
-					}
-				}
-			}
-			return windowWidth;
-		}
-		
-		windowWidth = getWindowWidth();
-		console.log(windowWidth);
-		
-		if ($('#r').is(':empty')){
-		  $('#rTab').hide();
-		  $('#r').hide();
-        };
-		
         $('#map').on('click', function () {
-			$('#r.selector:hidden').toggle('slide');
-			$('#r').show();
-			$('#rTab').show();
-			//$("#rTab").fadeOut('slow');
+            $('#SplashScreen').fadeOut('slow');
         });
-		
-		$('#r').on('click', function () {
-            $(this).toggle( "slide" );
-			$('.sideNav').fadeIn('fast');
-			moveTab();
-        });
-		
-		$('#viewButton1').on('click', function(){
-		    console.log('SAW VIEW1 CLICK');
+		 $('.close').on("click", function () {
+    		$(this).parents('div').fadeOut();
 		});
-		
-		$('#viewButton2').on('click', function(){
-		    console.log('SAW VIEW2 CLICK');
-		});
-		
-		$('#viewButton3').on('click', function(){
-		    console.log('SAW VIEW3 CLICK');
-		});
-		
-		function moveTab(){
-		    document.getElementById("rTab").style.left = 0;
-		}
-		
-		$('#rTab').on('click', function () {
-			if ($('#r').is(':hidden')){
-			    $('#r').toggle( "slide" );
-				};
-        });
-		
-		$('#statsTab').on('click', function () {
-			displayResults();
-			$('r').fadeOut('fast');
-        });
-		
-		$('.tableCanvas').on('click', function () {
-		    //$("#splashTab").fadeOut('fast');
-			//$("#rTab").fadeOut('fast');
-			$(this).fadeOut('slow');
-			$('.sideNav').fadeIn('fast');
-        });
-		
-		$('#splashTab').on('click', function () {
-		    //$("#splashTab").fadeOut('fast');
-			//$("#rTab").fadeOut('fast');
-			$('#SplashScreen').toggle( "slide" );
-			//$('.sideNav').fadeOut('fast');
-        });
-		
-		// Draw vector layers
-		$('#layer0CheckBox').on('click', function () {
-		    console.log('Clicked Layer 1!');
-			if ($('#layerTest1').is(':hidden')){
-			    document.getElementById('layerTest1').innerHTML = "Counties";
-			    $('#layerTest1').show();
-			}else{
-			    $('#layerTest1').hide();
-			};
-		});
-		
-		$('#layer1CheckBox').on('click', function () {
-		    console.log('Clicked Layer 2!');
-			if ($('#layerTest2').is(':hidden')){
-			    document.getElementById('layerTest2').innerHTML = "EUSA";
-			    $('#layerTest2').show();
-			}else{
-			    $('#layerTest2').hide();
-			};
-		});
-		
-		$('#layer2CheckBox').on('click', function () {
-		    console.log('Clicked Layer 3!');
-			if ($('#layerTest3').is(':hidden')){
-			    document.getElementById('layerTest3').innerHTML = "Tiles";
-			    $('#layerTest3').show();
-			}else{
-			    $('#layerTest3').hide();
-			};
-		});
+
 
         // Setup World Imagery Basemap
         esriConfig.defaults.map.basemaps.solar = {
@@ -277,18 +87,13 @@ $(window).load(function () {
             }],
             title: "Solar"
         };
-		
 
         // Setup solar imageservice layer
         var map = new Map("map", {
             basemap: "solar",
-			// test solar tile center
-			center: [-95.4175, 44.6169],
-			zoom: 12,
-			// Blegen center
-            //center: [-93.243322, 44.971795],
+            center: [-93.243322, 44.971795],
             showAttribution: false,
-            //zoom: 13
+            zoom: 13
         });
 
         var params = new ImageServiceParameters();
@@ -299,17 +104,16 @@ $(window).load(function () {
         rasterFunction.variableName = "Raster";
         params.renderingRule = rasterFunction;
         params.noData = 0;
-		
-        var solarLayer = new ArcGISImageServiceLayer(imgDisplayURL, {
+        var layer = new ArcGISImageServiceLayer(imgDisplayURL, {
             imageServiceParameters: params,
             showAttribution: false,
             opacity: 1.0
         });
-		
+        map.addLayer(layer);
 
 
         // Build basemap toggle button to show/hide solar layer revealing world imagery
-        /*var toggle = new BasemapToggle({
+        var toggle = new BasemapToggle({
             map: map,
             basemap: "hybrid",
             basemaps: {
@@ -323,65 +127,18 @@ $(window).load(function () {
                 }
             }
         }, "BasemapToggle");
-        //toggle.startup();*/
+        toggle.startup();
 
         $('#BasemapToggle').on('click', function () {
             if (layerflag == 0) {
-                solarLayer.hide();
+                layer.hide();
                 layerflag = 1;
             } else {
-                solarLayer.show();
+                layer.show();
                 layerflag = 0;
             }
 
         });
-		
-		$("a#dropdownMenu.dropdown-toggle").click(function(ev) {
-			$("ul#dropdownBookmarkList.dropdown-menu").hide();
-			$("ul#dropdownMenuList.dropdown-menu").toggle();
-            //$("a.dropdown-toggle").dropdown("toggle");
-            return false;
-          });
-		  
-		$("a#dropdownBookmark.dropdown-toggle").click(function(ev) {
-		  $("ul#dropdownMenuList.dropdown-menu").hide();
-		  $("ul#dropdownBookmarkList.dropdown-menu").toggle();
-            return false;
-          });
-          /*$("ul.dropdown-menu a").click(function(ev) {
-              $("a.dropdown-toggle").dropdown("toggle");
-              return false;
-          });*/
-		  
-		$("#helpMenu").on('click', function(){
-		    //console.log('SAW HELP CLICK');
-			$("#SplashScreen").toggle();
-		});
-		
-		// Create aerial layer and load hidden
-		var aerialLayer = new Tiled("http://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer");
-		aerialLayer.hide();
-		
-		// Create street layer and load hidden
-		var streetLayer = new Tiled("http://server.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer/");
-		streetLayer.hide();
-		
-		// Add solar to the map
-        map.addLayer(solarLayer);
-		
-		// Add aerial to the map
-        map.addLayer(aerialLayer);
-		
-		// Add street to the map
-        map.addLayer(streetLayer);
-		
-		
-		function toggleBasemapView(){
-		    console.log('Saw toggleBasemapView function call');
-		    solarLayer.hide();
-			aerialLayer.hide();
-			streetLayer.hide();			
-			};
 
 
         // Setup a home button to zoom back to original extent
@@ -412,24 +169,21 @@ $(window).load(function () {
 
         // Setup a pin symbol to show current insolation measurement lcoation        
         var pinSymbol = new esri.symbol.PictureMarkerSymbol({
-            "angle":0,
-			"xoffset":2,
-			"yoffset":8,
-			"type":"esriPMS",
-			"url":"http://static.arcgis.com/images/Symbols/Shapes/BluePin1LargeB.png",
-			"contentType":"image/png",
-			"width":30,
-			"height":30
+            "angle": 0,
+            "xoffset": 0,
+            "yoffset": 12,
+            "type": "esriPMS",
+            "url": "http://static.arcgis.com/images/Symbols/Basic/GreenStickpin.png",
+            "contentType": "image/png",
+            "width": 30,
+            "height": 30
         });
 
 
         // Setup a help ? that displays splash screen again
         $("#HelpMe").click(function () {
-		    console.log('CLICKED HELP ME');
             $("#r").fadeOut('fast');
-            //$("#SplashScreen").fadeIn('slow');
-			$("#SplashScreen").toggle('slide');
-			
+            $("#SplashScreen").fadeIn('slow');
         });
 
 
@@ -446,11 +200,8 @@ $(window).load(function () {
 
         $("#currentLoc").click(function () {
             if (navigator.geolocation) {
-				  //$("#r").fadeOut('fast');
-				  $('#r.selector:hidden').toggle('slide');
-				  $('#SplashScreen').toggle('slide');
-				  //$('#SplashScreen').fadeOut('slow');
-				  
+				  $("#r").fadeOut('fast');
+				  $('#SplashScreen').fadeOut('slow');
                 navigator.geolocation.getCurrentPosition(zoomToLocation, locationError);
                 //watchId = navigator.geolocation.watchPosition(showLocation, locationError);
             } else {
@@ -524,8 +275,7 @@ $(window).load(function () {
 		
 		function showResults(evt) {
 			//$("#r").fadeOut('fast');
-            //$("#SplashScreen").fadeOut('slow');
-		    $('#SplashScreen').toggle('slide');
+           $("#SplashScreen").fadeOut('slow');
 			map.graphics.clear();
 		    var point = evt.result.feature.geometry;
 			var symbol = new SimpleMarkerSymbol();
@@ -537,16 +287,13 @@ $(window).load(function () {
 			var result = "<p>Click/Zoom anywhere near your search result (<img src='/assets/img/blue_diamond.gif'>) to view solar radiation per square meter.</p><p>Struggling to find what you are looking for? Try using the basemap toggle button at left to bring up satellite imagery for further help finding the spot you wish to analyze.</p>";
 
                         document.getElementById('r').innerHTML = result;
-                        //$("#r").fadeIn('slow');
-						//$("#r").toggle('slide');
-						$('#r.selector:hidden').toggle('slide');
+                        $("#r").fadeIn('slow');
 		}
 
         // Click on map to query solar imageservice, bare earth county layer, and utility service area layer
         var clicky = map.on("click", pixelQuery);
 
         function pixelQuery(e) {
-		    document.getElementById('r').innerHTML = '';
 		
             //setup insolation query
             var query = new Query();
@@ -622,9 +369,7 @@ $(window).load(function () {
                         var result = "<H3><strong>INSOLATION (kWh/m<sup>2</sup>)</strong></H3><p>Total per Year: " + y.toFixed(2) + warning + "<br />Avg per Day: " + v.toFixed(2) + " (" + quality + ")" + warning + "</p>" + warningMsg;
 
                         document.getElementById('r').innerHTML = result;
-                        //$("#r").fadeIn('slow');
-						//$("#r").toggle('slide');
-						$('r.selector:hidden').fadeIn('fast');
+                        $("#r").fadeIn('slow');
 
 
 						  //setup Utility Service Provider query
@@ -671,12 +416,10 @@ $(window).load(function () {
 
                 } else {
 					  // clicked point is outside of the state
-                    var result = "<H3><strong>INSOLATION (kWh/m<sup>2</sup>)</strong></H3><p>Total per Year: Unknown**<br />Avg per Day: Unknown**</p><p>**<span id='smText'>This point is out of the study area. Click within the State of Minnesota or try searching for something like 'Target Field'.</span></p><span class='closeSplash'>(X) CLOSE</span> </p>";
+                    var result = "<H3><strong>INSOLATION (kWh/m<sup>2</sup>)</strong></H3><p>Total per Year: Unknown**<br />Avg per Day: Unknown**</p><p>**<span id='smText'>This point is out of the study area. Click within the State of Minnesota or try searching for something like 'Target Field'.</span></p>";
 
                     document.getElementById('r').innerHTML = result;
-                    //$("#r").fadeIn('slow');
-					//$("#r").toggle('slide');
-					$('#r.selector:hidden').toggle('slide');
+                    $("#r").fadeIn('slow');
                 }
                
             });
@@ -694,13 +437,12 @@ $(window).load(function () {
 		
 		// beginning of solarGP tool
 		map.on("click",solarGPTool);
-
-        gsvc = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
-		var gp = new esri.tasks.Geoprocessor("http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/SolarPointQuery_hr/GPServer/SolarPointQuery_hr");
+		
+		var gp = new esri.tasks.Geoprocessor("http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/SolarPointQuery/GPServer/SolarPointQuery");
 				
 		function solarGPTool(evt){
-		    point = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
-			// y = webMercatorUtils.webMercatorToGeographic(evt.mapPoint['y']);
+		    x = evt.mapPoint['x'];
+			y = evt.mapPoint['y'];
 			//initialize query task
             queryTask = new esri.tasks.QueryTask("http://gis.uspatial.umn.edu/arcgis/rest/services/solar/MN_DSM/ImageServer");
 
@@ -710,188 +452,54 @@ $(window).load(function () {
             tilequery.outFields = ["Name"];
 			tilequery.geometry = evt.mapPoint;
 			
+			point = new Point(x, y, '26915');
+			
+			//console.log(point)
+			
 			queryTask.execute(tilequery, function (results) {
-				tile = (results.features[0].attributes["Name"] + '.img');
-				//console.log(tile);
-				//console.log('Point: ' + point);
-				executeGP(point, tile);
-				
+				var tile = results.features[0].attributes["Name"];
+				if (tile==='751'){
+				    executeGP(point, tile)
+					}else{
+					console.log('FAILED')
+					};
 				});
 			};
 		
 		function executeGP(point, tile){
-			startTime = new Date().getTime();
-			console.log('Processing tile: ' + tile);
-			console.log('Point: ' + point['x'], point['y']);
-			var params = {"PointX":point['x'], "PointY":point['y'], "File_Name":tile};
-			gp.execute(params, displayResults);
+		    //console.log(point['x']);
+			//console.log(tile);
+			//var startTime = new Date().getTime();
+			console.log('Processing ' + tile + ' tile.');
+			//var params = {point, "tile":tile};
+			//gp.execute(params, displayResults);
+			gp.execute(point, displayResults);
 			}
 			
 		function displayResults(results, messages) {
+		    console.log('Got to display');
 			//do something with the results
-			var insolResults = results[0].value.split("\n");
-			var sunHrResults = results[1].value.split("\n");
-			insolResults.pop();
-			sunHrResults.pop();
 			
-			var insolValue=[insolResults[0],insolResults[1],insolResults[2],insolResults[3],insolResults[4],insolResults[5],insolResults[6],insolResults[7],insolResults[8],insolResults[9],insolResults[10],insolResults[11]];
-			var insolValueCorrected=[];
-			console.log(insolValue);
-			total = 0
-			for (var i = 0; i < 12; i++){
-				console.log(i);
-				switch(i){
-					case 11:
-						console.log('Case 11: ');
-						console.log(insolValue[i])
-						total += (insolValue[i]/1000);
-						console.log('Total: '+ total);
-						break;
-					case 0:
-						console.log('Case 0: ');
-						console.log(insolValue[i]-insolValue[11])
-						total += ((insolValue[i]-insolValue[11])/1000);
-						console.log('Total: '+ total);
-						break;
-					default:
-						
-						
-						console.log('Default '+insolValue[i]+' : ')
-						console.log('i+1     '+insolValue[i+1]);
-						console.log('i+     '+insolValue[i]);
-						console.log('diff' + insolValue[i+1]-insolValue[i])
-						total += ((insolValue[i+1]-insolValue[i])/1000);
-						console.log('Total: '+ total);
-						break;
-						};
-				};
+			//test = results[0].value;
+			//console.log(test)
+			//var data = test.split("\n");
+			//console.log(data);
 			
-			console.log(typeof(total));
-			console.log(total);
+
+            /*var x = d3.scale.linear()
+              .domain([0, d3.max(data)])
+              .range([0, 420]);*/
+	
+            /*d3.select(".chart")
+            .selectAll("div")
+            .data(data)
+            .enter().append("div")
+            .style("width", function(d) { return x(d) + "px"; })
+            .text(function(d) { return d; });*/
 			
-				/*holder = i-sum;
-				insolValueCorrected.push(holder)
-				sum += holder;
-				if (i === 0){
-					holder = insolValue[i]
-					} 
-					else{
-						holder = (insolValue[i]-(sum);
-						sum += insolValue[i]
-				}
-				
-				console.log(holder);
-				}*/
-				
-				
-			//console.log(insolValueCorrected);
-			
-			//insolResults.insolValue.push(1)
-			var data = {
-			
-				"month": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-				"insolValue":[insolResults[0],insolResults[1],insolResults[2],insolResults[3],insolResults[4],insolResults[5],insolResults[6],insolResults[7],insolResults[8],insolResults[9],insolResults[10],insolResults[11]],
-				"sunHrValue":[sunHrResults[0],sunHrResults[1],sunHrResults[2],sunHrResults[3],sunHrResults[4],sunHrResults[5],sunHrResults[6],sunHrResults[7],sunHrResults[8],sunHrResults[9],sunHrResults[10],sunHrResults[11]]
-			}
-			
-			
-			//var maxResults = Math.max.apply(Math, insolResults.value);
-			var insolMaxResults = Math.max.apply(Math, data.insolValue);
-			//console.log('Insol Max Results ' + insolMaxResults.value);
-			
-			var sunHrMaxResults = Math.max.apply(Math, data.sunHrValue);
-			//console.log('SunHr Max Results ' + sunHrMaxResults.value);
-			//$("#root").html("");
-			//draw(data);
-
-			function draw(data) {
-				var margin = {
-						"top": 10,
-						"right": 10,
-						"bottom": 30,
-						"left": 50
-					},
-					width = 700,
-					height = 300;
-					barWidth = 40;
-
-				var x = d3.scale.ordinal()
-					.domain(data.month.map(function(d) {
-						return d.substring(0, 3);}))
-					.rangeRoundBands([0, width], 0);
-
-
-				var y = d3.scale.linear()
-					.domain([0, maxResults])
-					.range([height, 0]);
-
-				var xAxis = d3.svg.axis().scale(x).orient("bottom");
-
-				var yAxis = d3.svg.axis().scale(y).orient("left");
-
-				var svgContainer = d3.select("#root").append("svg")
-					.attr("class", "chart")
-					.attr("width", width + margin.left + margin.right)
-					.attr("height", height + margin.top + margin.bottom).append("g")
-						.attr("transform", "translate(" + margin.left + "," + margin.right + ")");
-						
-				var tip = d3.tip()
-				  .attr('class', 'd3-tip')
-				  .offset([-10, 0])
-				  .html(function(d) {
-					return "<strong>Value:</strong> <span style='color:red'>" + d + "</span>";
-				  })
-
-				svgContainer.call(tip);
-
-				svgContainer.append("g")
-					.attr("class", "x axis")
-					.attr("transform", "translate( 0," + height + ")")
-					.call(xAxis);
-
-				svgContainer.append("g")
-					.attr("class", "y axis").call(yAxis)
-					/*.append("text")
-						.attr("transform", "rotate(-90)")
-						.attr("y", 6)
-						.attr("dy", ".71em")
-						.style("text-anchor", "end")
-						.text("Solar Value")*/
-					.append("text")
-						.attr("x", (width / 2))             
-						.attr("y", 10)
-//						- (margin.top/8))
-						.attr("text-anchor", "middle")  
-						.style("font-size", "16px") 
-						.style("text-decoration", "underline")  
-						.text("Solar Insolation By Month");
-						
-				svgContainer.selectAll(".bar").data(data.value).enter().append("rect")
-					.attr("class", "bar")
-					.attr("x", function(d, i) {
-						return i * x.rangeBand() + (x.rangeBand()/2) -(barWidth/2);
-					})
-					.attr("y", function(d) {
-						return y(d);
-					})
-					.attr("width", barWidth)
-					//function(){
-						//return x.rangeBand();
-					//})
-					.attr("height", function(d) {
-						return height -y(d);
-					})
-					.on('mouseover', tip.show)
-					.on('mouseout', tip.hide)
-					
-				$('.tableCanvas').toggle('slide');
-				if(typeof startTime === 'undefined'){
-                    startTime = new Date().getTime();
-                };
-				endTime = new Date().getTime();
-				console.log("Solar point processing took: " + ((endTime - startTime)*0.001) + " seconds.")
-			}
-
+			//$('.tableCanvas').show();
+			//var endTime = new Date().getTime();
+			//console.log("Solar point processing took: " + (endTime - startTime) + "ms.");
 			};
 
     });

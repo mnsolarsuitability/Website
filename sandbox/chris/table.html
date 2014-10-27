@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="CoffeeCup HTML Editor (www.coffeecup.com)">
+    <meta name="dcterms.created" content="Sun, 12 Oct 2014 04:45:04 GMT">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title></title>
+    
+    <!--[if IE]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+	<link href="/lib/solarApp.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="/lib/d3/d3.min.js"></script>
+  </head>
+  <body>
+  
+  <div id="root">
+        </div>
+		
+<script>
+var data = {
+
+    "month": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+	"value":[8975.941, 12108.867, 17092.450, 24006.004, 32594.658, 42222.140, 52101.155, 61411.397, 69474.444, 75771.178, 80049.208, 5823.043]
+}
+
+draw(data);
+
+function draw(data) {
+    var margin = {
+            "top": 10,
+            "right": 10,
+            "bottom": 30,
+            "left": 50
+        },
+        width = 700,
+        height = 300;
+
+    var x = d3.scale.ordinal()
+        .domain(data.month.map(function(d) {
+            return d.substring(0, 3);}))
+        .rangeRoundBands([0, width], 0);
+
+
+    var y = d3.scale.linear()
+        .domain([0, d3.max(data.value)])
+        .range([height, 0]);
+
+    var xAxis = d3.svg.axis().scale(x).orient("bottom");
+
+    var yAxis = d3.svg.axis().scale(y).orient("left");
+
+    var svgContainer = d3.select("#root").append("svg")
+        .attr("class", "chart")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom).append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.right + ")");
+
+    svgContainer.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate( 0," + height + ")")
+        .call(xAxis);
+
+    svgContainer.append("g")
+        .attr("class", "y axis").call(yAxis)
+        .append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", ".71em")
+            .style("text-anchor", "end")
+            .text("Solar Value");
+
+    svgContainer.selectAll(".bar").data(data.value).enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", function(d, i) {
+            return i * x.rangeBand();
+        })
+        .attr("y", function(d) {
+            return y(d);
+        })
+        .attr("width", function(){
+            return x.rangeBand();
+        })
+        .attr("height", function(d) {
+            return height -y(d);
+        });
+}
+</script>
+  
+  
+
+<!--<svg class="chart"></svg>
+<script>
+
+var width = 420,
+    barHeight = 20;
+
+var x = d3.scale.linear()
+    .range([0, width]);
+
+console.log(width);
+
+var chart = d3.select(".chart")
+    .attr("width", width);
+
+d3.tsv("test.tsv", type, function(error, data) {
+  x.domain([0, d3.max(data, function(d) { return d.value; })]);
+
+  chart.attr("height", barHeight * data.length);
+
+  var bar = chart.selectAll("g")
+      .data(data)
+    .enter().append("g")
+      .attr("transform", function(d, i) { return "translate(0," + i * barHeight + ")"; });
+
+  bar.append("rect")
+      .attr("width", function(d) { return x(d.value); })
+      .attr("height", barHeight - 1);
+
+  bar.append("text")
+      .attr("x", function(d) { return x(d.value) - 3; })
+      .attr("y", barHeight / 2)
+      .attr("dy", ".35em")
+      .text(function(d) { return d.value; });
+});
+
+function type(d) {
+  d.value = +d.value; // coerce to number
+  return d;
+}
+
+</script>-->
+  </body>
+  
+</html>
