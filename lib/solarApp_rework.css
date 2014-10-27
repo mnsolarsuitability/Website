@@ -133,6 +133,20 @@ body{
    color:white;  
 }
 
+button.menuButton, a.menuButton{
+  background-color:#474343;
+  color:white;  
+  border: 1px solid white;
+ }
+
+.dropdown-accordion .panel-heading {
+  padding: 0;
+}
+.dropdown-accordion .panel-heading a {
+  display: block;
+  padding: 10px 15px;
+}
+ 
 button#resultsButton {
    height: 40px;
    width:80px;

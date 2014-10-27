@@ -30,87 +30,99 @@
     <div class="row">
 	  <div id="headerBar">
         <div class="col-md-4">
-		  <div id="search"></div>
-		</div>
-		
-		<div class="col-md-1">
 		  <div class="row">
-		    
-		    <!--<div class="col-md-3">
-		      <div id="HomeButton"></div>
-		    </div>-->
-			
-			<div class="col-md-3">
-		      <div class="btn-group">
-			    <button type="button" class="btn btn-default" id="HomeButton"></button>
-			    <button type="button" class="btn btn-default" id="currentLoc">Left</button>
-			  </div>
-			</div>
-		    
-		
-		    <div class="col-md-3">
-		      <div id="currentLoc"></div>
-		    </div>
-			
-			<div class="col-md-3">
-		      <div></div>
-		    </div>
-		
-		    <!--
-			<div class="col-md-3" style="margin-top:0px">
-		      <div id="HelpMe">?</div>
-		    </div>
-			
-			<div class="col-md-3" style="margin-top:0px">
-              <div id="BasemapToggle"></div>
-		    </div>-->
-
-		  </div>
+            <div class="col-md-12">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search">
+                <span class="input-group-btn">
+                  <button class="btn btn-default menuButton" type="button">Go!</button>
+                </span>
+              </div><!-- /input-group -->
+            </div><!-- /.col-lg-6 -->
+          </div><!-- /.row -->
+		  <!--<div id="search"></div>-->
 		</div>
 		
-		<div class="col-md-4">
-		  <!--<div class="toggleLayers">
-            <div id="layerTitle">
-              Layer List :
-            </div>
-            <div id="layers">
-              <span id="layer_list"><input type='checkbox' class='list_item' id='layer0CheckBox' value=0 />Counties
-                <input type='checkbox' class='list_item' id='layer1CheckBox' value=1 />EUSA
-                <input type='checkbox' class='list_item' id='layer2CheckBox' value=1 />Tiles
-              </span>
-            </div>
-          </div>-->
-	    </div>
-
-		<!--<div class="col-md-1">
-		  <div id="esriLogo">
-            <a href="http://www.esri.com/" target="_blank"><img src="/assets/img/powered-by-esri-logo-med.png" alt="Esri"/></a>
-          </div>
-		</div>-->
-		
-		<!--<div class="col-md-1">
-		  <div id="umnLogo">
-             <a href="http://solar.maps.umn.edu" target="_blank"><img src="/assets/img/UMN_M_white.gif" alt="University of Minnesota" id="umnLogo" /></a>
-          </div>
-		</div>-->
-		
-		<div class="col-md-3">
+		<div class="col-md-8">
+		  <!--			
+			<div class="btn-group dropdown">
+			  <div class="dropdown dropdown-accordion" data-accordion="#accordion">
+                <a data-toggle="dropdown" href="#" class="btn btn-primary menuButton">Bookmarks <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                  <li>
+                    <div class="panel-group" id="accordion">
+                      <div class="panel panel-default">
+                        <div class="panel-heading">
+                          <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+                              Unit 1
+                            </a>
+                          </h4>
+                        </div>
+                        <div id="collapseOne" class="panel-collapse collapse">
+                          <div class="panel-body">
+                            <a href="#">Item a</a><br>
+                            <a href="#">Item b</a>
+                          </div>
+                        </div>
+                      </div>
+					</div>        
+                  </li>
+                </ul>
+              </div>
+			  
+  
+		     -->
+        <div class="btn-toolbar" role="toolbar">
+		  <div class="btn-group">
+			<button type="button" class="btn btn-default menuButton">HomeButton</button>
+			<button type="button" class="btn btn-default menuButton">CurrentLocation</button>
+	      </div>
+			
 		  <div class="dropdown">
-            <a class="dropdown-toggle" id="dropdownMenu"ayer href="#">Menu</a>
-            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-              <li role="presentation"><input type='checkbox' class='list_item' id='layer0CheckBox' value=0 />Counties</a></li>
-              <li role="presentation"><input type='checkbox' class='list_item' id='layer1CheckBox' value=1 />EUSA</a></li>
-              <li role="presentation"><input type='checkbox' class='list_item' id='layer2CheckBox' value=1 />Tiles</a></li>
-              <li role="presentation" class="divider"></li>
-              <li role="presentation"><a role="menuitem" tabindex="-1" href="#"><div id="helpMenu">HELP</div></a></li>
-			  <!--<a role="menuitem" tabindex="-1" href="#">Help</a></li>-->
-            </ul>
+		    <div class="btn-group">
+			  <button type="button" class="btn btn-default menuButton">Bookmarks</button>
+		      <button type="button" class="btn btn-default dropdown-toggle menuButton" data-toggle="dropdown">
+                Menu
+                  <span class="caret"></span>
+              </button>
+            
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                <li role="presentation"><input type='checkbox' class='list_item' id='layer0CheckBox' value=0 />Counties</a></li>
+                <li role="presentation"><input type='checkbox' class='list_item' id='layer1CheckBox' value=1 />EUSA</a></li>
+                <li role="presentation"><input type='checkbox' class='list_item' id='layer2CheckBox' value=1 />Tiles</a></li>
+                <li role="presentation" class="divider"></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="#"><div id="helpMenu">HELP</div></a></li>
+			  
+              </ul>
+			</div>
+			</div>
           </div>
 		</div>
 		
 	  </div>
 	</div>
   </div>
+  
+ 
+<div id="bottomBar" style='position: absolute; display:none'>
+  <div class="container-full">
+    <div class="row">
+	  <div class="col-md-9">
+        <div class="baseMapToggle" style="margin-left:20px">
+		  <div class="btn-group">
+            <button type="button" id="solarButton" class="btn btn-default activeButton" style="margin-left:10px; border-radius:40px 0 0 40px">Solar</button>
+	        <button type="button" id="aerialButton" class="btn btn-default">Aerial</button>
+	        <button type="button" id="streetButton" class="btn btn-default" style="border-radius:0 40px 40px 0">Streets</button>
+		  </div>
+		</div>
+	  </div>
+	  <div class="col-md-3">
+	    <button type="button" class="btn btn-default menuButton">Results</button>
+	  </div>
+    </div>
+  </div>
+</div>
 		  
 
 
@@ -137,62 +149,7 @@
 
 
 <div class="sideNav">
-  
-  <!--<div id="rTab">RESULTS</div>-->
-  <!--<div id="statsTab">STATISTICS</div>
-  <div id="splashTab">HELP</div>-->
 </div>
-
-
-<div id="bottomBar" style='position: absolute; display:none'>
-  <div class="container-full">
-    <div class="row">
-	  <div class="col-md-9">
-        <div class="baseMapToggle" style="margin-left:20px">
-		  <div class="btn-group">
-            <button type="button" id="solarButton" class="btn btn-default activeButton" style="margin-left:10px; border-radius:40px 0 0 40px">Solar</button>
-	        <button type="button" id="aerialButton" class="btn btn-default">Aerial</button>
-	        <button type="button" id="streetButton" class="btn btn-default" style="border-radius:0 40px 40px 0">Streets</button>
-		  </div>
-		</div>
-	  </div>
-	  <div class="col-md-3">
-	    <button type="button" id="resultsButton">Results</button>
-	  </div>
-    </div>
-  </div>
-</div>
-<!--
-<div class="container">
-  <div class="row">
-	<div class="col-md-12" style="margin-top:0px">
-	  <div id="bottomBar" style='position: absolute; display:none'>
-	    <div class="row">
-          <div class="col-md-3" style="margin-top:0px">
-		    <div class="baseMapToggle">
-              <input type="radio" name="baseMap" id="solarRadio">Solar
-            </div>
-             
-		    <div class="baseMapToggle">
-              <input type="radio" name="baseMap" id="aerialRadio">Aerial
-            </div>
-			  
-            <div class="baseMapToggle">
-              <input type="radio" name="baseMap" id="streetRadio">Streets
-            </div>
-			
-		  </div>
-			
-		  <div class="col-md-9" style="margin-top:0px">
-		  </div>
-		  
-        </div>
-      </div>
-	</div>
-  </div>  
-</div>-->
-
-
 
 <div id="layerTest1"></div>
 <div id="layerTest2"></div>
