@@ -124,7 +124,7 @@ var imgDisplayURL2 = 'http://us-futuregis.oit.umn.edu/arcgis/rest/services/solar
             basemaps: {
                 solar: {
                     label: "Solar",
-                    url: "/solar/images/solar_square.png"
+                    url: "/assets/img/solar_square.png"
                 },
                 hybrid: {
                     label: "Aerial",

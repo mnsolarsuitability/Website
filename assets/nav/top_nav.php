@@ -78,7 +78,7 @@
   </div><!-- End search div -->
 
   <div class="apptitle">
-    <div class="container">
+    <div class="container-full">
       Minnesota Solar Suitability Analysis
     </div>
   </div>
@@ -88,9 +88,9 @@
 	$currPage = substr($_SERVER["REQUEST_URI"], 1, 3); 
 ?>
 
-  <div class="nav">
+  <div class="nav visible-lg">
     <div class="navbar-inner">
-      <div class="container">
+      <div class="container-full">
         <ul class="nav nav-pills red">
           <li<?php if($currPage == "ind") echo ' class="active"'; ?>>
             <a href="/index.php">Home</a>
@@ -115,6 +115,66 @@
             "/news.php">
             News</a>
           </li>
+
+          <li<?php if($currPage == "ref") echo ' class="active"'; ?>>
+            <a href=
+            "/references.php">
+            References</a>
+          </li>
+
+          <li<?php if($currPage == "tea") echo ' class="active"'; ?>>
+            <a href=
+            "/team.php">
+            Team</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  <div class="nav hidden-lg">
+    <div class="navbar-inner">
+      <div class="container-full">
+        <ul class="nav nav-pills red">
+          <li<?php if($currPage == "ind") echo ' class="active"'; ?>>
+            <a href="/index.php">Home</a>
+          </li>
+		  
+		  <li<?php if($currPage == "app") echo ' class="active"'; ?>>
+            <a href="/app"><img src="/assets/img/solar-map-app-icon-114.png" style="width:30px; margin-top:-15px; margin-bottom:-15px; padding-right:5px">App</a>
+          </li>
+
+          <li class="dropdown<?php if($currPage == "met") echo ' active'; ?>">
+		    
+		    <!--<a href="#" class="dropdown-toggle" data-toggle="dropdown">Data<span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+		      <li><a href="methods.php">Methods/a></li>
+              <li><a href="products.php">Products & Data</a></li>
+		    </ul>
+		  </li>-->
+            <a href="/methods.php">Methods</a>
+          </li>
+
+          <li<?php if($currPage == "pro") echo ' class="active"'; ?>>
+            <a href=
+            "/products.php">
+            Products & Data</a>
+          </li>
+          
+          <li<?php if($currPage == "new") echo ' class="active"'; ?>>
+            <a href=
+            "/news.php">
+            News</a>
+          </li>
+		  <!--<li class="dropdown">
+		    <a href="#" class="dropdown-toggle" data-toggle="dropdown">About<span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+		      <li><a href="news.php">News/a></li>
+              <li><a href="referencess.php">References</a></li>
+			  <li><a href="team.php">Team</a></li>
+		    </ul>
+		  </li>-->
+		  
 
           <li<?php if($currPage == "ref") echo ' class="active"'; ?>>
             <a href=

@@ -144,7 +144,7 @@ var customExtentAndSR = new esri.geometry.Extent(477133,4979982,479365,4981176,n
             basemaps: {
                 solar: {
                     label: "Solar",
-                    url: "/solar/images/solar_square.png"
+                    url: "/assets/img/solar_square.png"
                 },
                 hybrid: {
                     label: "Aerial",

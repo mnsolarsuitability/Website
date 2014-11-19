@@ -22,12 +22,12 @@
   
   <!-- START OUR CONTENT -->
   <div class="boundingbox">
-    <div class="container">
+    <div class="container-full">
       <div class="row">
         <div class="col-md-8">
           <div class="topleftwideColumn">
 		  <h1>Our Team</h1>
-            <p><img alt="Solar Dream Team" src="./assets/img/SolarPteam627.png" style=
+            <p><img alt="Solar Dream Team" src="./assets/img/fall14SolarTeam.png" style=
             "width:100%"><br>
             <br>
             Our research team comprises 7 graduate students and a faculty
@@ -55,7 +55,7 @@
                 <a href="https://uspatial.umn.edu/" target="_blank"><li>U-Spatial Support for
                 Spatial Research</li></a>
               
-                <a href="http://www.cleanenergyresourceteams.org/ target="_blank""><li style="margin-bottom:0px">Clean Energy
+                <a href="http://www.cleanenergyresourceteams.org/" target="_blank"><li style="margin-bottom:0px">Clean Energy
                 Resource Teams</li></a>
 
             </ul>

@@ -22,7 +22,7 @@
     
 <div class="boundingbox">
 
-  <div class="container">
+  <div class="container-full">
   
     <div class="row" style="margin-top:10px">
       <div class="col-md-6">
@@ -64,30 +64,32 @@
           <h4>Bibliography</h4>
 
           <p style="font-weight:bold;">References</p>
-          <p>
-
-          Dorninger, P., & Pfeifer, N. “A comprehensive automated 3D approach for building extraction, reconstruction, and regularization from airborne laser scanning point clouds.” Sensors, 8(11), 7323-7343.
-          <br>
-          <br>
-
-          Fu, P. and P.M. Rich. 2000. A geometric solar radiation model and its applications in agriculture and forestry. Proceedings of the Second International Conference on Geospatial Information in Agriculture and Forestry. I- 357-364.
-          <br>
-          <br>
-
-          Jakubiec, J. R., Jakubiec, J. A., & Reinhart, C. F. (2013). “A method for predicting city- wide electricity gains from photovoltaic panels based on LiDAR and GIS data combined with hourly daysim simulations.” Solar Energy, 93, 127-143.
-          <br>
-          <br>
-
-          Lukac, N., Žlaus, D., Seme, S., Žalik, B., Štumberger, G., Lukac, N., Štumberger, G. (2013). “Rating of roofs’ surfaces regarding their solar potential and suitability for PV systems, based on LiDAR data.” Applied Energy, 102, 803-812.
-          <br>
-          <br>
-
-          Nguyen, H., & P. “The application of LiDAR to assessment of rooftop solar photovoltaic deployment potential in a municipal district unit.” Sensors, 12(4), 4534-4558.
-          <br>
-          <br>
-
-          Wiginton, L., & N. “Quantifying rooftop solar photovoltaic potential for regional renewable energy policy.” Computers, Environment and Urban Systems, 34(4), 345-357.</p>
-        </div>
+          <ul>
+		    <li>
+			  <a href="assets/pdf/Dorninger_Pfeifer.pdf">Dorninger, P., & Pfeifer, N. “A comprehensive automated 3D approach for building extraction, reconstruction, and regularization from airborne laser scanning point clouds.” Sensors, 8(11), 7323-7343.</a>
+			</li>
+			
+			<li>
+			  <a href="assets/pdf/fu_rich_2000.pdf">Fu, P. and P.M. Rich. 2000. A geometric solar radiation model and its applications in agriculture and forestry. Proceedings of the Second International Conference on Geospatial Information in Agriculture and Forestry. I- 357-364.</a>
+            </li>
+			
+			<li>
+			  <a href="assets/pdf/Jakubiec_Reinhart_2013_PredictingCity-WideElectricProductionFromPVPanels-libre.pdf">Jakubiec, J. R., Jakubiec, J. A., & Reinhart, C. F. (2013). “A method for predicting city- wide electricity gains from photovoltaic panels based on LiDAR and GIS data combined with hourly daysim simulations.” Solar Energy, 93, 127-143.</a>
+            </li>
+			
+			<li>
+			  <a href="assets/pdf/roof-libre.pdf">Lukac, N., Žlaus, D., Seme, S., Žalik, B., Štumberger, G., Lukac, N., Štumberger, G. (2013). “Rating of roofs’ surfaces regarding their solar potential and suitability for PV systems, based on LiDAR data.” Applied Energy, 102, 803-812.</a>
+            </li>
+			
+			<li>
+			  <a href="assets/pdf/NguyenPearceHarrapBarber.pdf">Nguyen, H., & P. “The application of LiDAR to assessment of rooftop solar photovoltaic deployment potential in a municipal district unit.” Sensors, 12(4), 4534-4558.</a>
+            </li>
+			
+			<li>
+			  <a href="assets/pdf/Buildings-roofs-photovoltaic-potential-assessment-based-on-LiDAR-Light-Detection-And-Ranging-data_2014_Energy.pdf">Wiginton, L., & N. “Quantifying rooftop solar photovoltaic potential for regional renewable energy policy.” Computers, Environment and Urban Systems, 34(4), 345-357.</p>
+            </li>
+		  </ul>
+		</div>
       </div>
     </div>
   </div>

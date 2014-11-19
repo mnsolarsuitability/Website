@@ -63,16 +63,41 @@ $(window).load(function () {
 		var layer;
 		var layerflag = 0;
 	
+    // Initialize Google Geocoder and API key
+	var geocoder;
+	
+	// MN Solar Suitability API key
+	//gapi.client.setApiKey('AIzaSyCI5rFXoNNM-IGDP-BZ1opjXTtB9wZalEI');
+	
+	// Chris' API Key
+	gapi.client.setApiKey('AIzaSyChnPHuHTelEGwa6vI9DAFGWCraqrumUMc');
+	
+	$('#searchGo').on('click', function() {
+	    codeAddress();
+		
+		});
+	
+	// Hide some divs
 	$('#root').hide();
 	$('#layerTest1').hide();
 	$('#layerTest2').hide();
 	$('#layerTest3').hide();
+	$('#resultsButton').hide();
+	//$('#r').hide();
+	$('#resultsSmall').hide();
+	$("#resultsBig").hide();
+	$("#resultsBLAH").hide();
+	$("#loader").hide();
 	
 	$(function(){
         $(window).resize(function(){
             placeFooter();
+			placeResults();
         });
         placeFooter();
+		//placeResults();
+		
+		
         // hide it before it's positioned
         $('#bottomBar').css('display','inline');
     });
@@ -83,6 +108,28 @@ $(window).load(function () {
         var offset = parseInt(windHeight) - parseInt(footerHeight);
         $('#bottomBar').css('top',offset);
     };
+	
+	function placeResults() {  
+        var windHeight = $(window).height();
+        var footerHeight = $('#bottomBar').height();
+		var resultsHeight = $('#resultsSmall').height();
+        var offset = parseInt(windHeight) - (parseInt(footerHeight)+parseInt(resultsHeight));
+        $('#resultsSmall').css('top',offset);
+    };
+	
+	/*function placeResultsTab() {  
+	    $('#rTab').show();
+        var resultsWidth = $('#r').width();
+		
+		// .height() due to rTab rotation
+        var resultsTabWidth = $('#rTab').height();
+		
+		//console.log('rWidth : ' + resultsWidth);
+		//console.log('rTabWidth : ' + resultsTabWidth);
+		var offset = parseInt(resultsWidth) + 100;
+		//console.log('Offset :' + offset);
+        $('#rTab').css('bottom',offset);
+    };*/
 	
 	// Collapse accordion every time dropdown is shown
     $('.dropdown-accordion').on('show.bs.dropdown', function (event) {
@@ -103,6 +150,25 @@ $(window).load(function () {
 		$("#aerialButton").removeClass("activeButton");
 		$("#streetButton").removeClass("activeButton");
 	};
+
+	$("#bookmarkLocation").on('click', function(){
+		console.log("BOOKMARKED!");
+
+		// COOKIE TEST
+		lat = "Latitude :" + ptLat;
+		document.cookie=lat;
+
+		var x = document.cookie;
+
+		console.log("Cookie :" + x);
+
+		// GET POINT LOCATION
+		// IF NO POINT, ERROR
+		// ELSE WRITE BOOKMARK
+		// ADD TO BOOKMARK
+	});
+
+
 	
 	$("#solarButton").on('click',function(){
 	    buttonClassRemove();
@@ -125,9 +191,14 @@ $(window).load(function () {
 		streetLayer.show();
 		});
 		
-	$("#resultsButton").on('click',function(){
-	  console.log('Results Button');
-	  $('#r').toggle();
+	$("#resultsBLAH").on('click',function(){
+	    placeResults();
+	  //$('#r').toggle();
+	    $('#resultsSmall').toggle();
+	  });
+	  
+	$("#resultsHeader").on('click', function(){
+	    $("#resultsBig").toggle();
 	  });
 		
     function establishMapCenter() {
@@ -166,7 +237,7 @@ $(window).load(function () {
 				});
 		}
 
-		establishMapCenter()
+		//establishMapCenter()
 
 		// Creates sticky bottom nav/footer bar
 		function getWindowWidth() {
@@ -187,26 +258,24 @@ $(window).load(function () {
 			return windowWidth;
 		}
 		
-		windowWidth = getWindowWidth();
-		console.log(windowWidth);
-		
-		if ($('#r').is(':empty')){
+		/*if ($('#r').is(':empty')){
 		  $('#rTab').hide();
 		  $('#r').hide();
-        };
+        };*/
 		
-        $('#map').on('click', function () {
-			$('#r.selector:hidden').toggle('slide');
-			$('#r').show();
-			$('#rTab').show();
+        /*$('#map').on('click', function () {
+			console.log('Used map.onclick');
+			//$('#r.selector:hidden').toggle('slide');
+			//$('#r').show();
+			//$('#rTab').show();
 			//$("#rTab").fadeOut('slow');
-        });
+        });*/
 		
-		$('#r').on('click', function () {
+		/*$('#r').on('click', function () {
             $(this).toggle( "slide" );
 			$('.sideNav').fadeIn('fast');
 			moveTab();
-        });
+        });*/
 		
 		$('#viewButton1').on('click', function(){
 		    console.log('SAW VIEW1 CLICK');
@@ -224,13 +293,20 @@ $(window).load(function () {
 		    document.getElementById("rTab").style.left = 0;
 		}
 		
-		$('#rTab').on('click', function () {
+		$('.dropdown-menu layerCheck').click(function(e) {
+		    console.log("Trying to stop prop");
+            e.stopPropagation();
+        });
+		
+		$('input').click(function (e) { e.stopPropagation(); });
+		
+		/*$('#rTab').on('click', function () {
 			if ($('#r').is(':hidden')){
 			    $('#r').toggle( "slide" );
 				};
-        });
+        });*/
 		
-		$('#statsTab').on('click', function () {
+		/*$('#statsTab').on('click', function () {
 			displayResults();
 			$('r').fadeOut('fast');
         });
@@ -247,7 +323,7 @@ $(window).load(function () {
 			//$("#rTab").fadeOut('fast');
 			$('#SplashScreen').toggle( "slide" );
 			//$('.sideNav').fadeOut('fast');
-        });
+        });/
 		
 		// Draw vector layers
 		$('#layer0CheckBox').on('click', function () {
@@ -278,7 +354,9 @@ $(window).load(function () {
 			}else{
 			    $('#layerTest3').hide();
 			};
-		});
+		});*/
+		
+		
 
         // Setup World Imagery Basemap
         esriConfig.defaults.map.basemaps.solar = {
@@ -296,14 +374,90 @@ $(window).load(function () {
         // Setup solar imageservice layer
         var map = new Map("map", {
             basemap: "solar",
-			// test solar tile center
-			center: [-95.4175, 44.6169],
-			zoom: 12,
-			// Blegen center
-            //center: [-93.243322, 44.971795],
+			center: [-93.243322, 44.971795],
+			zoom: 13,
             showAttribution: false,
-            //zoom: 13
-        });
+
+        })
+		
+		$('#searchBar').keypress(function(e) {
+	    
+            //Autocomplete variables
+            var input = document.getElementById('searchBar');
+            //var searchform = document.getElementById('form1');
+            var place;
+            var autocomplete = new google.maps.places.Autocomplete(input);
+ 
+            //Add listener to detect autocomplete selection
+            google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                place = autocomplete.getPlace();
+                //console.log('PLACE  :  ' + place);
+    			//console.log(JSON.parse(JSON.stringify(place)));
+	    		autocompleteLng = place.geometry.location.B;
+		    	autocompleteLat = place.geometry.location.k;
+			    //console.log(autocompleteLat, autocompleteLng);
+				var pt = new Point(autocompleteLng, autocompleteLat);
+				//console.log(pt);
+				map.centerAndZoom(pt, 18);
+				addGraphic(pt);
+				//var newlatlong = new google.maps.LatLng({lat:autocompleteLat, lng:autocompleteLong});
+				//console.log(newlatlong);
+                //map.setCenter(newlatlong);
+                //marker.setPosition(newlatlong);
+                //map.setZoom(12);
+            });
+ 
+            //Add listener to search
+            input.addEventListener("change", function() {
+                //var newlatlong = new google.maps.LatLng(place.geometry.location.lat(),place.geometry.location.lng());
+    			//var newlatlong = new google.maps.LatLng({lat:autocompleteLat, lng:autocompleteLong});
+                //map.setCenter(newlatlong);
+                //marker.setPosition(newlatlong);
+                //map.setZoom(12);
+ 
+            });
+     
+            //Reset the inpout box on click
+            input.addEventListener('click', function(){
+            input.value = "";
+            });
+
+            if (e.which == 13) {
+                codeAddress();
+            }
+	    });
+		
+		
+		function codeAddress() {
+		    swBounds = new google.maps.LatLng({lat:42, lng:-95});
+		    neBounds = new google.maps.LatLng({lat:46, lng:-91});
+		    extent = new google.maps.LatLngBounds(swBounds, neBounds);
+	        //extent = google.maps.LatLngBounds({sw:google.maps.LatLng({lat:42, lng:-95}), ne:google.maps.LatLng({lat:46, lng:-91})});
+
+	        geocoder = new google.maps.Geocoder();
+            var address = document.getElementById("searchBar").value;
+		    //console.log("Address : " + address);
+             geocoder.geocode( { 'address': address, 'bounds':extent}, function(results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+					geocodeLong = results[0].geometry.location.B;
+					geocodeLat = results[0].geometry.location.k;
+					var pt = new Point(geocodeLong, geocodeLat);
+					map.centerAndZoom(pt, 18);
+					addGraphic(pt);
+					beQuery(pt);
+                }
+				else if (status == google.maps.GeocoderStatus.ZERO_RESULTS){
+				    alert('No addresses were found.')
+					}
+				else if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT){
+				    alert('Over query limit (2,500/mo)');
+				
+				}
+				else {
+                    alert("Geocode was not successful for the following reason: " + status);
+                }
+            });
+        };
 
         var params = new ImageServiceParameters();
 
@@ -320,35 +474,13 @@ $(window).load(function () {
             opacity: 1.0
         });
 		
-
-
-        // Build basemap toggle button to show/hide solar layer revealing world imagery
-        /*var toggle = new BasemapToggle({
-            map: map,
-            basemap: "hybrid",
-            basemaps: {
-                solar: {
-                    label: "Solar",
-                    url: "/assets/img/solar_square.png"
-                },
-                hybrid: {
-                    label: "Aerial",
-                    url: "http://js.arcgis.com/3.7/js/esri/dijit/images/basemaps/hybrid.jpg"
-                }
-            }
-        }, "BasemapToggle");
-        //toggle.startup();*/
-
-        $('#BasemapToggle').on('click', function () {
-            if (layerflag == 0) {
-                solarLayer.hide();
-                layerflag = 1;
-            } else {
-                solarLayer.show();
-                layerflag = 0;
-            }
-
-        });
+		$('#homeButton').on('click', function() {
+		    //console.log('Home button clicked');
+		    //var centerPoint = new esri.geometry.Point ([-93.243322,44.971795]);
+			//console.log(centerPoint);
+			map.centerAt(new esri.geometry.Point ([-93.243322,44.971795]));
+			console.log('Trying to center');
+			});
 		
 		$("a#dropdownMenu.dropdown-toggle").click(function(ev) {
 			$("ul#dropdownBookmarkList.dropdown-menu").hide();
@@ -367,13 +499,18 @@ $(window).load(function () {
               return false;
           });*/
 		  
+		$(".closeSplash").on('click', function(){
+		    $("#SplashScreen").hide();
+			});
+		  
 		$("#helpMenu").on('click', function(){
-		    //console.log('SAW HELP CLICK');
+		    console.log('SAW HELP CLICK');
 			$("#SplashScreen").toggle();
 		});
 		
 		// Create aerial layer and load hidden
 		var aerialLayer = new Tiled("http://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer");
+		//http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer
 		aerialLayer.hide();
 		
 		// Create street layer and load hidden
@@ -391,7 +528,7 @@ $(window).load(function () {
 		
 		
 		function toggleBasemapView(){
-		    console.log('Saw toggleBasemapView function call');
+		    //console.log('Saw toggleBasemapView function call');
 		    solarLayer.hide();
 			aerialLayer.hide();
 			streetLayer.hide();			
@@ -399,7 +536,7 @@ $(window).load(function () {
 
 
         // Setup a home button to zoom back to original extent
-        var home = new HomeButton({
+        /*var home = new HomeButton({
             map: map,
             visible: true,
             showPointer: true,
@@ -409,18 +546,19 @@ $(window).load(function () {
                 timeout: 15000,
                 enableHighAccuracy: true
             }
-        }, "HomeButton");
-        home.startup();
+        }, "HomeButtonOld");
+        home.startup();*/
 
 
         // Setup address search geolocator
-        var geocoder = new Geocoder({
+        /*var geocoder = new Geocoder({
             map: map,
             arcgisGeocoder: {
-                placeholder: "Find a place"
+                placeholder: "Find a place",
+				autoComplete: true
             }
         }, dom.byId("search"));
-        geocoder.startup();
+        geocoder.startup();*/
 
 		
 
@@ -440,7 +578,7 @@ $(window).load(function () {
         // Setup a help ? that displays splash screen again
         $("#HelpMe").click(function () {
 		    console.log('CLICKED HELP ME');
-            $("#r").fadeOut('fast');
+            //$("#r").fadeOut('fast');
             //$("#SplashScreen").fadeIn('slow');
 			$("#SplashScreen").toggle('slide');
 			
@@ -448,7 +586,7 @@ $(window).load(function () {
 
 
         // Setup my current location button and geolocator
-        geoLocate = new LocateButton({
+        /*geoLocate = new LocateButton({
             map: map,
             highlightLocation: true,
             symbol: pinSymbol,
@@ -456,12 +594,12 @@ $(window).load(function () {
         }, "LocateButton");
         geoLocate.startup();
 
-		geocoder.on("select", showResults);
+		geocoder.on("select", showResults);*/
 
         $("#currentLoc").click(function () {
             if (navigator.geolocation) {
 				  //$("#r").fadeOut('fast');
-				  $('#r.selector:hidden').toggle('slide');
+				  //$('#r.selector:hidden').toggle('slide');
 				  $('#SplashScreen').toggle('slide');
 				  //$('#SplashScreen').fadeOut('slow');
 				  
@@ -553,14 +691,21 @@ $(window).load(function () {
                         document.getElementById('r').innerHTML = result;
                         //$("#r").fadeIn('slow');
 						//$("#r").toggle('slide');
-						$('#r.selector:hidden').toggle('slide');
+						//$('#r.selector:hidden').toggle('slide');
 		}
 
         // Click on map to query solar imageservice, bare earth county layer, and utility service area layer
         var clicky = map.on("click", pixelQuery);
 
         function pixelQuery(e) {
-		    document.getElementById('r').innerHTML = '';
+		    //document.getElementById('r').innerHTML = '';
+			//placeResults();
+			$('#resultsButton').show();
+			//$('#r').show();
+			//placeResults();
+			
+			// CLEAR DIV
+			$("#results").html("");
 		
             //setup insolation query
             var query = new Query();
@@ -633,12 +778,17 @@ $(window).load(function () {
                                 break;
                         }
 
-                        var result = "<H3><strong>INSOLATION (kWh/m<sup>2</sup>)</strong></H3><p>Total per Year: " + y.toFixed(2) + warning + "<br />Avg per Day: " + v.toFixed(2) + " (" + quality + ")" + warning + "</p>" + warningMsg;
+                        //var result = "<H3><strong>INSOLATION (kWh/m<sup>2</sup>)</strong></H3><p>Total per Year: " + y.toFixed(2) + warning + "<br />Avg per Day: " + v.toFixed(2) + " (" + quality + ")" + warning + "</p>" + warningMsg;
 
-                        document.getElementById('r').innerHTML = result;
+						var result = '<div class="resultsTopicTitle">INSOLATION (kWh/m2)</div><div class="resultsDisplay">Total per Year: ' + y.toFixed(2) + warning + '<br>Avg per Day: ' + v.toFixed(2) + ' (' + quality + ')' + warning + warningMsg +'</div>';
+						//<div class="resultsTopicTitle">Sun Hours (hr/mo)</div><div class="resultsDisplay">Yearly Avg:<br></div>
+                        //console.log("solar: ") + result;
+						
+                        //document.getElementById('r').innerHTML = result;
+						$("#results").html(result);
                         //$("#r").fadeIn('slow');
 						//$("#r").toggle('slide');
-						$('r.selector:hidden').fadeIn('fast');
+						//$('r.selector:hidden').fadeIn('fast');
 
 
 						  //setup Utility Service Provider query
@@ -674,10 +824,15 @@ $(window).load(function () {
 								var getstarted = "<p><a href='http://thecleanenergybuilder.com/directory#resultsType=both&page=0&pageNum=25&order=alphaTitle&proximityNum=60&proximityInput=" + zip + "&textInput=&textSearchTitle=1&textSearchDescription=1&field_established=&field_employees=&field_year=&reload=false&mapSize=large&allResults=false&tids2=&tids3=568&tids4=&tids5=&tids6=' target='_blank'>Get Started: Contact a Local Installer</a></p>";
 							}
 
-                            var result = "<p><b>Utility Service Provider:   </b><br />" + fullname + "<br />" + street + "<br />" + city + ", MN " + zip + "<br />" + phone + "<br /><a target='_blank' href='http://" + website + "'>" + website + "</a></p><p><a href='http://www.dsireusa.org/solar/incentives/index.cfm?re=1&ee=1&spv=1&st=0&srp=0&state=MN' target='_blank'>MN Incentives/Policies for Solar</a></p>" + getstarted;
-
+                            //var result = "<p><H3><strong>Utility Service Provider:   </strong></h3><br />" + fullname + "<br />" + street + "<br />" + city + ", MN " + zip + "<br />" + phone + "<br /><a target='_blank' href='http://" + website + "'>" + website + "</a></p><p><a href='http://www.dsireusa.org/solar/incentives/index.cfm?re=1&ee=1&spv=1&st=0&srp=0&state=MN' target='_blank'>MN Incentives/Policies for Solar</a></p>" + getstarted;
+                            var result ='<div class="resultsTopicTitle">Utility Service Provider:</div><div class="resultsDisplay">' + fullname + ' ' + phone + '</div>';
+							
+							//console.log("EUSA: " + $("results") + result);
 							   //add service utility provider to insolation results
-                            document.getElementById('r').innerHTML = document.getElementById('r').innerHTML + "<hr />" + result;
+                            //document.getElementById('r').innerHTML = document.getElementById('r').innerHTML + "<hr />" + result;
+							document.getElementById('results').innerHTML = document.getElementById('results').innerHTML + result;
+							//$("results").html($("results") + result);
+							
 
                         });
                     });
@@ -686,11 +841,11 @@ $(window).load(function () {
                 } else {
 					  // clicked point is outside of the state
                     var result = "<H3><strong>INSOLATION (kWh/m<sup>2</sup>)</strong></H3><p>Total per Year: Unknown**<br />Avg per Day: Unknown**</p><p>**<span id='smText'>This point is out of the study area. Click within the State of Minnesota or try searching for something like 'Target Field'.</span></p><span class='closeSplash'>(X) CLOSE</span> </p>";
-
-                    document.getElementById('r').innerHTML = result;
+                    alert("This location is outside of the study area. Please refine your search to be limited to the state of Minnesota.");
+                    //document.getElementById('r').innerHTML = result;
                     //$("#r").fadeIn('slow');
 					//$("#r").toggle('slide');
-					$('#r.selector:hidden').toggle('slide');
+					//$('#r.selector:hidden').toggle('slide');
                 }
                
             });
@@ -703,20 +858,88 @@ $(window).load(function () {
             var point = e.mapPoint;
             var graphic = new Graphic(point, pinSymbol);
             map.graphics.add(graphic);
+			
+			// Store point lat/long
+			ptLong = e.mapPoint.y
+			ptLat = e.mapPoint.x
 
         };
 		
-		// beginning of solarGP tool
+		
+		//test function for outside of study area
+		function beQuery(pt){
+		//setup bare earth county layer query
+		    
+			console.log("beQuery called");
+			
+            var BEquery = new Query();
+            var BEQueryTask = new QueryTask(bareEarthCountyURL);
+            BEquery.geometry = pt;
+            BEquery.geometryType = "esriGeometryPoint";
+            BEquery.outFields = ["bare_earth","COUNTYNAME"];
+            BEquery.spatialRelationship = query.SPATIAL_REL_INTERSECTS;
+            BEquery.mosaicRule = "";
+            BEquery.sr = 102100;
+            BEquery.imageDisplay = 1;
+            BEquery.tolerance = 1;
+            BEquery.returnGeometry = false;
+            BEquery.returnZ = false;
+            BEquery.returnM = false;
+            BEquery.f = "pjson";
+
+            BEQueryTask.execute(BEquery, function (results) {
+				
+                //first make sure clicked point is within the state
+                if (results.features && results.features.length > 0) {
+					
+                    bareEarth = results.features[0].attributes["bare_earth"];
+                    county = results.features[0].attributes["COUNTYNAME"];
+
+                    //then check if clicked point is within a bare earth county, if so add disclaimer
+                    /*if (bareEarth === 1) {
+                        var warning = "**";
+                        var warningMsg = "<p>**<span id='smText'>The lidar data available for " + county + " County includes only bare earth points. Hence, this insolation value does not take shade from nearby surface features into consideration.</span></p>";
+						
+							if(county == "Pine") {
+								var warningMsg = "<p>**<span id='smText'>The lidar data available for " + county + " County was inconsistently classified across different flight lines. Hence, insolation accuracy is variable as shade from nearby surface features may not be taken into consideration.</span></p>";
+							}
+                 
+                    } else {
+                        var warning = "";
+                        var warningMsg = "";
+                    }*/
+		        } else{
+				    setTimeout(function(){
+					    alert("This location is outside of the study area. Please refine your search to be limited to the state of Minnesota.");
+						
+						map.centerAt(new esri.geometry.Point ([-93.243322,44.971795]));
+						}, 1500);
+					}
+		    });
+		};
+		
+		
+		/* -----------------------------
+    		beginning of solarGP tool
+			---------------------------- */
 		map.on("click",solarGPTool);
 
         gsvc = new GeometryService("http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer");
-		var gp = new esri.tasks.Geoprocessor("http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/SolarPointQuery_hr/GPServer/SolarPointQuery_hr");
-				
+		
+		//Old GP service
+		//var gp = new esri.tasks.Geoprocessor("http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/SolarPointQuery_hr/GPServer/SolarPointQuery_hr");
+		
+		//var gp = new esri.tasks.Geoprocessor("http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/SolarPointQuery_fast/GPServer/SolarPointQuery_hr");
+		var gp = new esri.tasks.Geoprocessor("http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/SolarPointQuery_fast/GPServer/Script");
+		
+
+		 
+		
 		function solarGPTool(evt){
 		    point = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
-			// y = webMercatorUtils.webMercatorToGeographic(evt.mapPoint['y']);
+			
 			//initialize query task
-            queryTask = new esri.tasks.QueryTask("http://gis.uspatial.umn.edu/arcgis/rest/services/solar/MN_DSM/ImageServer");
+            queryTask = new esri.tasks.QueryTask("http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/MN_DSM/ImageServer");
 
             //initialize query
             tilequery = new esri.tasks.Query();
@@ -726,8 +949,6 @@ $(window).load(function () {
 			
 			queryTask.execute(tilequery, function (results) {
 				tile = (results.features[0].attributes["Name"] + '.img');
-				//console.log(tile);
-				//console.log('Point: ' + point);
 				executeGP(point, tile);
 				
 				});
@@ -735,125 +956,164 @@ $(window).load(function () {
 		
 		function executeGP(point, tile){
 			startTime = new Date().getTime();
-			console.log('Processing tile: ' + tile);
-			console.log('Point: ' + point['x'], point['y']);
+			$("#loader").show();
 			var params = {"PointX":point['x'], "PointY":point['y'], "File_Name":tile};
+			console.log(JSON.stringify(params, null, 4));
 			gp.execute(params, displayResults);
 			}
-			
+		
+		function getMonth(val){
+		    switch(val){
+				    case 0:
+					    month = "Jan"
+						break;
+					case 1:
+					    month = "Feb"
+						break;
+					case 2:
+					    month = "Mar"
+						break;
+					case 3:
+					    month = "Apr"
+						break;
+					case 4:
+					    month = "May"
+						break;
+					case 5:
+					    month = "Jun"
+						break;
+					case 6:
+					    month = "Jul"
+						break;
+					case 7:
+					    month = "Aug"
+						break;
+					case 8:
+					    month = "Sep"
+						break;
+					case 9:
+					    month = "Oct"
+						break;
+					case 10:
+					    month = "Nov"
+						break;
+					default:
+					    month = "Dec"
+					};
+				return month;
+				}
+		
 		function displayResults(results, messages) {
-			//do something with the results
+		    //empty div so histo doesn't duplicate
+			$("#resultsHisto").html("");
+			$("#sunHrHisto").html("");
+			
+			placeResults();
+			
+			//show results
+			$('#loader').hide();
+			$('#resultsSmall').show();
+			$('#resultsBLAH').show();
+			
+			//parse the results
 			var insolResults = results[0].value.split("\n");
 			var sunHrResults = results[1].value.split("\n");
+			
+			//remove final value (blank)
 			insolResults.pop();
 			sunHrResults.pop();
 			
 			var insolValue=[insolResults[0],insolResults[1],insolResults[2],insolResults[3],insolResults[4],insolResults[5],insolResults[6],insolResults[7],insolResults[8],insolResults[9],insolResults[10],insolResults[11]];
 			var insolValueCorrected=[];
-			console.log(insolValue);
+			maxInsol = 0;
+			
+			var sunHrValue=[sunHrResults[0],sunHrResults[1],sunHrResults[2],sunHrResults[3],sunHrResults[4],sunHrResults[5],sunHrResults[6],sunHrResults[7],sunHrResults[8],sunHrResults[9],sunHrResults[10],sunHrResults[11]];
+			maxSun = 0;
 			total = 0
+			
 			for (var i = 0; i < 12; i++){
-				console.log(i);
-				switch(i){
-					case 11:
-						console.log('Case 11: ');
-						console.log(insolValue[i])
-						total += (insolValue[i]/1000);
-						console.log('Total: '+ total);
-						break;
-					case 0:
-						console.log('Case 0: ');
-						console.log(insolValue[i]-insolValue[11])
-						total += ((insolValue[i]-insolValue[11])/1000);
-						console.log('Total: '+ total);
-						break;
-					default:
-						
-						
-						console.log('Default '+insolValue[i]+' : ')
-						console.log('i+1     '+insolValue[i+1]);
-						console.log('i+     '+insolValue[i]);
-						console.log('diff' + insolValue[i+1]-insolValue[i])
-						total += ((insolValue[i+1]-insolValue[i])/1000);
-						console.log('Total: '+ total);
-						break;
-						};
+				
+				month = getMonth(i);
+				
+				//convert Wh to kWh
+				insolValDiv1000 = insolResults[i]/1000;
+				total += insolValDiv1000;
+				if (insolValDiv1000 > maxInsol){
+				    maxInsol = insolValDiv1000;
+					}
+				
+				insolValueCorrected.push(insolValDiv1000);
+				
 				};
 			
-			console.log(typeof(total));
-			console.log(total);
-			
-				/*holder = i-sum;
-				insolValueCorrected.push(holder)
-				sum += holder;
-				if (i === 0){
-					holder = insolValue[i]
-					} 
-					else{
-						holder = (insolValue[i]-(sum);
-						sum += insolValue[i]
-				}
+			total = 0;
+			for (var i = 0; i < 12; i++){
 				
-				console.log(holder);
-				}*/
+				month = getMonth(i)
 				
-				
-			//console.log(insolValueCorrected);
-			
-			//insolResults.insolValue.push(1)
+				total += parseInt(sunHrValue[i]);
+				if (parseInt(sunHrValue[i]) > maxSun){
+				    maxSun = parseInt(sunHrValue[i]);
+					}
+				};
+
 			var data = {
 			
 				"month": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-				"insolValue":[insolResults[0],insolResults[1],insolResults[2],insolResults[3],insolResults[4],insolResults[5],insolResults[6],insolResults[7],insolResults[8],insolResults[9],insolResults[10],insolResults[11]],
+				"insolValue":[insolValueCorrected[0],insolValueCorrected[1],insolValueCorrected[2],insolValueCorrected[3],insolValueCorrected[4],insolValueCorrected[5],insolValueCorrected[6],insolValueCorrected[7],insolValueCorrected[8],insolValueCorrected[9],insolValueCorrected[10],insolValueCorrected[11]],
 				"sunHrValue":[sunHrResults[0],sunHrResults[1],sunHrResults[2],sunHrResults[3],sunHrResults[4],sunHrResults[5],sunHrResults[6],sunHrResults[7],sunHrResults[8],sunHrResults[9],sunHrResults[10],sunHrResults[11]]
 			}
 			
+			// query time
+			endTime = new Date().getTime();
+			console.log("Solar point processing took: " + ((endTime - startTime)*0.001) + " seconds.")
 			
-			//var maxResults = Math.max.apply(Math, insolResults.value);
-			var insolMaxResults = Math.max.apply(Math, data.insolValue);
-			//console.log('Insol Max Results ' + insolMaxResults.value);
+			// create histos
+			   
+			function draw(data, dataAttr, max, div, title) {
 			
-			var sunHrMaxResults = Math.max.apply(Math, data.sunHrValue);
-			//console.log('SunHr Max Results ' + sunHrMaxResults.value);
-			//$("#root").html("");
-			//draw(data);
-
-			function draw(data) {
 				var margin = {
 						"top": 10,
 						"right": 10,
 						"bottom": 30,
 						"left": 50
 					},
-					width = 700,
-					height = 300;
-					barWidth = 40;
+					width = 440,
+					height = 160;
+					barWidth = 20;
 
 				var x = d3.scale.ordinal()
 					.domain(data.month.map(function(d) {
 						return d.substring(0, 3);}))
 					.rangeRoundBands([0, width], 0);
 
-
 				var y = d3.scale.linear()
-					.domain([0, maxResults])
+				    // SET Y AXIS HEIGHT
+					.domain([0, (max + 50)])
 					.range([height, 0]);
 
-				var xAxis = d3.svg.axis().scale(x).orient("bottom");
+				var xAxis = d3.svg.axis()
+				    .scale(x)
+					.orient("bottom");
 
-				var yAxis = d3.svg.axis().scale(y).orient("left");
+				var yAxis = d3.svg.axis()
+				    .scale(y)
+					.orient("left");
+					
 
-				var svgContainer = d3.select("#root").append("svg")
+				var svgContainer = d3.select(div).append("svg")
 					.attr("class", "chart")
 					.attr("width", width + margin.left + margin.right)
 					.attr("height", height + margin.top + margin.bottom).append("g")
 						.attr("transform", "translate(" + margin.left + "," + margin.right + ")");
-						
+				
+				// CREATE TOOL TIP
 				var tip = d3.tip()
 				  .attr('class', 'd3-tip')
 				  .offset([-10, 0])
 				  .html(function(d) {
-					return "<strong>Value:</strong> <span style='color:red'>" + d + "</span>";
+					return "<strong>Value:</strong> <span style='color:red'>" + parseFloat(d).toFixed(2) + "</span>";
+					
 				  })
 
 				svgContainer.call(tip);
@@ -865,22 +1125,115 @@ $(window).load(function () {
 
 				svgContainer.append("g")
 					.attr("class", "y axis").call(yAxis)
-					/*.append("text")
-						.attr("transform", "rotate(-90)")
-						.attr("y", 6)
-						.attr("dy", ".71em")
-						.style("text-anchor", "end")
-						.text("Solar Value")*/
 					.append("text")
-						.attr("x", (width / 2))             
+						.attr("x", (width / 1.5))             
+						.attr("y", 10)
+						.attr("text-anchor", "center")  
+						.style("font-size", "16px") 
+						//.style("padding-left", "100px")
+						.text(title);
+						
+				svgContainer.selectAll(".bar").data(dataAttr).enter().append("rect")
+					.attr("class", "bar")
+					.attr("x", function(d, i) {
+						return i * x.rangeBand() + (x.rangeBand()/2) -(barWidth/2);
+					})
+					.attr("y", function(d) {
+						return y(d);
+					})
+					.attr("width", barWidth)
+					.attr("height", function(d) {
+						return height -y(d);
+					})
+					.on('mouseover', tip.show)
+					.on('mouseout', tip.hide)
+
+                }
+
+				draw(data,data.insolValue,maxInsol, "#resultsHisto", "Solar Insolation By Month (kWh)");
+			    draw(data,data.sunHrValue,maxSun, "#sunHrHisto", "Sun Hours By Month");
+			};
+		
+			
+			
+			
+
+    });
+});
+
+
+/* --------------------------------
+  OLD CODE
+  ---------------------------------*/
+  
+				/*var margin = {
+						"top": 10,
+						"right": 10,
+						"bottom": 30,
+						"left": 50
+					},
+					width = 440,
+					height = 160;
+					barWidth = 20;
+
+				var x = d3.scale.ordinal()
+					.domain(data.month.map(function(d) {
+						return d.substring(0, 3);}))
+					.rangeRoundBands([0, width], 0);
+
+				var y = d3.scale.linear()
+				    // SET Y AXIS HEIGHT
+					.domain([0, (maxInsol + 50)])
+					
+					//ROUND - (Math.ceil(maxInsol/100)*100)])
+					
+					//maxResults])
+					.range([height, 0]);
+
+				var xAxis = d3.svg.axis().scale(x).orient("bottom");
+
+				var yAxis = d3.svg.axis().scale(y).orient("left");
+
+				var svgContainer = d3.select("#resultsHisto").append("svg")
+					.attr("class", "chart")
+					.attr("width", width + margin.left + margin.right)
+					.attr("height", height + margin.top + margin.bottom).append("g")
+						.attr("transform", "translate(" + margin.left + "," + margin.right + ")");
+				
+				// CREATE TOOL TIP
+				var tip = d3.tip()
+				  .attr('class', 'd3-tip')
+				  .offset([-10, 0])
+				  .html(function(d) {
+					return "<strong>Value:</strong> <span style='color:red'>" + d.toFixed(2) + "</span>";
+				  })
+
+				svgContainer.call(tip);
+
+				svgContainer.append("g")
+					.attr("class", "x axis")
+					.attr("transform", "translate( 0," + height + ")")
+					.call(xAxis);
+
+				svgContainer.append("g")
+					.attr("class", "y axis").call(yAxis)
+					//.append("text")
+						//.attr("transform", "rotate(-90)")
+						//.attr("y", 6)
+						//.attr("dy", ".71em")
+						//.style("text-anchor", "end")
+						//.text("Solar Value")
+					.append("text")
+						.attr("x", (width / 1.5))             
 						.attr("y", 10)
 //						- (margin.top/8))
-						.attr("text-anchor", "middle")  
+						.attr("text-anchor", "right")  
 						.style("font-size", "16px") 
-						.style("text-decoration", "underline")  
-						.text("Solar Insolation By Month");
+						.style("padding-left", "100px")
+						//.style("text-decoration", "underline")  
+						.text("Solar Insolation By Month (kWh)");
 						
-				svgContainer.selectAll(".bar").data(data.value).enter().append("rect")
+				svgContainer.selectAll(".bar").data(data.insolValue).enter().append("rect")
 					.attr("class", "bar")
 					.attr("x", function(d, i) {
 						return i * x.rangeBand() + (x.rangeBand()/2) -(barWidth/2);
@@ -898,15 +1251,82 @@ $(window).load(function () {
 					.on('mouseover', tip.show)
 					.on('mouseout', tip.hide)
 					
-				$('.tableCanvas').toggle('slide');
-				if(typeof startTime === 'undefined'){
-                    startTime = new Date().getTime();
-                };
-				endTime = new Date().getTime();
-				console.log("Solar point processing took: " + ((endTime - startTime)*0.001) + " seconds.")
-			}
+				//$('.tableCanvas').toggle('slide');
+                //}
 
-			};
+				// DRAW SOLAR HRS
+				var margin = {
+						"top": 10,
+						"right": 10,
+						"bottom": 30,
+						"left": 50
+					},
+					width = 440,
+					height = 160;
+					barWidth = 20;
 
-    });
-});
+				var x = d3.scale.ordinal()
+					.domain(data.month.map(function(d) {
+						return d.substring(0, 3);}))
+					.rangeRoundBands([0, width], 0);
+
+				var y = d3.scale.linear()
+				    // SET Y AXIS HEIGHT
+					.domain([0, (maxSun + 100)])
+					.range([height, 0]);
+
+				var xAxis = d3.svg.axis().scale(x).orient("bottom");
+
+				var yAxis = d3.svg.axis().scale(y).orient("left");
+
+				var svgContainer = d3.select("#sunHrHisto").append("svg")
+					.attr("class", "chart")
+					.attr("width", width + margin.left + margin.right)
+					.attr("height", height + margin.top + margin.bottom).append("g")
+						.attr("transform", "translate(" + margin.left + "," + margin.right + ")");
+				
+				// CREATE TOOL TIP
+				var tip = d3.tip()
+				  .attr('class', 'd3-tip')
+				  .offset([-10, 0])
+				  .html(function(d) {
+					return "<strong>Value:</strong> <span style='color:red'>" + d.toFixed(2) + "</span>";
+				  })
+
+				svgContainer.call(tip);
+
+				svgContainer.append("g")
+					.attr("class", "x axis")
+					.attr("transform", "translate( 0," + height + ")")
+					.call(xAxis);
+
+				svgContainer.append("g")
+					.attr("class", "y axis").call(yAxis)
+					.append("text")
+						.attr("x", (width / 2))             
+						.attr("y", 10)
+						.attr("text-anchor", "middle")  
+						.style("font-size", "16px") 
+						.style("text-decoration", "underline")  
+						.text("Sun Hours By Month");
+						
+				svgContainer.selectAll(".bar").data(data.sunHrValue).enter().append("rect")
+					.attr("class", "bar")
+					.attr("x", function(d, i) {
+						return i * x.rangeBand() + (x.rangeBand()/2) -(barWidth/2);
+					})
+					.attr("y", function(d) {
+						return y(d);
+					})
+					.attr("width", barWidth)
+					.attr("height", function(d) {
+						return height -y(d);
+					})
+					.on('mouseover', tip.show)
+					.on('mouseout', tip.hide)
+					
+				//$('.tableCanvas').toggle('slide');
+                }
+			//}
+
+			};*/

@@ -21,7 +21,7 @@
 <!-- START OUR CONTENT -->
 
 <div class="boundingbox">
-  <div class="container">
+  <div class="container-full">
     <div class="row">
       <div class="col-md-12" style="margin-top:40px">
 	    <h4>News Stream</h4>

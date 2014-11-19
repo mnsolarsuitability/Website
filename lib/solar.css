@@ -365,6 +365,13 @@ td {
     font-size: 18px;
 }
 
+.prodImg{
+width:50%;
+height:auto; 
+margin-bottom:15px;
+text-align:center;
+}
+
 #cartoDBIframe iframe{
 width:100%;
 height:600px;

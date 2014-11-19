@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>MN Solar Suitability Analysis App</title>
+<link rel="shortcut icon" href="/assets/img/favicon.ico" />
+<link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.9/js/esri/css/esri.css">
+<link href="solarIOS.css" rel="stylesheet" type="text/css">
+
+<!-- Google Analytics Tracking Snippet -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36981530-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+</head>
+<body>
+
+
+<div id="r">Solar Results</div>
+<script type="text/javascript">
+	var basemapURL = 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/';  //imagery basemap
+	var imgDisplayURL = 'http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/Solar/ImageServer/';  
+  //var imgDisplayURL = 'http://us-pspatialgis1.oit.umn.edu:6080/arcgis/rest/services/solar/MN_Solar_Reference/ImageServer/';
+  //solar data for display
+	var imgIdentifyURL = imgDisplayURL + 'identify';  //solar data for querying insolation
+	var vectorDataURL = 'http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/solar_fgdb/MapServer/';
+	var bareEarthCountyURL = vectorDataURL + '1';  //vector layer for identifying counties with only bare earth lidar
+	var eusaURL = vectorDataURL + '0';  //utility service providers vector layer
+</script>
+<script type='text/javascript' src='http://code.jquery.com/jquery-2.0.2.js'></script>
+<script type='text/javascript' src="http://js.arcgis.com/3.9/"></script>
+
+<script type="text/javascript">
+
+// JavaScript Document
+
+$(window).load(function () {
+    require([
+        "esri/map",
+
+        "esri/layers/ArcGISTiledMapServiceLayer",
+        "esri/layers/ImageServiceParameters",
+        "esri/layers/ArcGISImageServiceLayer",
+
+        "esri/toolbars/draw",
+        "esri/graphic",
+        "esri/geometry/Point",
+
+        "esri/symbols/SimpleMarkerSymbol",
+        "esri/symbols/SimpleLineSymbol",
+        "esri/symbols/SimpleFillSymbol",
+
+        "esri/geometry/screenUtils",
+        "esri/urlUtils",
+        "esri/config",
+        "esri/request",
+
+        "esri/dijit/Geocoder",
+        "esri/dijit/HomeButton",
+        "esri/dijit/LocateButton",
+
+        "dojo/parser",
+        "dojo/dom",
+        "dojo/dom-construct",
+        "dojo/query",
+        "dojo/_base/Color",
+
+        "dojo/on",
+        "dojo/dom-class",
+        "dojo/_base/json",
+        "dijit/registry",
+
+        "esri/tasks/query",
+        "esri/tasks/QueryTask",
+        "esri/dijit/BasemapToggle",
+        "esri/InfoTemplate",
+
+        "dijit/layout/BorderContainer", "dijit/layout/ContentPane",
+        "dijit/form/Button", "dojo/domReady!"], function (
+    Map,
+    Tiled, ImageServiceParameters, ArcGISImageServiceLayer,
+    Draw, Graphic, Point,
+    SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol,
+    screenUtils, urlUtils, esriConfig, esriRequest,
+    Geocoder, HomeButton, LocateButton,
+    parser, dom, domConstruct, query, Color,
+    on, domClass, dojoJson, registry, Query, QueryTask, BasemapToggle, InfoTemplate) {
+
+        parser.parse();
+         var layer;
+         var layerflag = 0;
+
+       
+
+
+        if(getParameterByName("long") < -75 && getParameterByName("lat") > 35){
+            // If coords supplied via param, zoom to them
+            // Setup solar imageservice layer
+            
+            $('#SplashScreen').fadeOut('fast');
+
+            var pt = new Point(getParameterByName("long"), getParameterByName("lat"));
+
+            
+            
+             var evt = {};
+             evt.mapPoint = pt;
+             
+             pixelQuery(evt);
+
+
+                    
+
+        } 
+
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+        
+        function showResults(evt) {
+            //$("#r").fadeOut('fast');
+           $("#SplashScreen").fadeOut('slow');
+          
+            var point = evt.result.feature.geometry;
+            var symbol = new SimpleMarkerSymbol();
+            console.log("assigned symbol");
+            symbol.setStyle(SimpleMarkerSymbol.STYLE_DIAMOND);
+            symbol.setColor(new Color([0,255,255]));
+
+
+
+
+            //setup bare earth county layer query
+            var BEquery = new Query();
+            var BEQueryTask = new QueryTask(bareEarthCountyURL);
+            BEquery.geometry = point;
+            BEquery.geometryType = "esriGeometryPoint";
+            BEquery.outFields = ["bare_earth","COUNTYNAME"];
+            BEquery.spatialRelationship = query.SPATIAL_REL_INTERSECTS;
+            BEquery.mosaicRule = "";
+            BEquery.sr = 102100;
+            BEquery.imageDisplay = 1;
+            BEquery.tolerance = 1;
+            BEquery.returnGeometry = false;
+            BEquery.returnZ = false;
+            BEquery.returnM = false;
+            BEquery.f = "pjson";
+
+            BEQueryTask.execute(BEquery, function (results) {
+                console.log(results);
+                //first make sure clicked point is within the state
+                if (results.features && results.features.length > 0) {
+
+                
+
+
+                    var result = "<p>Click/Zoom anywhere near your search result (<img src='/assets/img/blue_diamond.gif'>) to view solar radiation per square meter.</p><p>Struggling to find what you are looking for? Try using the basemap toggle button at left to bring up satellite imagery for further help finding the spot you wish to analyze.</p>";
+
+                    document.getElementById('r').innerHTML = result;
+                    $("#r").fadeIn('slow');
+
+                } else {
+
+                    // clicked point is outside of the state
+                    var result = "<H3><strong>This point is out of the study area. Click within the State of Minnesota or try searching for something like 'Target Field'.</strong></H3>";
+
+                    document.getElementById('r').innerHTML = result;
+                    $("#r").fadeIn('fast');
+
+                    /*
+                    setTimeout(function(){
+                        zoomToCoords(-93.243322, 44.971795, 15);
+                    }, 4000);
+                    */
+                }
+
+        });
+}
+
+
+        function pixelQuery(e) {
+        
+            //setup insolation query
+            var query = new Query();
+            var queryTask = new QueryTask(imgIdentifyURL);
+            query.geometry = e.mapPoint;
+            query.geometryType = "esriGeometryPoint";
+            query.mosaicRule = "";
+            //query.pixelSize = 1; 
+            query.sr = 102100;
+            query.imageDisplay = 1;
+            query.tolerance = 1;
+            query.returnGeometry = false;
+            query.returnZ = false;
+            query.returnM = false;
+            query.f = "pjson";
+
+            //setup bare earth county layer query
+            var BEquery = new Query();
+            var BEQueryTask = new QueryTask(bareEarthCountyURL);
+            BEquery.geometry = e.mapPoint;
+            BEquery.geometryType = "esriGeometryPoint";
+            BEquery.outFields = ["bare_earth","COUNTYNAME"];
+            BEquery.spatialRelationship = query.SPATIAL_REL_INTERSECTS;
+            BEquery.mosaicRule = "";
+            BEquery.sr = 102100;
+            BEquery.imageDisplay = 1;
+            BEquery.tolerance = 1;
+            BEquery.returnGeometry = false;
+            BEquery.returnZ = false;
+            BEquery.returnM = false;
+            BEquery.f = "pjson";
+
+            BEQueryTask.execute(BEquery, function (results) {
+                
+                //first make sure clicked point is within the state
+                if (results.features && results.features.length > 0) {
+                    
+                    bareEarth = results.features[0].attributes["bare_earth"];
+                    county = results.features[0].attributes["COUNTYNAME"];
+
+                    //then check if clicked point is within a bare earth county, if so add disclaimer
+                    if (bareEarth === 1) {
+                        var warning = "**";
+                        var warningMsg = "<p>**<span id='smText'>The lidar data available for " + county + " County includes only bare earth points. Hence, this insolation value does not take shade from nearby surface features into consideration.</span></p>";
+                        
+                            if(county == "Pine") {
+                                var warningMsg = "<p>**<span id='smText'>The lidar data available for " + county + " County was inconsistently classified across different flight lines. Hence, insolation accuracy is variable as shade from nearby surface features may not be taken into consideration.</span></p>";
+                            }
+                 
+                    } else {
+                        var warning = "";
+                        var warningMsg = "";
+                    }
+
+                    queryTask.execute(query, function (results) {
+
+                        var val = results.value;
+                        var v = val / 1000 / 365;
+                        var y = val / 1000;
+                        var quality = 0;
+                        switch (true) {
+                            case (v > 2.7):
+                                quality = "Optimal";
+                                break;
+                            case (v < 1.7):
+                                quality = "Poor";
+                                break;
+                            default:
+                                quality = "Good";
+                                break;
+                        }
+
+                        var result = "<H3><strong>INSOLATION (kWh/m<sup>2</sup>)</strong></H3><p>Total per Year: " + y.toFixed(2) + warning + "<br />Avg per Day: " + v.toFixed(2) + " (" + quality + ")" + warning + "</p>" + warningMsg;
+
+                        document.getElementById('r').innerHTML = result;
+                        $("#r").fadeIn('slow');
+var mp = esri.geometry.webMercatorToGeographic(e.mapPoint);
+
+                          //setup Utility Service Provider query
+                        var query = new Query();
+                        var queryTask = new QueryTask(eusaURL);
+                        console.log(mp.x + ", " + mp.y);
+                        query.geometry = e.mapPoint;
+                        query.geometryType = "esriGeometryPoint";
+                        query.outFields = ["*"];
+                        query.spatialRelationship = query.SPATIAL_REL_INTERSECTS;
+                        query.mosaicRule = "";
+                        query.sr = 102100;
+                        query.imageDisplay = 1;
+                        query.tolerance = 1;
+                        query.returnGeometry = false;
+                        query.returnZ = false;
+                        query.returnM = false;
+                        query.f = "pjson";
+
+                        queryTask.execute(query, function (results) {
+                            console.log(results.features[0]);
+                            fullname = results.features[0].attributes["FULL_NAME"];
+                            city = results.features[0].attributes["CITY"];
+                            street = results.features[0].attributes["STREET"];
+                            phone = results.features[0].attributes["PHONE"];
+                            website = results.features[0].attributes["WEBSITE"];
+                            elec_comp = results.features[0].attributes["ELEC_COMP"];
+                            zip = results.features[0].attributes["ZIP"];
+                            
+                            if(quality == "Poor") {
+                                var getstarted = "<p>Location not optimal? Check out:<br /><a href='http://mncerts.org/solargardens' target='_blank'>Community Solar Gardens</a></p>";
+                            }else{
+                                var getstarted = "<p><a href='http://thecleanenergybuilder.com/directory#resultsType=both&page=0&pageNum=25&order=alphaTitle&proximityNum=60&proximityInput=" + zip + "&textInput=&textSearchTitle=1&textSearchDescription=1&field_established=&field_employees=&field_year=&reload=false&mapSize=large&allResults=false&tids2=&tids3=568&tids4=&tids5=&tids6=' target='_blank'>Get Started: Contact a Local Installer</a></p>";
+                            }
+
+                            var result = "<p><b>Utility Service Provider:   </b><br />" + fullname + "<br />" + street + "<br />" + city + ", MN " + zip + "<br />" + phone + "<br /><a target='_blank' href='http://" + website + "'>" + website + "</a></p><p><a href='http://www.dsireusa.org/solar/incentives/index.cfm?re=1&ee=1&spv=1&st=0&srp=0&state=MN' target='_blank'>MN Incentives/Policies for Solar</a></p>" + getstarted + "<p>Report bad data <a href='/bad_data_handler.php?x=" + mp.x + "&y=" + mp.y + "' target='_blank'>here</a>.</p>";
+
+                               //add service utility provider to insolation results
+                            document.getElementById('r').innerHTML = document.getElementById('r').innerHTML + "<hr />" + result;
+
+                        });
+                    });
+
+
+                } else {
+                      // clicked point is outside of the state
+                    var result = "<H3><strong>INSOLATION (kWh/m<sup>2</sup>)</strong></H3><p>Total per Year: Unknown**<br />Avg per Day: Unknown**</p><p>**<span id='smText'>This point is out of the study area. Click within the State of Minnesota or try searching for something like 'Target Field'.</span></p>";
+
+                    document.getElementById('r').innerHTML = result;
+                    $("#r").fadeIn('slow');
+                }
+               
+            });
+
+        }
+
+    });
+});
+
+
+</script>
+
+</body>
+</html>

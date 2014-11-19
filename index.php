@@ -21,7 +21,7 @@
   
 <!-- START OUR CONTENT -->
 <div class="boundingbox">
-  <div class="container">
+  <div class="container-full">
     <div class="row">
       <div class="col-md-8" style="margin-top:40px">
 	  

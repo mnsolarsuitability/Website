@@ -48,35 +48,44 @@ $y = htmlentities($_REQUEST['y']);
 <?php include_once ("assets/nav/top_nav.php");?>
   
 <!-- START OUR CONTENT -->
-<h3>You have indicated that there is a problem with the following location:<br>
-<a href="/app/index.html?lat=<?php echo $y; ?>&long=<?php echo $x; ?>"><?php echo $y .", ". $x; ?></a></h3>
-<p>&nbsp;</p>
-<?php if($msg != ""){ 
 
-			echo "<h5>".$msg."</h5><a href='javascript:window.close()'>X Close this window and return to the app</a>";
+<div class="boundingbox">
+  <div class="container-full">
+    <div class="row">
+      <div class="col-md-12">
+        <h3>You have indicated that there is a problem with the following location:<br>
+        <a href="/app/index.html?lat=<?php echo $y; ?>&long=<?php echo $x; ?>"><?php echo $y .", ". $x; ?></a></h3>
+        <p>&nbsp;</p>
+        <?php if($msg != ""){ 
+
+		  echo "<h5>".$msg."</h5><a href='javascript:window.close()'>X Close this window and return to the app</a>";
 
 		} else {
-?>
+        ?>
 
-    <form action="" method="post">
-    <p>Please tell us who you are: </p>
-    <p><label for="name">Name:</label>
-      <input type="name" name="name" id="name">
-    </p>
-    <p>
-      <label for="email">Email:</label>
-      <input name="email" type="email" required="required" id="email">
-    </p>
-    <p>
-      <label for="notes">Notes:</label>
-      <textarea name="notes" id="notes"></textarea>
-    </p>
-    <p>
-    <input type="hidden" name="lat" id="lat" value="<?php echo $y; ?>">
-    <input type="hidden" name="long" id="long" value="<?php echo $x; ?>">
-      <input type="submit" name="submit" id="submit" value="Submit" onClick="javascript:document.getElementById('submit').value = '******* Sending now. Thank You! *******';">
-    </p>
-    </form>
+        <form action="" method="post">
+        <p>Please tell us who you are: </p>
+        <p><label for="name">Name:</label>
+          <input type="name" name="name" id="name">
+        </p>
+        <p>
+          <label for="email">Email:</label>
+          <input name="email" type="email" required="required" id="email">
+        </p>
+        <p>
+          <label for="notes">Notes:</label>
+          <textarea name="notes" id="notes"></textarea>
+        </p>
+        <p>
+        <input type="hidden" name="lat" id="lat" value="<?php echo $y; ?>">
+        <input type="hidden" name="long" id="long" value="<?php echo $x; ?>">
+        <input type="submit" name="submit" id="submit" value="Submit" onClick="javascript:document.getElementById('submit').value = '******* Sending now. Thank You! *******';">
+        </p>
+        </form>
+	  </div>
+    </div>
+  </div>
+</div>
 
 <?php } ?>
 <p>&nbsp;</p>

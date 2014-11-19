@@ -41,11 +41,11 @@
 <div id="map" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'"> <a href="http://solar.maps.umn.edu" target="_blank"><img src="/assets/img/UMN_M_white.gif" alt="University of Minnesota" id="umnLogo" /></a> </div>
 <script type="text/javascript">
 	var basemapURL = 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/';  //imagery basemap
-	var imgDisplayURL = 'http://gis.uspatial.umn.edu/arcgis/rest/services/solar/Solar/ImageServer/';  
+	var imgDisplayURL = 'http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/Solar/ImageServer/';  
   //var imgDisplayURL = 'http://us-pspatialgis1.oit.umn.edu:6080/arcgis/rest/services/solar/MN_Solar_Reference/ImageServer/';
   //solar data for display
 	var imgIdentifyURL = imgDisplayURL + 'identify';  //solar data for querying insolation
-	var vectorDataURL = 'http://gis.uspatial.umn.edu/arcgis/rest/services/solar/solar_fgdb/MapServer/';
+	var vectorDataURL = 'http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/solar_fgdb/MapServer/';
 	var bareEarthCountyURL = vectorDataURL + '1';  //vector layer for identifying counties with only bare earth lidar
 	var eusaURL = vectorDataURL + '0';  //utility service providers vector layer
 </script>
