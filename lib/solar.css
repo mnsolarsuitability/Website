@@ -27,6 +27,10 @@
     border-radius:5px;
 }
 
+.noUnderline:hover{
+text-decoration:none !important;
+}
+
 .nav li {
     text-align:center;
     height:10px

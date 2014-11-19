@@ -9,14 +9,15 @@
       #map, #smap {
         height: 200px;
         width: 300px;
-        margin: 20px 10px 20px 20px;
+        margin: 10px 5px 10px 5px;
         padding: 0;
-		 display: inline-block;
+		display: inline-block;
       }
       body {
         background-color: #FFF;
         overflow: hidden;
         font-family: "Trebuchet MS";
+		width:670px;
       }
     </style>
     <script src="http://js.arcgis.com/3.11/"></script>
@@ -111,6 +112,7 @@
 <?php echo str_replace("_","<br>",$_REQUEST['u'])."<br>"; ?> 
 <a href="http://<?php echo $_REQUEST['w']; ?>" target="_blank"><?php echo $_REQUEST['w']; ?><a/>
 </p>
+<?php if($_REQUEST['p'] == "") { ?>
 <p>
 <a href="<?php echo $_SERVER['REQUEST_URI']."&p=1"; ?>">
 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -129,6 +131,14 @@
 
 </svg></a>
 </p>
+<?php } ?>
+<script type="text/javascript">
+
+var data = <?php echo $_REQUEST['m'];  ?>;
+
+console.log(data.insolValue);
+
+</script>
 </div>
 </body>
 </html>

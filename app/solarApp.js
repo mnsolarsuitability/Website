@@ -72,6 +72,8 @@ $(window).load(function () {
 	
 		// Initial hidden divs
 		$("#helpScreen").hide();
+		$('#resultsHeader').hide();
+		$('#resultsMinimized').hide();
 	    $('#resultsButton').hide();
 	    $('#resultsSmall').hide();
 	    $("#resultsBig").hide();
@@ -89,6 +91,7 @@ $(window).load(function () {
             $(window).resize(function(){
                 placeFooter();
 			    placeResults();
+			    //placeResultsTabNoResults();
             });
             placeFooter();
 		
@@ -110,6 +113,54 @@ $(window).load(function () {
             var offset = parseInt(windHeight) - (parseInt(footerHeight)+parseInt(resultsHeight));
             $('#resultsSmall').css('top',offset);
         };
+
+        function placeResultsTabNoResults() {  
+        	$('#resultsHeader').hide();
+            var windHeight = $(window).height();
+            var footerHeight = $('#bottomBar').height();
+		    var resultsTabHeight = 45;
+		    var resultsTabWidth = 100;
+            var offset = parseInt(windHeight) - (parseInt(footerHeight)+parseInt(resultsTabHeight));
+            $('#resultsMinimized').css('top',offset);
+            var windWidth = $(window).width();
+            var widthOffset = (parseInt(windWidth)/2)-(resultsTabWidth/2);
+            $('#resultsMinimized').css('left',widthOffset);
+            $('#resultsMinimized').show();
+        };
+
+        function placeResultsTabResults() {  
+        	$('resultsMinimized').hide();
+            var windHeight = $(window).height();
+            var footerHeight = $('#bottomBar').height();
+		    var resultsHeight = $('#resultsSmall').height();
+		    var resultsTabHeight = 45;
+		    var resultsTabWidth = 100;
+            var offset = parseInt(windHeight) - (parseInt(footerHeight)+parseInt(resultsHeight)+parseInt(resultsTabHeight));
+            $('#resultsHeader').css('top',offset);
+            var windWidth = $(window).width();
+            var widthOffset = (parseInt(windWidth)/2)-(resultsTabWidth/2);
+            $('#resultsHeader').css('left',widthOffset);
+            $('#resultsHeader').show();
+        };
+
+        $("#closeResults").on('click',function(){
+            $("#resultsSmall").hide();
+            placeResultsTabNoResults();
+        });
+
+        $("#resultsBigClose").on('click',function(){
+        	console.log('Clicked');
+        	$("#resultsBig").hide();
+        	placeResultsTabNoResults();
+        });
+
+        $("#resultsMinimized").on('click',function(){
+            $("#resultsSmall").show();
+            $("#resultsMinimized").hide();
+            placeResultsTabResults();
+
+        });
+
 	    // ---------------------------------------------------
 
 		// Create map
@@ -216,6 +267,8 @@ $(window).load(function () {
 	    // Show big results report
 	    $("#resultsHeader").on('click', function(){
 	        $("#resultsBig").toggle();
+	        $("#resultsSmall").hide();
+	        $("resultsMinimized").hide();
 	    });
 		
 		
@@ -353,7 +406,7 @@ $(window).load(function () {
 			
 			 var evt = {};
 			 evt.mapPoint = pt;
-			 console.log(pt);
+			 //console.log(pt);
 			 
 			 pixelQuery(evt);
         }
@@ -401,12 +454,14 @@ $(window).load(function () {
         }
 		
 		$("#resultsButton").on('click', function(){
-		    $("#resultsSmall").toggle();
+		    $("#resultsSmall").hide();
 			$("#resultsBig").hide();
+			$("#resultsHeader").hide();
+			placeResultsTabNoResults();
+			$("#resultsMinimized").show();
 			});
 		
 		$("#showReport").on('click', function(){
-			$("#resultsBig").innerHTML = "blah";
 			$("#resultsBig").show();
 			$("#resultsSmall").hide();
 			
@@ -540,7 +595,7 @@ $(window).load(function () {
                             elec_comp = results.features[0].attributes["ELEC_COMP"];
                             zip = results.features[0].attributes["ZIP"];
 							
-							var utility = fullname + "_" + city + "_" + street + "_" + zip + "_" + website + "_" + phone;
+							var utility = encodeURIComponent(fullname + "_" + street + "_" + city + ", MN " +zip + "_" + phone);
 							
 							if(quality == "Poor") {
 								var getstarted = "<p>Location not optimal? Check out:<br /><a href='http://mncerts.org/solargardens' target='_blank'>Community Solar Gardens</a></p>";
@@ -551,9 +606,10 @@ $(window).load(function () {
                             var result ='<div class="resultsTopicTitle">Utility Service Provider:</div><div class="resultsDisplay">' + fullname + ' ' + phone + '</div>';
 
 							document.getElementById('results').innerHTML = document.getElementById('results').innerHTML + result;
-							console.log(e.mapPoint);
+							//console.log(e.mapPoint);
 							point = webMercatorUtils.webMercatorToGeographic(e.mapPoint);
-							document.getElementById('resultsBig').innerHTML = "<iframe src='http://solar.maps.umn.edu/report.php?z=" + zip + "&long=" + point['x'] + "&lat=" + point['y'] + "&y="+ y.toFixed(2) + "&u=" + utility + "' width='100%' height='100%'><p>Your browser does not support iframes.</p></iframe>";
+							resultsiFrameURL = "http://solar.maps.umn.edu/report.php?w=" + website + "&long=" + point['x'] + "&lat=" + point['y'] + "&y="+ y.toFixed(2) + "&u=" + utility;
+							//console.log(resultsiFrameURL);
                         });
                     });
 
@@ -620,7 +676,7 @@ $(window).load(function () {
 		
 		// Center loader on screen
 		function placeLoader(){
-		    console.log('Trying to place loader');
+		    //console.log('Trying to place loader');
 		    var windHeight = $(window).height();
             var windWidth = $(window).width();
 			var loaderHeight = 140;
@@ -666,7 +722,7 @@ $(window).load(function () {
 			placeLoader();
 			
 			var params = {"PointX":point['x'], "PointY":point['y'], "File_Name":tile};
-			console.log(JSON.stringify(params, null, 4));
+			//console.log(JSON.stringify(params, null, 4));
 			gp.execute(params, displayResults);
 			}
 		
@@ -717,6 +773,7 @@ $(window).load(function () {
 			$("#sunHrHisto").html("");
 			
 			placeResults();
+			placeResultsTabResults();
 			
 			//show results
 			$('#loader').hide();
@@ -771,20 +828,22 @@ $(window).load(function () {
 				"insolValue":[insolValueCorrected[0],insolValueCorrected[1],insolValueCorrected[2],insolValueCorrected[3],insolValueCorrected[4],insolValueCorrected[5],insolValueCorrected[6],insolValueCorrected[7],insolValueCorrected[8],insolValueCorrected[9],insolValueCorrected[10],insolValueCorrected[11]],
 				"sunHrValue":[sunHrResults[0],sunHrResults[1],sunHrResults[2],sunHrResults[3],sunHrResults[4],sunHrResults[5],sunHrResults[6],sunHrResults[7],sunHrResults[8],sunHrResults[9],sunHrResults[10],sunHrResults[11]]
 			}
-			
+			$("#resultsBig").html("<iframe src='" + resultsiFrameURL + "&m=" + JSON.stringify(data) + "' width='96%' height='96%' style='overflow-x:hidden;overflow-y:visible;'><p>Your browser does not support iFrames.</p></iframe>");
+			// <div id="resultsBigClose" style="padding-right:10px">( x )</div>
 			// query time
 			endTime = new Date().getTime();
-			console.log("Solar point processing took: " + ((endTime - startTime)*0.001) + " seconds.")
+			//console.log("Solar point processing took: " + ((endTime - startTime)*0.001) + " seconds.")
 			
 			// create histos
 			   
-			function draw(data, dataAttr, max, div, title) {
-			
+			function draw(data, dataAttr, max, div, title, titleOffset, titleModifier) {
+
+			    titleOffset = parseInt(titleOffset);
 				var margin = {
-						"top": 0,
+						"top": 10,
 						"right": 10,
-						"bottom": 30,
-						"left": 20
+						"bottom": 50,
+						"left": 50
 					},
 					width = 440,
 					height = 160;
@@ -840,7 +899,7 @@ $(window).load(function () {
 				svgContainer.append("g")
 					.attr("class", "y axis").call(yAxis)
 					.append("text")
-						.attr("x", (width / 1.5))             
+						.attr("x", (width / titleOffset + titleModifier))             
 						.attr("y", 10)
 						.attr("text-anchor", "center")  
 						.style("font-size", "16px") 
@@ -864,10 +923,10 @@ $(window).load(function () {
                 }
                 
 				// create Solar Insol histo
-				draw(data,data.insolValue,maxInsol, "#resultsHisto", "Solar Insolation By Month (kWh)");
+				draw(data,data.insolValue,maxInsol, "#resultsHisto", "Solar Insolation By Month (kWh)", 2, 20);
 				
 				// create Sun Hrs histo
-			    draw(data,data.sunHrValue,maxSun, "#sunHrHisto", "Sun Hours By Month");
+			    draw(data,data.sunHrValue,maxSun, "#sunHrHisto", "Sun Hours By Month", 2, -40);
 				
 				
 				

@@ -28,17 +28,17 @@
         <div class="topleft2Column">
           <ul class="nav nav-tabs nav-stacked">
                 
-            <a href="#methods" data-toggle="tab"><li style="margin-top:20px">Methods</li></a>
+            <a href="#methods" data-toggle="tab" class="noUnderline"><li style="margin-top:20px">Methods</li></a>
 		
-            <a href="#methods_lidar" data-toggle="tab"><li>LiDAR Data</li></a>
+            <a href="#methods_lidar" data-toggle="tab" class="noUnderline"><li>LiDAR Data</li></a>
 
-            <a href="#methods_dsm" data-toggle="tab"><li>Digital Surface Model
+            <a href="#methods_dsm" data-toggle="tab" class="noUnderline"><li>Digital Surface Model
             </li></a>
                
-            <a href="#methods_solar" data-toggle="tab"><li>Solar Radiation
+            <a href="#methods_solar" data-toggle="tab" class="noUnderline"><li>Solar Radiation
             Analysis</li></a>
                 
-            <a href="#methods_parallel" data-toggle="tab"><li style="margin-bottom:0px">Parallel
+            <a href="#methods_parallel" data-toggle="tab" class="noUnderline"><li style="margin-bottom:0px">Parallel
             Processing</li></a>
           </ul>
         </div>

@@ -411,7 +411,7 @@ div.panel.panel-default,div.panel.panel-default a {
     line-height:30px
 }
 
-.closeSplash,.showReport, #closeResults{
+.closeSplash,.showReport, #closeResults, #resultsBigClose{
     cursor:pointer
 }
 
@@ -490,7 +490,7 @@ div.panel.panel-default,div.panel.panel-default a {
 	z-index:500;
 }
 
-#closeResults{
+#closeResults, #resultsBigClose{
     float:right;
     text-align: right !important;
 }

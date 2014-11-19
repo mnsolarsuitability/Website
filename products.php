@@ -26,17 +26,17 @@
 	   <div class="col-md-3">
 	     <ul class="nav nav-tabs nav-stacked">
                 
-              <a href="#gisdata" data-toggle="tab"><li style="margin-top:20px">GIS Data</li></a>
+              <a href="#gisdata" data-toggle="tab" class="noUnderline"><li style="margin-top:20px">GIS Data</li></a>
 			  
-			  <a href="#currentIssues" data-toggle="tab"><li>Current Data Issues</li></a>
+			  <a href="#currentIssues" data-toggle="tab" class="noUnderline"><li>Current Data Issues</li></a>
 			  
-			  <a href="#presentations" data-toggle="tab"><li>Presentations</li></a>
+			  <a href="#presentations" data-toggle="tab" class="noUnderline"><li>Presentations</li></a>
 			  
-			  <a href="#media" data-toggle="tab"><li>Video/Photos</li></a>
+			  <a href="#media" data-toggle="tab" class="noUnderline"><li>Video/Photos</li></a>
 		
-              <a href="#press" data-toggle="tab"><li>Press/Publications</li></a>
+              <a href="#press" data-toggle="tab" class="noUnderline"><li>Press/Publications</li></a>
 
-              <a href="#scripts" data-toggle="tab"><li>Scripts</li></a>
+              <a href="#scripts" data-toggle="tab" class="noUnderline"><li>Scripts</li></a>
 
           </ul>
 	   </div>
@@ -70,15 +70,15 @@
     		   <p>There are presently what appear to be large  &quot;gaps&quot; in the solar suitability data available via our  app. These gaps correspond to areas where the existing publicly available county level lidar data did not conform to the standards used for the rest of the state due to early adoption from these counties. The data provided by these counties was either missing full classification of lidar points other than &quot;ground&quot; (buildings, vegetation, etc.), or the non-ground point returns were removed entirely.  Our processing model ignored unclassified points, resulting in a digital surface model devoid of non-ground features for these areas, creating what look like county-wide swaths with no shade. </p>
     		   
 			   <p>We are currently working to remedy these blank areas where suitable data exists. However, non-ground returns are totally absent for three counties, and new data will need to become available before they can be fixed.    </p>
-		       <p><img src="/assets/img/reprocessmap.png" class="prodImg" style="margin-bottom:0px"></p>
-    		   <h3>Counties Currently Being Reprocessed:</h3>
+		       <p><img src="/assets/img/reprocessmap-11-17-14.jpg" class="prodImg" style="margin-bottom:0px"></p>
+    		   <h3>Final Stages of Reprocessing:</h3>
 		         <ul>
       		       <li>Stearns</li>
+				   <li>Pine</li>
     		     </ul>
-		       <h3>Counties in the Reprocessing Queue:</h3>
+		       <h3>Initial Stages of Reprocessing:</h3>
 		       <ul>
 		         <li>Crow Wing</li>
-  		         <li>Pine</li>
   		         <li>Wright</li>
 		       </ul>
     		   <h3>Counties Requiring New Data:</h3>
