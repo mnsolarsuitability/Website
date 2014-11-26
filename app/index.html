@@ -12,6 +12,8 @@
   <link href= "/bootstrap-3.2.0-dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
   <link rel="stylesheet" type="text/css" href="http://js.arcgis.com/3.9/js/esri/css/esri.css">
   
+  <link href="http://cdn.jsdelivr.net/qtip2/2.2.1/jquery.qtip.min.css">
+  
   <!-- Required JavaScript -->
 
   <script type='text/javascript' src='https://code.jquery.com/jquery-2.1.1.min.js'></script>
@@ -20,7 +22,9 @@
   <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
   <script src="https://apis.google.com/js/client.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false&amp;libraries=places"></script>
-
+  
+  <script src="http://cdn.jsdelivr.net/qtip2/2.2.1/jquery.qtip.js"></script>
+  
   <title>MN Solar Suitability Analysis App</title>
 
 </head>
@@ -72,12 +76,12 @@
                   <li role="presentation"><div id="helpMenu"><a role="menuitem" tabindex="-1" href="#">HELP</a></div></li>
 				  <li role="presentation" class="divider"></li>
 				  <li role="presentation">
-				    <div id=helpImageContainer">
+				    <div id="helpImageContainer">
 				      <div class="helpImage">
 				        <a href="http://www.esri.com" target="_blank"><img src="/assets/img/powered-by-esri-logo-med.png"></a>
 				      </div>
 				      <div class="helpImage">
-				        <a href="http://www.umn.edu" target="_blanl"><img src="/assets/img/UMN_M_white.gif"></a>
+				        <a href="http://www.umn.edu" target="_blanl"><img src="/assets/img/UMN_M_white.gif" style="margin-left:20px"></a>
 				      </div>
 				    </div>
 				  </li>
@@ -113,6 +117,9 @@
         <path fill="#FFFFFF" d="M-292.7,390.7l-8.8,8.8c-0.8,0.8-0.8,2.1,0,2.9l0.7,0.7c0.8,0.8,2.1,0.8,2.9,0l6.7-6.7l6.7,6.7
             c0.8,0.8,2.1,0.8,2.9,0l0.7-0.7c0.8-0.8,0.8-2.1,0-2.9l-8.8-8.8c-0.4-0.4-1-0.6-1.6-0.6C-291.7,390.1-292.3,390.3-292.7,390.7z"/>
         </svg></div>
+		<div style="text-align:center; color:white; width:100px; margin-left:-30px">
+		  Full Report
+		</div>
     </div>
 
   <div id="resultsMinimized">
@@ -120,6 +127,9 @@
         <path fill="#FFFFFF" d="M-292.7,390.7l-8.8,8.8c-0.8,0.8-0.8,2.1,0,2.9l0.7,0.7c0.8,0.8,2.1,0.8,2.9,0l6.7-6.7l6.7,6.7
             c0.8,0.8,2.1,0.8,2.9,0l0.7-0.7c0.8-0.8,0.8-2.1,0-2.9l-8.8-8.8c-0.4-0.4-1-0.6-1.6-0.6C-291.7,390.1-292.3,390.3-292.7,390.7z"/>
         </svg></div>
+		<div style="text-align:center; color:white; width:100px; margin-left:-30px">
+		  Results
+		</div>
     </div>
 
   <div id="resultsSmall">  
@@ -153,6 +163,13 @@
   
 <!-- ResultsBig -->
   <div id="resultsBig">
+    <div id="closeBigResults">
+          ( X )
+    </div>
+    
+    <div id="resultsBigContent">
+	</div>
+  </div>
   <!-- integrate bad data, solar gardens, incentives -->
     
   </div>	
@@ -219,6 +236,7 @@
   <script type="text/javascript">
 	  var basemapURL = 'http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/';  //imagery basemap
 	  var imgDisplayURL = 'http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/Solar/ImageServer/';  //solar data for display
+	  //var imgDisplayURL = 'https://us-spatial-test.oit.umn.edu/arcgis/rest/services/MN_Solar/ImageServer/';  //solar data for display (NEW)
 	  var imgIdentifyURL = imgDisplayURL + 'identify';  //solar data for querying insolation
 	  var vectorDataURL = 'http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/solar_fgdb/MapServer/';
 	  var bareEarthCountyURL = vectorDataURL + '1';  //vector layer for identifying counties with only bare earth lidar

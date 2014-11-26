@@ -490,10 +490,20 @@ div.panel.panel-default,div.panel.panel-default a {
 	z-index:500;
 }
 
-#closeResults, #resultsBigClose{
+#closeResults{
     float:right;
     text-align: right !important;
 }
+
+#closeBigResults{
+    float:right;
+	text-align: right !important;
+	margin-right:10px;
+	color:white;
+	cursor:pointer;
+	z-index:10;
+	
+	}
 
 .resultsDisplay {
     display:inline-block;
@@ -504,7 +514,8 @@ div.panel.panel-default,div.panel.panel-default a {
 }
 
 .resultsTopicTitle {
-    font-size:24px;
+    font-size:20px;
+	padding-bottom:5px;
     border-bottom:1px solid #fff;
     margin-bottom:15px;
 }

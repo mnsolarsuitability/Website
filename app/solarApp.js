@@ -78,6 +78,7 @@ $(window).load(function () {
 	    $('#resultsSmall').hide();
 	    $("#resultsBig").hide();
 	    $("#loader").hide();
+		$("#closeBigResults").hide();
 		
 		// Hidden layers
 	    $('#layerTest1').hide();
@@ -97,6 +98,8 @@ $(window).load(function () {
 		
             // hide it before it's positioned
             $('#bottomBar').css('display','inline');
+			$('#resultsSmall').hide();
+			$('#resultsHeader').hide();
         });
 
         function placeFooter() {  
@@ -140,6 +143,7 @@ $(window).load(function () {
             var windWidth = $(window).width();
             var widthOffset = (parseInt(windWidth)/2)-(resultsTabWidth/2);
             $('#resultsHeader').css('left',widthOffset);
+			console.log("Pleaceresultstabresults");
             $('#resultsHeader').show();
         };
 
@@ -148,7 +152,7 @@ $(window).load(function () {
             placeResultsTabNoResults();
         });
 
-        $("#resultsBigClose").on('click',function(){
+        $("#closeBigResults").on('click',function(){
         	console.log('Clicked');
         	$("#resultsBig").hide();
         	placeResultsTabNoResults();
@@ -158,7 +162,6 @@ $(window).load(function () {
             $("#resultsSmall").show();
             $("#resultsMinimized").hide();
             placeResultsTabResults();
-
         });
 
 	    // ---------------------------------------------------
@@ -178,14 +181,42 @@ $(window).load(function () {
                 title: "Solar"
             };
 		
+		// Read URL Parameters
+		function getParameterByName(name) {
+			name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+			var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+				results = regex.exec(location.search);
+			return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+		}
+
+        // If coords supplied via param, zoom to them
+        if(getParameterByName("long") < -75 && getParameterByName("lat") > 35){
+           
+            // Setup solar imageservice layer
+            
+            $('#SplashScreen').fadeOut('fast');
+
+            var map = new Map("map", {
+            basemap: "solar",
+            center: [getParameterByName("long"), getParameterByName("lat")],
+            showAttribution: false,
+            zoom: 13
+            });
+
+            setTimeout(function(){
+                zoomToCoords(getParameterByName("long"), getParameterByName("lat"), 15);
+            }, 4000);           
+
+        } else {
 
             // Setup solar imageservice layer
             var map = new Map("map", {
                 basemap: "solar",
-			    center: [-93.243322, 44.971795],
-			    zoom: 13,
+                center: [-93.243322, 44.971795],
                 showAttribution: false,
-            })
+                zoom: 13
+            });
+        }
 			
 			var params = new ImageServiceParameters();
 
@@ -267,6 +298,7 @@ $(window).load(function () {
 	    // Show big results report
 	    $("#resultsHeader").on('click', function(){
 	        $("#resultsBig").toggle();
+			$("#closeBigResults").show();
 	        $("#resultsSmall").hide();
 	        $("resultsMinimized").hide();
 	    });
@@ -362,6 +394,28 @@ $(window).load(function () {
 		$(".closeSplash").on('click', function(){
 		    $("#helpScreen").hide();
 			});
+			
+	    $(".valueHelp").hover(function(){
+		    console.log("Hovering");
+			});
+		
+		$(".valueHelp").on('click',function(){
+		    console.log("clicking");
+			});
+			
+		$(document).on('mouseover',".valueHelp", function(){
+		    console.log("new clicking");
+			$(".valueHelp").qtip({ // Grab some elements to apply the tooltip to
+                   content: {
+                   text: 'My common piece of text here'
+                   }
+                  })
+			});
+			
+		//  Shows value help on click
+		//$("#questionMark").on('click', function(){
+		//    console.log("Question mark clicked");
+		//});
 			
 		
 			
@@ -492,6 +546,9 @@ $(window).load(function () {
 
         function pixelQuery(e) {
 			
+			
+			var mp = esri.geometry.webMercatorToGeographic(e.mapPoint);
+			
 			// Clear results div
 			$("#results").html("");
 		
@@ -565,7 +622,9 @@ $(window).load(function () {
                                 break;
                         }
 
-						var result = '<div class="resultsTopicTitle">INSOLATION (kWh/m2)</div><div class="resultsDisplay">Total per Year: ' + y.toFixed(2) + warning + '<br>Avg per Day: ' + v.toFixed(2) + ' (' + quality + ')' + warning + warningMsg +'</div>';
+						var result = '<div>INSOLATION (kWh/m<sup>2</sup>)</div><div class="resultsDisplay" style="display:block">Total per Year: ' + y.toFixed(2) + warning + '<br>Avg per Day: ' + v.toFixed(2) + ' <div class="valueHelp" style="display:inline-block;">(' + quality + ')</div>' + warning + warningMsg +'</div>';
+						
+						// <div id="questionMark"><img src="/assets/img/help.png" style = "width:20px; height:20px; display:inline"></div>
 						
 						$("#results").html(result);
 
@@ -603,7 +662,9 @@ $(window).load(function () {
 								var getstarted = "<p><a href='http://thecleanenergybuilder.com/directory#resultsType=both&page=0&pageNum=25&order=alphaTitle&proximityNum=60&proximityInput=" + zip + "&textInput=&textSearchTitle=1&textSearchDescription=1&field_established=&field_employees=&field_year=&reload=false&mapSize=large&allResults=false&tids2=&tids3=568&tids4=&tids5=&tids6=' target='_blank'>Get Started: Contact a Local Installer</a></p>";
 							}
 
-                            var result ='<div class="resultsTopicTitle">Utility Service Provider:</div><div class="resultsDisplay">' + fullname + ' ' + phone + '</div>';
+                            var result ='<p><br>UTILITY SERVICE PROVIDER</div><div class="resultsDisplay">' + fullname + ' - <a href="tel:+1-' + phone.slice(1,4) + '-' + phone.slice(6,14) +  '">' + phone + '</a></p>';
+							var result = result + "</p><p><a href='http://www.dsireusa.org/solar/incentives/index.cfm?re=1&ee=1&spv=1&st=0&srp=0&state=MN' target='_blank'>MN Incentives/Policies for Solar</a></p>" + getstarted + "<p>Report bad data <a href='/bad_data_handler.php?x=" + mp.x + "&y=" + mp.y + "' target='_blank'>here</a>.</p>";
+
 
 							document.getElementById('results').innerHTML = document.getElementById('results').innerHTML + result;
 							//console.log(e.mapPoint);
@@ -686,6 +747,8 @@ $(window).load(function () {
             $('#loader').css('top',verticalOffset);
 			$('#loader').css('left',horizOffset);
 		    $("#loader").show();
+			$("#resultsSmall").hide();
+			$("#resultsHeader").hide();
 		}
 		
 		/* -----------------------------
@@ -702,7 +765,9 @@ $(window).load(function () {
 		    point = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
 			
 			//initialize query task
-            queryTask = new esri.tasks.QueryTask("http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/MN_DSM/ImageServer");
+            //queryTask = new esri.tasks.QueryTask("https://us-spatial-test.oit.umn.edu/arcgis/rest/services/MN_DSM_Ref/ImageServer");
+			
+			queryTask = new esri.tasks.QueryTask("http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/MN_DSM/ImageServer");
 
             //initialize query
             tilequery = new esri.tasks.Query();
@@ -856,7 +921,7 @@ $(window).load(function () {
 
 				var y = d3.scale.linear()
 				    // SET Y AXIS HEIGHT
-					.domain([0, (max + 50)])
+					.domain([0, (max)])
 					.range([height, 0]);
 
 				var xAxis = d3.svg.axis()
@@ -923,10 +988,10 @@ $(window).load(function () {
                 }
                 
 				// create Solar Insol histo
-				draw(data,data.insolValue,maxInsol, "#resultsHisto", "Solar Insolation By Month (kWh)", 2, 20);
+				draw(data,data.insolValue,220, "#resultsHisto", "Solar Insolation By Month (kWh)", 2, 20);
 				
 				// create Sun Hrs histo
-			    draw(data,data.sunHrValue,maxSun, "#sunHrHisto", "Sun Hours By Month", 2, -40);
+			    draw(data,data.sunHrValue,500, "#sunHrHisto", "Sun Hours By Month", 2, -40);
 				
 				
 				

@@ -9,35 +9,54 @@
 
   <script type="text/javascript" src="/lib/d3/d3.min.js"></script>
   <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+
+  <style>
+  body {
+  	background-color:#555555;
+  }
+
+  .chart rect {
+		fill: #ff7400;
+	}
+
+  </style>
 </head>
 
 <body>
 
 <div id="test">
-  Test here
 </div>
 
 <script>
 
-var data = {
-			
-				"month": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-				"insolValue":[1,2,3,4,5,6,6,5,4,3,2,1],
-				//"sunHrValue":[sunHrResults[0],sunHrResults[1],sunHrResults[2],sunHrResults[3],sunHrResults[4],sunHrResults[5],sunHrResults[6],sunHrResults[7],sunHrResults[8],sunHrResults[9],sunHrResults[10],sunHrResults[11]]
-			}
+var solData = <?php 
+	
+	if(isset($_REQUEST['m'])){
 
-var solarMax = 6;
+			echo $_REQUEST['m']; 
+
+		} else {
+
+			echo '{"month":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"insolValue":[11.3074254036,21.3921353366,59.7055400827,102.41932865199999,141.49145818600002,148.15530767,148.501556312,118.281530153,73.2630635271,30.2534353161,12.995365536900001,8.251301863819998],"sunHrValue":["101.846323529","108.167546859","187.510341692","230.421472563","258.670366778","257.619971264","264.52096687","244.442617482","209.243694996","130.222019216","101.322514125","94.0420168067"]}';
+	}
+
+
+	?>;
+
+console.log(solData);
+
+var solarMax = Math.max.apply(Math, solData.insolValue);
 
 var params = ({
 	// json object
-	data:"data",
+	data:solData,
 	// json category
-    dataAttr:"insolValue",
-    chartWidth:400,
-    chartHeight:300,
-    barWidth:10,
+    dataAttr:solData.insolValue,
+    chartWidth:340,
+    chartHeight:120,
+    barWidth:8,
     max:solarMax,
-    div:"test",
+    div:"#test",
     title:"This is a title",
     titleOffset: 2,
     titleModifier: 20,
@@ -46,10 +65,10 @@ var params = ({
 
 //function draw(data, dataAttr, max, div, title, titleOffset, titleModifier) {
 function draw(params) {
-    titleOffset = parseInt(titleOffset);
+    titleOffset = parseInt(params.titleOffset);
 	var margin = {
-			"top": 10,
-			"right": 10,
+			"top": 5,
+			"right": 5,
 			"bottom": 50,
 			"left": 50
 		},
@@ -110,10 +129,10 @@ function draw(params) {
 			.attr("x", (width / params.titleOffset + params.titleModifier))             
 			.attr("y", 10)
 			.attr("text-anchor", "center")  
-			.style("font-size", "16px") 
-			.text(title);
+			.style("font-size", "13px");
+			//.text(params.title); 
 			
-	svgContainer.selectAll(".bar").data(dataAttr).enter().append("rect")
+	svgContainer.selectAll(".bar").data(params.dataAttr).enter().append("rect")
 		.attr("class", "bar")
 		.attr("x", function(d, i) {
 			return i * x.rangeBand() + (x.rangeBand()/2) -(barWidth/2);
