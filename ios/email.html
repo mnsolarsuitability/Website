@@ -1,0 +1,18 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'>
+<title>Untitled Document</title>
+</head>
+
+<body>
+
+<h2><img style='float:left; padding-right:10px;' src='http://solar.maps.umn.edu/assets/img/solar-app-transparent220x235.png' width='62' height='65' alt='MN Solar Logo'/>Minnesota Solar Suitability Location Report</h2>
+<p><b>Latitude</b>: <?php echo $_REQUEST['lat']; ?> <b>Longitude: </b><?php echo $_REQUEST['long']; ?></p>
+<p>
+Total Insolation per Year: <?php echo $_REQUEST['y']; ?> kWh/m<sup>2</sup><br />Avg per Day: kWh/m<sup>2</sup></p>
+<p><a href='http://solar.maps.umn.edu/report.php?z=55401&w=www.xcelenergy.com&long=-93.26967202136068&lat=44.97695608090048&y=280.49&u=Xcel%20Energy_414%20Nicollet%20Mall_Minneapolis%2C%20MN%2055401_(612)%20330-5500'>Click here to view your complete report</a></p>
+
+
+</body>
+</html>

@@ -65,10 +65,10 @@ $(window).load(function () {
 	    var geocoder;
 	
 	    // MN Solar Suitability API key
-	    //gapi.client.setApiKey('AIzaSyCI5rFXoNNM-IGDP-BZ1opjXTtB9wZalEI');
+	    gapi.client.setApiKey('AIzaSyCI5rFXoNNM-IGDP-BZ1opjXTtB9wZalEI');
 	
 	    // Chris' API Key
-	    gapi.client.setApiKey('AIzaSyChnPHuHTelEGwa6vI9DAFGWCraqrumUMc');
+	    //gapi.client.setApiKey('AIzaSyChnPHuHTelEGwa6vI9DAFGWCraqrumUMc');
 	
 		// Initial hidden divs
 		$("#helpScreen").hide();
@@ -152,6 +152,7 @@ $(window).load(function () {
             placeResultsTabNoResults();
         });
 
+
         $("#closeBigResults").on('click',function(){
         	console.log('Clicked');
         	$("#resultsBig").hide();
@@ -205,7 +206,17 @@ $(window).load(function () {
 
             setTimeout(function(){
                 zoomToCoords(getParameterByName("long"), getParameterByName("lat"), 15);
-            }, 4000);           
+            }, 4000);
+			
+			// if getParameterByName("q") = 1 then call solar query here
+			
+			if(getParameterByName("q") == 1){
+				
+				 var pt = new Point(getParameterByName("long"), getParameterByName("lat"));
+				 
+				 pixelQuery(pt);
+				 
+			}
 
         } else {
 
@@ -321,7 +332,7 @@ $(window).load(function () {
             //Add listener to detect autocomplete selection
             google.maps.event.addListener(autocomplete, 'place_changed', function () {
                 place = autocomplete.getPlace();
-	    		autocompleteLng = place.geometry.location.B;
+	    		autocompleteLng = place.geometry.location.D;
 		    	autocompleteLat = place.geometry.location.k;
 				var pt = new Point(autocompleteLng, autocompleteLat);
 				map.centerAndZoom(pt, 18);
@@ -353,11 +364,13 @@ $(window).load(function () {
             var address = document.getElementById("searchBar").value;
              geocoder.geocode( { 'address': address, 'bounds':extent}, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
-					geocodeLong = results[0].geometry.location.B;
+					geocodeLong = results[0].geometry.location.D;
 					geocodeLat = results[0].geometry.location.k;
 					var pt = new Point(geocodeLong, geocodeLat);
 					map.centerAndZoom(pt, 18);
 					addGraphic(pt);
+					
+					console.log(results);
 					
 					// call bare earth query to check in-state status
 					beQuery(pt);
@@ -622,7 +635,7 @@ $(window).load(function () {
                                 break;
                         }
 
-						var result = '<div>INSOLATION (kWh/m<sup>2</sup>)</div><div class="resultsDisplay" style="display:block">Total per Year: ' + y.toFixed(2) + warning + '<br>Avg per Day: ' + v.toFixed(2) + ' <div class="valueHelp" style="display:inline-block;">(' + quality + ')</div>' + warning + warningMsg +'</div>';
+						var result = '<div><strong>INSOLATION (kWh/m<sup>2</sup>)</strong></div><div class="resultsDisplay" style="display:block">Total per Year: ' + y.toFixed(2) + warning + '<br>Avg per Day: ' + v.toFixed(2) + ' <div class="valueHelp" style="display:inline-block;">(' + quality + ')</div>' + warning + warningMsg +'</div>';
 						
 						// <div id="questionMark"><img src="/assets/img/help.png" style = "width:20px; height:20px; display:inline"></div>
 						
@@ -659,17 +672,17 @@ $(window).load(function () {
 							if(quality == "Poor") {
 								var getstarted = "<p>Location not optimal? Check out:<br /><a href='http://mncerts.org/solargardens' target='_blank'>Community Solar Gardens</a></p>";
 							}else{
-								var getstarted = "<p><a href='http://thecleanenergybuilder.com/directory#resultsType=both&page=0&pageNum=25&order=alphaTitle&proximityNum=60&proximityInput=" + zip + "&textInput=&textSearchTitle=1&textSearchDescription=1&field_established=&field_employees=&field_year=&reload=false&mapSize=large&allResults=false&tids2=&tids3=568&tids4=&tids5=&tids6=' target='_blank'>Get Started: Contact a Local Installer</a></p>";
+								var getstarted = "<p>Get Started: <a href='http://thecleanenergybuilder.com/directory#resultsType=both&page=0&pageNum=25&order=alphaTitle&proximityNum=60&proximityInput=" + zip + "&textInput=&textSearchTitle=1&textSearchDescription=1&field_established=&field_employees=&field_year=&reload=false&mapSize=large&allResults=false&tids2=&tids3=568&tids4=&tids5=&tids6=' target='_blank'>Contact a Local Installer</a></p>";
 							}
 
-                            var result ='<p><br>UTILITY SERVICE PROVIDER</div><div class="resultsDisplay">' + fullname + ' - <a href="tel:+1-' + phone.slice(1,4) + '-' + phone.slice(6,14) +  '">' + phone + '</a></p>';
+                            var result ='<div style="margin-top:5px;"><strong>UTILITY SERVICE PROVIDER</strong></div><div class="resultsDisplay">' + fullname + ' - <a href="tel:+1-' + phone.slice(1,4) + '-' + phone.slice(6,14) +  '">' + phone + '</a></p>';
 							var result = result + "</p><p><a href='http://www.dsireusa.org/solar/incentives/index.cfm?re=1&ee=1&spv=1&st=0&srp=0&state=MN' target='_blank'>MN Incentives/Policies for Solar</a></p>" + getstarted + "<p>Report bad data <a href='/bad_data_handler.php?x=" + mp.x + "&y=" + mp.y + "' target='_blank'>here</a>.</p>";
 
 
 							document.getElementById('results').innerHTML = document.getElementById('results').innerHTML + result;
 							//console.log(e.mapPoint);
 							point = webMercatorUtils.webMercatorToGeographic(e.mapPoint);
-							resultsiFrameURL = "http://solar.maps.umn.edu/report.php?w=" + website + "&long=" + point['x'] + "&lat=" + point['y'] + "&y="+ y.toFixed(2) + "&u=" + utility;
+							resultsiFrameURL = "/report.php?z=" + zip + "&w=" + website + "&long=" + point['x'] + "&lat=" + point['y'] + "&y="+ y.toFixed(2) + "&u=" + utility;
 							//console.log(resultsiFrameURL);
                         });
                     });
@@ -786,7 +799,7 @@ $(window).load(function () {
 			startTime = new Date().getTime();
 			placeLoader();
 			
-			var params = {"PointX":point['x'], "PointY":point['y'], "File_Name":tile};
+			params = {"PointX":point['x'], "PointY":point['y'], "File_Name":tile};
 			//console.log(JSON.stringify(params, null, 4));
 			gp.execute(params, displayResults);
 			}
@@ -836,14 +849,14 @@ $(window).load(function () {
 		    //empty div so histo doesn't duplicate
 			$("#resultsHisto").html("");
 			$("#sunHrHisto").html("");
-			
+			console.log(params.PointX);
 			placeResults();
 			placeResultsTabResults();
 			
 			//show results
 			$('#loader').hide();
 			$('#resultsSmall').show();
-			$('#resultsButton').show();
+			//$('#resultsButton').show();
 			
 			//parse the results
 			var insolResults = results[0].value.split("\n");
@@ -893,9 +906,14 @@ $(window).load(function () {
 				"insolValue":[insolValueCorrected[0],insolValueCorrected[1],insolValueCorrected[2],insolValueCorrected[3],insolValueCorrected[4],insolValueCorrected[5],insolValueCorrected[6],insolValueCorrected[7],insolValueCorrected[8],insolValueCorrected[9],insolValueCorrected[10],insolValueCorrected[11]],
 				"sunHrValue":[sunHrResults[0],sunHrResults[1],sunHrResults[2],sunHrResults[3],sunHrResults[4],sunHrResults[5],sunHrResults[6],sunHrResults[7],sunHrResults[8],sunHrResults[9],sunHrResults[10],sunHrResults[11]]
 			}
-			$("#resultsBig").html("<iframe src='" + resultsiFrameURL + "&m=" + JSON.stringify(data) + "' width='96%' height='96%' style='overflow-x:hidden;overflow-y:visible;'><p>Your browser does not support iFrames.</p></iframe>");
+			//$("#resultsBig").html("<iframe src='" + resultsiFrameURL + "&m=" + JSON.stringify(data) + "' width='670px' height='800px' style='overflow-x:scroll;overflow-y:scroll;'><p>Your browser does not support iFrames.</p></iframe>");
 			// <div id="resultsBigClose" style="padding-right:10px">( x )</div>
 			// query time
+			
+			$("#viewReportLink").html("<a class='fancybox fancybox.iframe' href='" + resultsiFrameURL + "&m=" + JSON.stringify(data) + "'>View Report</a>");
+			$("#emailReportLink").html("<a href='http://solar.maps.umn.edu/share_point.php?x=" + params.PointX + "&y=" + params.PointY + "'>Email Report</a>");
+			// <a class="fancybox fancybox.iframe" href='/report.php?z=55401&w=www.xcelenergy.com&long=-93.25602494189295&lat=44.97118778347387&y=868.16&u=Xcel%20Energy_414%20Nicollet%20Mall_Minneapolis%2C%20MN%2055401_(612)%20330-5500&m={"month":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"insolValue":[6.94716589294,19.8687424162,61.5008547231,110.267029307,156.162897311,165.772712797,163.85618036900001,129.207720868,76.9877044141,30.3438740387,8.01637505342,5.466850362400001],"sunHrValue":["1.19230769231","82.9038581384","218.959320378","270.482483916","324.905458475","334.945970741","333.145012315","296.123701354","241.950447593","134.125582947","6.81959716388","0.0"]}'>Iframe</a></li>
+	
 			endTime = new Date().getTime();
 			//console.log("Solar point processing took: " + ((endTime - startTime)*0.001) + " seconds.")
 			

@@ -3,13 +3,12 @@
 <head>
  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no"/>
-    <title>Test Chart</title>
+    <title>Solar Chart</title>
 
     <script type='text/javascript' src='https://code.jquery.com/jquery-2.1.1.min.js'></script>
 
   <script type="text/javascript" src="/lib/d3/d3.min.js"></script>
-  <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
-
+  <script src="/lib/d3-tip/index.js"></script>
   <style>
   body {
   	background-color:#<?php echo isset($_REQUEST['bg']) ? $_REQUEST['bg'] : "555555"; ?>;

@@ -11,10 +11,54 @@
   <title>Products & Results | Minnesota Solar Suitability Analysis</title>
  
   <?php include_once("assets/nav/header.php"); ?>
-  
+
+      <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+	<!--<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>-->
+	<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+	<script src="http://cdn-geoweb.s3.amazonaws.com/esri-leaflet/1.0.0-rc.4/esri-leaflet.js"></script> 
+	<script src="/lib/leaflet.ajax.min.js"></script>
+	<script src="/lib/counties.js"></script>
+	<script> $(function() {
+		
+		/*$("body").on("shown.bs.tab", "#tester", function() {
+			console.log("Changing size");
+            //ap.invalidateSize(false);
+            L.Util.requestAnimFrame(map.invalidateSize,map,!1,map._container);
+        });*/
+    });
+    </script>
+    	<!-- Add jQuery library -->
+	<script type="text/javascript" src="/lib/fancyBox/lib/jquery-1.10.1.min.js"></script>
+
+<!-- Add mousewheel plugin (this is optional) -->
+	<script type="text/javascript" src="/lib/fancyBox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
+
+	<!-- Add fancyBox main JS and CSS files -->
+	<script type="text/javascript" src="/lib/fancyBox/source/jquery.fancybox.js?v=2.1.5"></script>
+	<link rel="stylesheet" type="text/css" href="/lib/fancyBox/source/jquery.fancybox.css?v=2.1.5" media="screen" />
+
+	<script type="text/javascript">
+		
+		$(document).ready(function() {
+
+			$('.fancybox').fancybox();
+			
+			var hash = window.location.hash;
+			//console.log(hash);
+			if(hash != ""){
+				$('#myTabs a[href="' + hash + '"]').tab('show');
+			} else {
+				$('#myTabs a[href="#gisdata"]').tab('show');
+			};
+		});
+		//alert(window.location.hash);
+		
+	</script>
 </head>
 
 <body>
+
+	
 
 <!-- Top Nav -->
 <?php include_once ("assets/nav/top_nav.php");?>
@@ -24,14 +68,16 @@
    <div class="container-full">
      <div class="row">
 	   <div class="col-md-3">
-	     <ul class="nav nav-tabs nav-stacked">
+	     <ul class="nav nav-tabs nav-stacked" id="myTabs">
                 
               <a href="#gisdata" data-toggle="tab" class="noUnderline"><li style="margin-top:20px">GIS Data</li></a>
 			  
-			  <a href="#currentIssues" data-toggle="tab" class="noUnderline"><li>Current Data Issues</li></a>
+			  <a href="#currentIssues" data-toggle="tab" class="noUnderline" id="mapResize"><li>Current Data Issues</li></a>
 			  
 			  <a href="#presentations" data-toggle="tab" class="noUnderline"><li>Presentations</li></a>
 			  
+              <a href="#gallery" data-toggle="tab" class="noUnderline"><li>Map Gallery</li></a>
+              
 			  <a href="#media" data-toggle="tab" class="noUnderline"><li>Video/Photos</li></a>
 		
               <a href="#press" data-toggle="tab" class="noUnderline"><li>Press/Publications</li></a>
@@ -44,7 +90,7 @@
          <div class="products">
 		   <h1 style="margin-left:-20px">Products & Results</h1>
 		   <div class="tab-content">  
-             <div class="tab-pane active" id="gisdata">
+             <div class="tab-pane" id="gisdata">
 			   <p style="margin-top:10px">For more information about the availability of data products, contact the 
     		   <a href="mailto:uspatial@umn.edu?Subject=Solar%20information%20request" target="_top">U-Spatial help desk</a>.</p>
 	    	   <h4>Solar Insolation Raster</h4>
@@ -70,17 +116,16 @@
     		   <p>There are presently what appear to be large  &quot;gaps&quot; in the solar suitability data available via our  app. These gaps correspond to areas where the existing publicly available county level lidar data did not conform to the standards used for the rest of the state due to early adoption from these counties. The data provided by these counties was either missing full classification of lidar points other than &quot;ground&quot; (buildings, vegetation, etc.), or the non-ground point returns were removed entirely.  Our processing model ignored unclassified points, resulting in a digital surface model devoid of non-ground features for these areas, creating what look like county-wide swaths with no shade. </p>
     		   
 			   <p>We are currently working to remedy these blank areas where suitable data exists. However, non-ground returns are totally absent for three counties, and new data will need to become available before they can be fixed.    </p>
-		       <p><img src="/assets/img/reprocessmap-11-17-14.jpg" class="prodImg" style="margin-bottom:0px"></p>
+		       <!--<p><img src="/assets/img/reprocessmap-11-17-14.jpg" class="prodImg" style="margin-bottom:0px"></p>-->
+		       <div id="map" style="width:800px; height:800px"></div>
     		   <h3>Final Stages of Reprocessing:</h3>
 		         <ul>
-      		       <li>Stearns</li>
+		           <li>Crow Wing</li>
 				   <li>Pine</li>
+				   <li>Stearns</li>
+				   <li>Wright</li>
     		     </ul>
-		       <h3>Initial Stages of Reprocessing:</h3>
-		       <ul>
-		         <li>Crow Wing</li>
-  		         <li>Wright</li>
-		       </ul>
+
     		   <h3>Counties Requiring New Data:</h3>
 		       <ul>
   		         <li>Chisago</li>
@@ -114,9 +159,60 @@
 			     <li>
 			       <p style="font-size:18px"><strong>2014 GIS/LIS presentation slides available <a href="assets/docs/GISLIS_2014_Slides.zip">here</a>.</strong></p>
 				 </li>
+				 <li>
+				 	<p style="font-size:18px"><strong>Five Minute Solar Project Crash Course PDF available <a href="assets/pdf/5minSolar.pdf" target="_blank">here</a></strong></p>
+				 	<!--<iframe src="http://prezi.com/embed/i5pzk4gs5709/?bgcolor=ffffff&amp;lock_to_path=1&amp;autoplay=0&amp;autohide_ctrls=0&amp;features=undefined&amp;token=undefined&amp;disabled_features=undefined" width="550" height="400" frameBorder="0" webkitAllowFullScreen mozAllowFullscreen allowfullscreen></iframe>
+				 -->
+				 </li>
 			   </ul>
+               <h4>Featured:</h4>
+               <iframe src="https://docs.google.com/presentation/d/1yK4pigku5B39DCD9hUyaOXtQ18NcOY2gz0tqr25LunQ/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 			 </div>
-			 
+<div class="tab-pane" id="gallery">
+  
+    <div class="row" style="margin-top:10px">
+      
+	
+      <div class="col-md-12">
+            <h3><strong>Solar Map Gallery</strong></h3>
+      <p><em>(click to enlarge and use arrow keys to advance as slideshow)</em></p>
+	<p>
+		<a class="fancybox" href="/assets/maps/Andy_Dinktown_Rooftop_Map.png" data-fancybox-group="gallery" title="Rooftop Solar Suitability - Dinkytown, Minneapolis"><img src="/assets/maps/tn/Andy_Dinktown_Rooftop_Map.jpg" alt="" height="150px" /></a>
+        
+        <a class="fancybox" href="/assets/maps/contracted_point_density.jpg" data-fancybox-group="gallery" title="Lidar Point Density for Minnesota"><img src="/assets/maps/tn/contracted_point_density.jpg" alt="" height="150px" /></a>
+
+		<a class="fancybox" href="/assets/maps/dinkytown7c.PNG" data-fancybox-group="gallery" title="Lidar Point Cloud - Dinkytown, Minneapolis"><img src="/assets/maps/tn/dinkytown7c.jpg" alt="" height="150px" /></a>
+        
+        <a class="fancybox" href="/assets/maps/DSM2_dinkytown_draped.png" data-fancybox-group="gallery" title="Satellite Imagery Draped over Digital Surface Model - Dinkytown, Minneapolis"><img src="/assets/maps/tn/DSM2_dinkytown_draped.jpg" alt="" height="150px" /></a>
+        
+        <a class="fancybox" href="/assets/maps/DSM_Progress.png" data-fancybox-group="gallery" title="Real-time Progress Map used to Monitor Parallel Processing of the DSM"><img src="/assets/maps/tn/DSM_Progress.jpg" alt="" height="150px" /></a>
+        
+        <a class="fancybox" href="/assets/maps/hinkley-notnoiseexample.jpg" data-fancybox-group="gallery" title="Tall Structures Identified in Lidar Point Cloud"><img src="/assets/maps/tn/hinkley-notnoiseexample.jpg" alt="" height="150" /></a>
+        
+        <a class="fancybox" href="/assets/maps/MN-SunniestPts.png" data-fancybox-group="gallery" title="Map of the Sunniest Points in Minnesota"><img src="/assets/maps/tn/MN-SunniestPts.jpg" alt="" height="150" /></a>
+        
+        <a class="fancybox" href="/assets/maps/processed_data.JPG" data-fancybox-group="gallery" title="Progress Map used to Monitor Parallel Processing of the Solar Analysis"><img src="/assets/maps/tn/processed_data.JPG" alt="" height="150" /></a>
+        
+        <a class="fancybox" href="/assets/maps/processed_data_zoom1.JPG" data-fancybox-group="gallery" title="Inset of Solar Progress Map Showing 1sqkm Sections"><img src="/assets/maps/tn/processed_data_zoom1.JPG" alt="" height="150" /></a>
+        
+         <a class="fancybox" href="/assets/maps/reprocessmap.png" data-fancybox-group="gallery" title="County Lidar Data to be Reprocessed"><img src="/assets/maps/tn/reprocessmap.jpg" alt="" height="150" /></a>
+         
+         <a class="fancybox" href="/assets/maps/Solar_class_byTime.PNG" data-fancybox-group="gallery" title="Map showing Total Processing Time of Each Solar Analysis Tile"><img src="/assets/maps/tn/Solar_class_byTime.jpg" alt="" height="150" /></a>
+        
+        <a class="fancybox" href="/assets/maps/solar_day400x600.gif" data-fancybox-group="gallery" title="Animation of Sunlight Per Hour - Dinkytown, Minneapolis"><img src="/assets/maps/tn/solar_day400x600.jpg" alt="" height="150" /></a>
+        
+        <a class="fancybox" href="assets/maps/solar_year400x600.gif" data-fancybox-group="gallery" title="Animation of Sunlight Per Month - Dinkytown, Minneapolis"><img src="assets/maps/tn/solar_year400x600.jpg" alt="" height="150" /></a>
+        
+        <a class="fancybox" href="assets/maps/tile_overlay_with_tiles.JPG" data-fancybox-group="gallery" title="Fishnets Used for Parallel Processing - DSM (Red) and Solar (Black)"><img src="assets/maps/tn/tile_overlay_with_tiles.JPG" alt="" height="150" /></a>
+        
+         <a class="fancybox" href="/assets/maps/tornado.png" data-fancybox-group="gallery" title="Visible Scar in Landscape due to Tornado Damage - Minneapolis"><img src="/assets/maps/tn/tornado.jpg" alt="" height="150" /></a>        
+         </p>
+         </div>
+         </div>
+
+            </div>
+            
+            
 			 <div class="tab-pane" id="media">
 			   <br>
 			   
@@ -125,7 +221,7 @@
 			   </div>
 			   
 			   <div class="aspect-ratio">
-			     <iframe frameBorder="0" seamless="seamless" src="http://video.esri.com/iframe/3664/000000/width/700/0/00:00:00"></iframe>
+			     <iframe frameBorder="0" seamless src="http://video.esri.com/iframe/3664/000000/width/700/0/00:00:00"></iframe>
 		       </div>
 			   
 			   <br>
@@ -141,12 +237,15 @@
 			   <br>
 			   <br>
 				 
-			   <div class="videoTitle">
+			   <!--<div class="videoTitle">
 			     Web app video for Minnesota GIS/LIS Conference:
 			   </div>
 			   <div class="aspect-ratio">
-		         <iframe src="assets/vid/webApp_Ver2.wmv></iframe>
-		       </div>
+			   	  <video controls>
+					  <source src="assets/vid/webApp_Ver2.mp4" type="video/mp4">
+					  Your browser does not support HTML5 video.
+					</video>
+		       </div>-->
 			   
 			   <br>
 			   <br>
@@ -192,14 +291,17 @@
 			   --------------------->
 			   <h4>Other:</h4>
 			   <ul>
+			      <li>
+				   <div class="pubheadline"><a href="/map_gallery.php">Our Map Gallery
+			       </a></div>
+			     </li>
 			     <li>
-				   <div class="pubheadline">
-			       <a href="http://venturebeat.com/2014/07/02/these-13-apps-use-mapping-tech-to-fight-climate-change/">These 13 apps use mapping tech to fight climate change</a>
-			       </div>
+			       <div class="pubheadline"><a href="http://venturebeat.com/2014/07/02/these-13-apps-use-mapping-tech-to-fight-climate-change/">These 13 apps use mapping tech to fight climate change</a>
+		           </div>
 			       <div class="publisher">
 			         Venture Beat - July 2, 2014
-			       </div>
-				 </li>
+		           </div>
+		         </li>
 			   
 			   
 			   <!-------------------->
@@ -279,7 +381,7 @@
 			   <li>
 			     <div class="pubheadline">
 				   <a href="http://spatialnews.geocomm.com/dailynews/2014/jul/16/news2.html">Esri App Challenge Winners Create Actionable Tools to Strengthen Resilience Efforts</a	       
-			     </div>
+			     ></div>
 			     <div class="publisher">
 			       Spatial News - 2014
 			     </div>
@@ -452,6 +554,51 @@
  </div>
 	
     <!-- BEGIN UofM FOOTER -->
-<?php include_once ("assets/nav/footer.php");?>
+<?php //include_once ("assets/nav/footer.php");?>
+
+ <div class="footer">
+    <div class="grid_7 alpha" id="footer_inner">
+      <ul class="copyright">
+        <li>&copy; 2010 Regents of the University of Minnesota. All rights
+        reserved.</li>
+
+        <li>The University of Minnesota is an equal opportunity educator and
+        employer</li>
+
+        <li>Last modified on August 26, 2010</li>
+      </ul>
+    </div>
+
+    <div class="grid_5 omega" id="footer_right">
+      <ul class="footer_links">
+        <li>Twin Cities Campus:</li>
+
+        <li>
+          <a href="http://www1.umn.edu/pts/">Parking &amp; Transportation</a>
+        </li>
+
+        <li>
+          <a href="http://www.umn.edu/twincities/maps/index.html">Maps &amp;
+          Directions</a>
+        </li>
+      </ul><br class="clearabove">
+
+      <ul class="footer_links">
+        <li>
+          <a href="http://www.directory.umn.edu/">Directories</a>
+        </li>
+
+        <li>
+          <a href="http://www.umn.edu/twincities/contact/">Contact U of M</a>
+        </li>
+
+        <li>
+          <a href="http://www.privacy.umn.edu/">Privacy</a>
+        </li>
+      </ul><br class="clearabove">
+    </div>
+	</div>
+<script src="/bootstrap-3.2.0-dist/js/bootstrap.min.js"></script> 
+
 </body>
 </html>

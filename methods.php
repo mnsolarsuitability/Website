@@ -13,6 +13,19 @@
   
   <?php include_once("assets/nav/header.php");?>
   
+  <script type="text/javascript">
+  		$(document).ready(function() {
+			
+			var hash = window.location.hash;
+			//console.log(hash);
+			if(hash != ""){
+				$('#myTabs a[href="' + hash + '"]').tab('show');
+			} else {
+				$('#myTabs a[href="#methods"]').tab('show');
+			};
+		});
+		
+		</script>
 </head>
 
 <body>
@@ -26,7 +39,7 @@
     <div class="row" style="margin-top:15px">
       <div class="col-md-3" style="margin-top:0px">
         <div class="topleft2Column">
-          <ul class="nav nav-tabs nav-stacked">
+          <ul class="nav nav-tabs nav-stacked" id="myTabs">
                 
             <a href="#methods" data-toggle="tab" class="noUnderline"><li style="margin-top:20px">Methods</li></a>
 		
@@ -38,8 +51,10 @@
             <a href="#methods_solar" data-toggle="tab" class="noUnderline"><li>Solar Radiation
             Analysis</li></a>
                 
-            <a href="#methods_parallel" data-toggle="tab" class="noUnderline"><li style="margin-bottom:0px">Parallel
+            <a href="#methods_parallel" data-toggle="tab" class="noUnderline"><li>Parallel
             Processing</li></a>
+            
+            <a href="#methods_appdev" data-toggle="tab" class="noUnderline"><li style="margin-bottom:0px">App Development</li></a>
           </ul>
         </div>
       </div>
@@ -325,6 +340,40 @@
   				<br>
 				<a class="changePage" href="#methods_solar" data-toggle="tab">&lt; &lt; PREVIOUS</a>
                 <a class="top">^^ TOP ^^</a>
+                <a class="changePage" href="#methods_appdev" data-toggle="tab">NEXT &gt;&gt; </a>
+              </div>
+              
+              <div class="tab-pane" id="methods_appdev">
+				
+				<h1>App Development</h1>
+
+                <p style="max-width:80%">In recent years the decrease in price and increase in demand for solar panels has not be met by an increase in publicly available information for site suitability analysis to determine ideal solar panel placement.  For homeowners or businesses potentially interested in a PV solar system, there is a demand for more detailed information before reaching the step of hiring a solar installer. Solar insolation varies by latitude and climate, but the most important factor affecting small scale photovoltaic (PV) solar installations is intermittent shading due to adjacent structures and trees.<br><br>
+The purpose of this study was to develop a method for conducting shade analysis to calculate solar insolation at a high resolution (1 meter) across a large area (the state of Minnesota). The results were intended to provide a conservative estimate of solar insolation in kilowatt-hours (kWh). The primary data used in this study was Lidar elevation points gathered for Minnesota counties between 2006 and 2012 and made publicly available through the Minnesota Department of Natural Resources. The analysis was completed using a combination of proprietary and  open-source Geographic Information Systems (GIS) technology. This study was designed to provide maximum utility for a variety of applications. The resulting data can be integrated into existing maps and Geographic Information Systems, and it can be combined with local data for further analysis.<br>
+<img alt="Original App" border="0" src="assets/img/Mpls_Institute_of_Arts.jpg" width="600"></p>
+
+                <p>The original web app interface</p>
+<br>
+A simple interactive map viewer was developed to visualize the processed data. Many enhancements have been made since then, and there are a number of possibilities for further expansion. The original application could only perform a simple point query of total yearly insolation in kWh. The new app makes use of server-side processing to expand the query to real-time shading analysis. A selected point returns values for monthly insolation as well as sun hours. <br>
+
+<img alt="New App" border="0" src="assets/img/newappquery.jpg" width="600"></p>
+
+                <p>The new web app interface</p>
+                <br>
+               The first map had no formal method for offline output. The new map includes a printable location report, so that users can analyze a site and share the results. This report may also be emailed.
+                <br>
+<img alt="printable report" border="0" src="assets/img/report.jpg" width="600"></p>
+
+                <p>A printable location report</p>
+                <br>
+                There are a number of ways we can enhance functionality in the future. Most notably, the data makes it possible to estimate energy production and costs. We will work with solar industry experts to define the variables needed to complete these estimates, such as equipment efficiency. For planning an installation, it would also be helpful for users to be able to draw rectangles in the app. From there we could estimate total system size and calculate the insolation across the whole area. Ideally, the app would allow a homeowner to calculate their return on investment for a PV solar system.
+                <br>
+                <img alt="Drawing functionality" border="0" src="assets/img/apprectangle.jpg" width="600"></p>
+
+                <p>Example of drawing functionality</p>
+                <br>
+				<a class="changePage" href="#methods_parallel" data-toggle="tab">&lt;&lt; PREVIOUS</a>
+                <a class="top">^^ TOP ^^</a>
+				
               </div>
             </div>
           </div>

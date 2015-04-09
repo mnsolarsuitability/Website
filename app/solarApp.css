@@ -411,7 +411,7 @@ div.panel.panel-default,div.panel.panel-default a {
     line-height:30px
 }
 
-.closeSplash,.showReport, #closeResults, #resultsBigClose{
+.closeSplash,.showReport, #closeResults, #viewReport, #resultsBigClose{
     cursor:pointer
 }
 
@@ -490,9 +490,22 @@ div.panel.panel-default,div.panel.panel-default a {
 	z-index:500;
 }
 
-#closeResults{
-    float:right;
-    text-align: right !important;
+#viewReport a:visited, #viewReport a:hover, #viewReport a:link, #viewReport a:active, #emailReport a:visited, #emailReport a:hover, #emailReport a:link, #emailReport a:active{
+	font-size: 18px;
+	color: #fff;
+	text-decoration:none;
+}
+
+#closeResults, #viewReport, #emailReport{
+	text-align: right !important;
+}
+
+#viewReport, #emailReport, #closeResults{
+	margin-top:3px;
+	margin-right:6px;
+}
+#viewReport svg, #emailReport svg, #closeResults svg{
+	padding-top:5px !important;
 }
 
 #closeBigResults{

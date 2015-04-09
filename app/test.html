@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>fancyBox - Fancy jQuery Lightbox Alternative | Demonstration</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+	<!-- Add jQuery library -->
+ 	<script type='text/javascript' src='https://code.jquery.com/jquery-2.1.1.min.js'></script>
+
+	<!-- Add mousewheel plugin (this is optional) -->
+	<script type="text/javascript" src="/lib/fancyBox/lib/jquery.mousewheel-3.0.6.pack.js"></script>
+
+	<!-- Add fancyBox main JS and CSS files -->
+	<script type="text/javascript" src="/lib/fancyBox/source/jquery.fancybox.js?v=2.1.5"></script>
+	<link rel="stylesheet" type="text/css" href="/lib/fancyBox/source/jquery.fancybox.css?v=2.1.5" media="screen" />
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+
+			$('.fancybox').fancybox();
+
+		});
+	</script>
+	<style type="text/css">
+		.fancybox-custom .fancybox-skin {
+			box-shadow: 0 0 50px #222;
+		}
+
+		body {
+			max-width: 700px;
+			margin: 0 auto;
+		}
+	</style>
+</head>
+<body>
+	<h1>&nbsp;</h1>
+	<ul>
+	  <li><a class="fancybox" href="#inline1" title="Lorem ipsum dolor sit amet">Inline</a></li>
+		<li><a class="fancybox fancybox.ajax" href="../lib/fancyBox/demo/ajax.txt">Ajax</a></li>
+		<li><a class="fancybox fancybox.iframe" href='/report.php?z=55401&w=www.xcelenergy.com&long=-93.25602494189295&lat=44.97118778347387&y=868.16&u=Xcel%20Energy_414%20Nicollet%20Mall_Minneapolis%2C%20MN%2055401_(612)%20330-5500&m={"month":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"insolValue":[6.94716589294,19.8687424162,61.5008547231,110.267029307,156.162897311,165.772712797,163.85618036900001,129.207720868,76.9877044141,30.3438740387,8.01637505342,5.466850362400001],"sunHrValue":["1.19230769231","82.9038581384","218.959320378","270.482483916","324.905458475","334.945970741","333.145012315","296.123701354","241.950447593","134.125582947","6.81959716388","0.0"]}'>Iframe</a></li>
+	</ul>
+</body>
+</html>

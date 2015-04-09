@@ -16,7 +16,7 @@
 
 <script>
 L.mapbox.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6IlhHVkZmaW8ifQ.hAMX5hSW-QnTeRCMAy9A8Q';
-var map = L.mapbox.map('map', 'examples.map-20v6611k')
+var map = L.mapbox.map('map', 'examples.map-igb471ik')
     .setView([<?php echo $_REQUEST['lat']; ?>, <?php echo $_REQUEST['long']; ?>], 16);
 
 L.mapbox.featureLayer({
@@ -33,12 +33,8 @@ L.mapbox.featureLayer({
         ]
     },
     properties: {
-        title: 'Peregrine Espresso',
-        description: '1718 14th St NW, Washington, DC',
-        // one can customize markers by adding simplestyle properties
-        // https://www.mapbox.com/foundations/an-open-platform/#simplestyle
-        'marker-size': 'large',
-        'marker-color': '#BE9A6B'
+        'marker-size': 'medium',
+        'marker-color': '#006bfc'
     }
 }).addTo(map);
 </script>

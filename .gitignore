@@ -1,5 +1,7 @@
+.gitignore
 *dwsync.xml
-*_notes*
+_notes*
+archive/
 app/indexNEW.html
 
 *.pdf

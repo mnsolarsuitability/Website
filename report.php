@@ -18,6 +18,7 @@
         overflow: hidden;
         font-family: "Trebuchet MS";
 		width:670px;
+		height:800px;
       }
     </style>
     <script src="http://js.arcgis.com/3.11/"></script>
@@ -86,13 +87,14 @@
 		
 			smap.graphics.add(graphic);
 		});
-      });
 	  
 	  
 	  
 	  
 	  
 	  function draw(data, dataAttr, max, div, title, titleOffset, titleModifier, chartWidth,chartHeight) {
+		  
+		  console.log("hiiii" + data);
 	var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
     titleOffset = parseInt(titleOffset);
 	var margin = {
@@ -179,7 +181,7 @@
  };
 	  
 	  
-	  
+	  });  
 	  
     </script>
 </head>
@@ -190,7 +192,7 @@
 <h2>Sample Report (Actual Report Coming Soon):</h2>
 <img src="http://solar.maps.umn.edu/assets/img/fullReport.png" width="100%"> -->
 
-<h2>Minnesota Solar Suitability Location Report:</h2>
+<h2><img style="float:left; padding-right:10px;" src="assets/img/solar-app-transparent220x235.png" width="62" height="65" alt="MN Solar Logo"/>Minnesota Solar Suitability Location Report</h2>
 <p><b>Latitude</b>: <?php echo $_REQUEST['lat']; ?> <b>Longitude: </b><?php echo $_REQUEST['long']; ?><br>
 <div id="map"></div><div id="smap"></div>
 <p>
@@ -199,7 +201,7 @@
 <?php if($_REQUEST['y'] < 1.7) {
 								echo "<p>Location not optimal? Check out:<br /><a href='http://mncerts.org/solargardens' target='_blank'>Community Solar Gardens</a></p>";
 							}else{
-								echo "<p><a href='http://thecleanenergybuilder.com/directory#resultsType=both&page=0&pageNum=25&order=alphaTitle&proximityNum=60&proximityInput=" . substr($_REQUEST['z']) . "&textInput=&textSearchTitle=1&textSearchDescription=1&field_established=&field_employees=&field_year=&reload=false&mapSize=large&allResults=false&tids2=&tids3=568&tids4=&tids5=&tids6=' target='_blank'>Get Started: Contact a Local Installer</a></p>";
+								echo "<p><a href='http://thecleanenergybuilder.com/directory#resultsType=both&page=0&pageNum=25&order=alphaTitle&proximityNum=60&proximityInput=" . substr($_REQUEST['z'],0,5) . "&textInput=&textSearchTitle=1&textSearchDescription=1&field_established=&field_employees=&field_year=&reload=false&mapSize=large&allResults=false&tids2=&tids3=568&tids4=&tids5=&tids6=' target='_blank'>Get Started: Contact a Local Installer</a></p>";
 							}
 ?>
 </p>
@@ -234,7 +236,7 @@
 var data = <?php echo $_REQUEST['m'];  ?>;
 
 console.log(data.insolValue);
-// draw(data, data.insolValu, 465, "#test", "title",2,20,300,300));
+draw(data, data.insolValue, 465, "#test", "title",2,20,300,300);
 
 </script>
 
