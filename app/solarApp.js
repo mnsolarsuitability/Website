@@ -67,9 +67,6 @@ $(window).load(function () {
 	    // MN Solar Suitability API key
 	    gapi.client.setApiKey('AIzaSyCI5rFXoNNM-IGDP-BZ1opjXTtB9wZalEI');
 	
-	    // Chris' API Key
-	    //gapi.client.setApiKey('AIzaSyChnPHuHTelEGwa6vI9DAFGWCraqrumUMc');
-	
 		// Initial hidden divs
 		$("#helpScreen").hide();
 		$('#resultsHeader').hide();
@@ -166,7 +163,6 @@ $(window).load(function () {
         });
 
 	    // ---------------------------------------------------
-
 		// Create map
 		// ---------------------------------------------------
 		
@@ -332,8 +328,8 @@ $(window).load(function () {
             //Add listener to detect autocomplete selection
             google.maps.event.addListener(autocomplete, 'place_changed', function () {
                 place = autocomplete.getPlace();
-	    		autocompleteLng = place.geometry.location.D;
-		    	autocompleteLat = place.geometry.location.k;
+	    		autocompleteLng = place.geometry.location.lng();
+		    	autocompleteLat = place.geometry.location.lat();
 				var pt = new Point(autocompleteLng, autocompleteLat);
 				map.centerAndZoom(pt, 18);
 				addGraphic(pt);
@@ -364,8 +360,8 @@ $(window).load(function () {
             var address = document.getElementById("searchBar").value;
              geocoder.geocode( { 'address': address, 'bounds':extent}, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
-					geocodeLong = results[0].geometry.location.D;
-					geocodeLat = results[0].geometry.location.k;
+					geocodeLong = results[0].geometry.location.lng();
+					geocodeLat = results[0].geometry.location.lat();
 					var pt = new Point(geocodeLong, geocodeLat);
 					map.centerAndZoom(pt, 18);
 					addGraphic(pt);
@@ -379,7 +375,7 @@ $(window).load(function () {
 				    alert('No addresses were found.')
 					}
 				else if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT){
-				    alert('Over query limit (2,500/mo)');
+				    alert('Over query limit (2,500/mo). Please donate or wait till next month.');
 				
 				}
 				else {
@@ -672,14 +668,32 @@ $(window).load(function () {
 							if(quality == "Poor") {
 								var getstarted = "<p>Location not optimal? Check out:<br /><a href='http://mncerts.org/solargardens' target='_blank'>Community Solar Gardens</a></p>";
 							}else{
-								var getstarted = "<p>Get Started: <a href='http://thecleanenergybuilder.com/directory#resultsType=both&page=0&pageNum=25&order=alphaTitle&proximityNum=60&proximityInput=" + zip + "&textInput=&textSearchTitle=1&textSearchDescription=1&field_established=&field_employees=&field_year=&reload=false&mapSize=large&allResults=false&tids2=&tids3=568&tids4=&tids5=&tids6=' target='_blank'>Contact a Local Installer</a></p>";
+								var getstarted = "Get Started: <a href='http://thecleanenergybuilder.com/directory#resultsType=both&page=0&pageNum=25&order=alphaTitle&proximityNum=60&proximityInput=" 
+								+ zip + "&textInput=&textSearchTitle=1&textSearchDescription=1&field_established=&field_employees=&field_year=&reload=false&mapSize=large&allResults=false&tids2=&tids3=568&tids4=&tids5=&tids6=' target='_blank'>Contact a Local Installer</a>";
 							}
 
                             var result ='<div style="margin-top:5px;"><strong>UTILITY SERVICE PROVIDER</strong></div><div class="resultsDisplay">' + fullname + ' - <a href="tel:+1-' + phone.slice(1,4) + '-' + phone.slice(6,14) +  '">' + phone + '</a></p>';
-							var result = result + "</p><p><a href='http://www.dsireusa.org/solar/incentives/index.cfm?re=1&ee=1&spv=1&st=0&srp=0&state=MN' target='_blank'>MN Incentives/Policies for Solar</a></p>" + getstarted + "<p>Report bad data <a href='/bad_data_handler.php?x=" + mp.x + "&y=" + mp.y + "' target='_blank'>here</a>.</p>";
+							var result = result + "</p><p>MN Solar: <a href='http://programs.dsireusa.org/system/program?state=MN&technology=7&' target='_blank'>Incentives/Policies</a><br>"
+							 + getstarted + "</p><p>Report bad data <a href='/bad_data_handler.php?x=" + mp.x + "&y=" + mp.y + "' target='_blank'>here</a>.<br>Source data collect: <span id='collect'><span>.</p>";
 
 
 							document.getElementById('results').innerHTML = document.getElementById('results').innerHTML + result;
+
+							$.ajax({
+						      url: "ajax.php",
+						      type: "get",
+						      dataType: 'json',
+						      data: {'c': county},
+						      success: function(data){
+						            console.log(data);
+						            $('#collect').html(data.collect);        
+						      },
+						      error: function(xhr, desc, err) {
+						        console.log(xhr);
+						        console.log("Details: " + desc + "\nError:" + err);
+						      }
+						    }); 
+						    
 							//console.log(e.mapPoint);
 							point = webMercatorUtils.webMercatorToGeographic(e.mapPoint);
 							resultsiFrameURL = "/report.php?z=" + zip + "&w=" + website + "&long=" + point['x'] + "&lat=" + point['y'] + "&y="+ y.toFixed(2) + "&u=" + utility;

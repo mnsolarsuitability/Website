@@ -435,7 +435,7 @@ div.panel.panel-default,div.panel.panel-default a {
 }
 
 #resultsSmall {
-    background-color:#474343;
+    background-color:rgba(0,0,0,.75);
     font-size:18px;
     color:#fff;
     z-index:299;
@@ -521,7 +521,7 @@ div.panel.panel-default,div.panel.panel-default a {
 .resultsDisplay {
     display:inline-block;
     font-size:12px;
-    background-color:#474343;
+   /* background-color:#474343; */
     color:#fff;
     z-index:5
 }
