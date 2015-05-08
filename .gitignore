@@ -3,5 +3,6 @@
 _notes*
 archive/
 app/indexNEW.html
+app/config.php
 
 *.pdf
