@@ -1,0 +1,29 @@
+{
+  "name": "loa_bootstrap",
+  "version": "1.0.0",
+  "authors": [
+    "Chris Martin <christopher_martin@esri.com."
+  ],
+  "description": "LOA with Bootstrap test",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "jquery": null,
+    "bootstrap": null,
+    "jquery.ui": null,
+    "bootstrap-sass-twbs": "~3.3.3",
+    "colpick": "~2.0.2",
+    "fontawesome": "~4.3.0",
+    "modernizr": "~2.8.3",
+    "underscore": "~1.8.2",
+    "backbone": "~1.1.2"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {}
+}
