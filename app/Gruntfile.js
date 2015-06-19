@@ -23,9 +23,27 @@ module.exports = function(grunt) {
             expand: true
           },
           {
-            cwd: 'styles',
+            cwd:'assets/css',
             src: ['*.css'],
-            dest: 'release/styles',
+            dest: 'release/assets/css',
+            expand: true
+          },
+          {
+            cwd:'assets/images',
+            src: ['**'],
+            dest: 'release/assets/images',
+            expand: true
+          },
+          {
+            cwd:'assets/fonts',
+            src: ['**'],
+            dest: 'release/assets/fonts',
+            expand: true
+          },
+          {
+            cwd: 'styles',
+            src: ['main.css'],
+            dest: 'release/assets/css',
             expand: true
           },
           {
@@ -36,46 +54,74 @@ module.exports = function(grunt) {
         ]
       },
       bower: {
+        files: [
+          {
+            expand: true,
+            src: [
+              'bower_components/backbone/backbone.js',
+              'bower_components/bootstrap-sass-twbs/assets/javascripts/bootstrap.min.js',
+              'bower_components/d3/d3.min.js',
+              'bower_components/jquery/dist/jquery.min.js',
+              'bower_components/jquery/dist/jquery.min.map',
+              'bower_components/modernizr/modernizr.js',
+              'bower_components/underscore/underscore-min.js',
+              'bower_components/underscore/underscore-min.map'
+            ],
+            dest: './lib',
+            flatten: true
+          },
+          // D3-tip requires rename
+          {
+            expand: true,
+            src: [
+              'bower_components/d3-tip/index.js'
+            ],
+            dest: './lib/d3-tip.js',
+            flatten: true
+          }
+        ]
+      },
+      initStyles: {
+        files: [{
+          expand: true,
+          cwd: 'bower_components/bootstrap-sass-twbs/assets/stylesheets/',
+          src: ['**'],
+          dest: 'styles/bootstrap',
+        }]
+      },
+      cssToAssetsCSS: {
         files: [{
           expand: true,
           src: [
-            'bower_components/backbone/backbone.js',
-            'bower_components/bootstrap-sass-twbs/assets/javascripts/bootstrap.min.js',
-            'bower_components/colpick/js/colpick.js',
-            'bower_components/jquery/dist/jquery.min.js',
-            'bower_components/jquery/dist/jquery.min.map',
-            'bower_components/modernizr/modernizr.js',
-            'bower_components/underscore/underscore-min.js',
-            'bower_components/underscore/underscore-min.map'
+            'styles/main.css'
           ],
-          dest: './lib',
+          dest: 'assets/css',
           flatten: true
         }]
       },
-      style: {
+      stylesAndFonts: {
         files: [{
           expand: true,
           src: [
-            'bower_components/bootstrap/dist/css/bootstrap.min.css',
-            'bower_components/colpick/css/colpick.css',
             'bower_components/fontawesome/css/font-awesome.min.css',
+            'styles/main.css'
           ],
-          dest: 'styles',
+          dest: 'assets/css',
           flatten: true
         },
         {
           cwd: 'bower_components/bootstrap/fonts/',
           src: ['**'],
-          dest: 'fonts',
+          dest: 'assets/fonts',
           expand: true
         },
         {
           cwd: 'bower_components/fontawesome/fonts/',
           src: ['**'],
-          dest: 'fonts',
+          dest: 'assets/fonts',
           expand: true
-        }
-      ]}
+        }]
+      }
     },
 
     clean: ['release'],
@@ -89,7 +135,7 @@ module.exports = function(grunt) {
     watch: {
       css: {
         files: ['styles/*.scss'],
-        tasks: ['sass']
+        tasks: ['sass', 'copy:cssToAssetsCSS']
       }
     },
 
@@ -98,20 +144,6 @@ module.exports = function(grunt) {
         files: {
           'styles/main.css': 'styles/main.scss'
         }
-      }
-    },
-
-    esri_slurp: {
-      options: {
-        version: '3.13'
-      },
-      dev: {
-        options: {
-          // NOTE: issue w/ beautify on Win:
-          // https://github.com/steveoh/grunt-esri-slurp/issues/31
-          beautify: false
-        },
-        dest: 'lib/esri'
       }
     },
 
@@ -131,16 +163,9 @@ module.exports = function(grunt) {
         src: [ 'release/*.html' ]
       }
     },
-
-    uncss: {
-      dist: {
-        files: {
-          'styles/main.css': ['**/*.html']
-        }
-      }
-    }
   });
 
-  grunt.registerTask('init',['clean', 'shell:bowerInstall', 'copy:bower', 'copy:style', 'copy']);
-  grunt.registerTask('build',['clean', 'shell:bowerInstall', 'copy'])
+  grunt.registerTask('init',['clean', 'shell:bowerInstall', 'copy:bower', 'copy:stylesAndFonts', 'copy:initStyles']);
+  // grunt.registerTask('build',['clean', 'copy']);
+  grunt.registerTask('release', ['clean', 'copy:release']);
 };

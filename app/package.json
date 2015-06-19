@@ -1,8 +1,8 @@
 {
-  "name": "loa_bootstrap",
-  "version": "1.0.0",
-  "description": "",
-  "main": "themetest.js",
+  "name": "solar_refactor",
+  "version": "0.1.0",
+  "description": "Solar - refactor",
+  "main": "main.js",
   "dependencies": {
     "yeoman-generator": "^0.18.9"
   },
@@ -13,10 +13,8 @@
     "grunt-contrib-copy": "^0.8.0",
     "grunt-contrib-sass": "^0.9.2",
     "grunt-contrib-watch": "^0.6.1",
-    "grunt-esri-slurp": "^1.4.1",
     "grunt-shell": "^1.1.2",
     "grunt-stripcomments": "^0.3.1",
-    "grunt-uncss": "^0.4.1",
     "load-grunt-tasks": "^3.1.0"
   },
   "scripts": {
