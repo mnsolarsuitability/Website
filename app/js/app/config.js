@@ -27,8 +27,18 @@ define(['esri/symbols/PictureMarkerSymbol'],
       
       applicationTitle: 'MN Solar Suitability Analysis App',
       apiKey: 'AIzaSyCI5rFXoNNM-IGDP-BZ1opjXTtB9wZalEI',
+
+      // Esri Basemap Urls
+      imagery: 'http://server.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer',
+      streets: 'http://server.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer/',
       basemapUrl: basemapURL,
-      imgDisplayUrl: imgDisplayURL,
+
+      // Esri defaults
+      geometryService: 'http://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer',
+
+      // Solar data
+      gpTool: 'http://us-dspatialgis.oit.umn.edu:6080/arcgis/rest/services/solar/SolarPointQuery_fast/GPServer/Script',
+      solarImageryUrl: 'http://gis.uspatial.umn.edu/arcgis/rest/services/solar/mn_solar/ImageServer/',
       imgIdentifyUrl: imgIdentifyURL,
       vectorDataUrl: vectorDataURL,
       bareEarthCountyUrl: bareEarthCountyURL,

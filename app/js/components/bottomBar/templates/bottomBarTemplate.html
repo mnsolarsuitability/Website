@@ -1,28 +1,25 @@
 <div id="bottomBar" style='position: absolute'>
-  <div class="container-full">
-    <div class="row" style="padding-top:5px">
-      <div class="col-md-4">
-        <img src="assets/images/color_ramp_white_text.png" class="imgCenter" id="colorRamp">
-      </div>
-    
-      <div class="col-md-4">
-        <div class="baseMapToggle" style="margin-left:25%;">
-          <div class="btn-group">
-            <button type="button" id="solarButton" class="btn btn-default activeButton appButton" style="border-radius:40px 0 0 40px">Solar</button>
-            <button type="button" id="aerialButton" class="btn btn-default appButton">Aerial</button>
-            <button type="button" id="streetButton" class="btn btn-default appButton" style="border-radius:0 40px 40px 0; margin-right:40px">Streets</button>
-          </div>
-        </div>
-      </div>
+    <div class="container-fluid">
+        <div class="row" style="padding-top:5px">
+            <div class="col-md-4">
+                <img src="assets/images/color_ramp_white_text.png" class="imgCenter" id="colorRamp">
+            </div>
 
-      <div class="col-md-4">
-        <button type="button" class="btn btn-default menuButton appButton" style="float:right" id="resultsButton">Results
-      
-          <svg height="20px" width="20px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="-298 385.9 13.7 22.1" enable-background="new -298 385.9 13.7 22.1" xml:space="preserve">
-            <path fill="#FFFFFF" d="M-289.6,403.2l8.8-8.8c0.8-0.8,0.8-2.1,0-2.9l-0.7-0.7c-0.8-0.8-2.1-0.8-2.9,0l-6.7,6.7l-6.7-6.7 c-0.8-0.8-2.1-0.8-2.9,0l-0.7,0.7c-0.8,0.8-0.8,2.1,0,2.9l8.8,8.8c0.4,0.4,1,0.6,1.6,0.6C-290.6,403.9-290,403.7-289.6,403.2z"/>
-          </svg>
-        </button>
-      </div>
+            <div class="col-md-4">
+                <div class="baseMapToggle" style="margin-left:25%;">
+                    <div class="btn-group">
+                    <button type="button" id="solarButton" class="btn btn-default btn-group_leftButton activeButton appButton">Solar</button>
+                    <button type="button" id="aerialButton" class="btn btn-default appButton">Aerial</button>
+                    <button type="button" id="streetButton" class="btn btn-default appButton btn-group_rightButton">Streets</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <button type="button" class="btn btn-default menuButton appButton"  id="resultsButton">Results
+                    <i class="fa fa-caret-up"></i>
+                </button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>

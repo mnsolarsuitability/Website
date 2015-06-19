@@ -1,0 +1,305 @@
+#loader {
+  height: 140px;
+  width: 200px;
+  top: 300px;
+  left: 300px;
+  background-color: #474343;
+  position: absolute;
+  z-index: 20;
+  border: 2px solid #fff;
+  border-radius: 40px;
+  -webkit-border-radius: 40px;
+  -moz-border-radius: 40px; }
+
+#loader p {
+  font-size: 24px;
+  color: #fff;
+  text-align: center;
+  margin-top: 10px; }
+
+.bubblingG {
+  text-align: center;
+  width: 160px;
+  height: 100px;
+  position: relative;
+  top: -5px;
+  left: 20px;
+  z-index: 21; }
+
+.bubblingG span {
+  display: inline-block;
+  vertical-align: middle;
+  width: 20px;
+  height: 20px;
+  margin: 50px auto;
+  background: #3A3461;
+  -moz-border-radius: 100px;
+  -moz-animation: bubblingG 1s infinite alternate;
+  -webkit-border-radius: 100px;
+  -webkit-animation: bubblingG 1s infinite alternate;
+  -ms-border-radius: 100px;
+  -ms-animation: bubblingG 1s infinite alternate;
+  -o-border-radius: 100px;
+  -o-animation: bubblingG 1s infinite alternate;
+  border-radius: 100px;
+  animation: bubblingG 1s infinite alternate; }
+
+#bubblingG_1 {
+  -moz-animation-delay: 0;
+  -webkit-animation-delay: 0;
+  -ms-animation-delay: 0;
+  -o-animation-delay: 0;
+  animation-delay: 0; }
+
+#bubblingG_2 {
+  -moz-animation-delay: .3s;
+  -webkit-animation-delay: .3s;
+  -ms-animation-delay: .3s;
+  -o-animation-delay: .3s;
+  animation-delay: 0.3s; }
+
+#bubblingG_3 {
+  -moz-animation-delay: .6s;
+  -webkit-animation-delay: .6s;
+  -ms-animation-delay: .6s;
+  -o-animation-delay: .6s;
+  animation-delay: 0.6s; }
+
+@-moz-keyframes bubblingG {
+  0% {
+    width: 20px;
+    height: 20px;
+    background-color: #3A3461;
+    -moz-transform: translateY(0); }
+  100% {
+    width: 48px;
+    height: 48px;
+    background-color: #FFC163;
+    -moz-transform: translateY(-42px); } }
+@-webkit-keyframes bubblingG {
+  0% {
+    width: 20px;
+    height: 20px;
+    background-color: #3A3461;
+    -webkit-transform: translateY(0); }
+  100% {
+    width: 48px;
+    height: 48px;
+    background-color: #FFC163;
+    -webkit-transform: translateY(-42px); } }
+@-ms-keyframes bubblingG {
+  0% {
+    width: 20px;
+    height: 20px;
+    background-color: #3A3461;
+    -ms-transform: translateY(0); }
+  100% {
+    width: 48px;
+    height: 48px;
+    background-color: #FFC163;
+    -ms-transform: translateY(-42px); } }
+@-o-keyframes bubblingG {
+  0% {
+    width: 20px;
+    height: 20px;
+    background-color: #3A3461;
+    -o-transform: translateY(0); }
+  100% {
+    width: 48px;
+    height: 48px;
+    background-color: #FFC163;
+    -o-transform: translateY(-42px); } }
+.baseMapToggle {
+  float: left;
+  width: auto; }
+
+.baseMapToggle button {
+  height: 40px;
+  width: 80px;
+  background-color: #474343;
+  color: #fff; }
+
+.baseMapToggle button.activeButton {
+  color: #474343;
+  background-color: #fff; }
+
+.btn-group_leftButton {
+  border-radius: 40px 0 0 40px; }
+
+.btn-group_rightButton {
+  border-radius: 0 40px 40px 0;
+  margin-right: 40px; }
+
+#resultsButton {
+  display: none;
+  float: right; }
+
+.closeSplash:hover {
+  text-decoration: underline; }
+
+#colorRamp {
+  display: block;
+  margin-left: 25%;
+  margin-right: 25%;
+  width: auto;
+  height: 70px; }
+
+#colorRamp img {
+  width: auto;
+  display: relative;
+  top: -10px;
+  height: 100%;
+  display: block;
+  margin: auto; }
+
+#helpScreen {
+  display: none;
+  position: absolute;
+  padding-top: 5px;
+  padding-left: 60px;
+  padding-right: 20px;
+  padding-bottom: 5px;
+  height: 322px;
+  z-index: 101;
+  font-family: TrebuchetMS,arial;
+  color: #fff;
+  border-top: 3px solid #fff;
+  border-right: 3px solid #fff;
+  border-bottom: 3px solid #fff;
+  border-radius: 0 40px 40px 0;
+  background: #474343;
+  line-height: 30px; }
+
+#website {
+  position: relative;
+  z-index: 55;
+  max-width: 200px;
+  font-family: "TrebuchetMS";
+  float: right;
+  text-align: right;
+  vertical-align: bottom;
+  font-size: 15px;
+  color: #fff; }
+
+#viewReport a:visited, #viewReport a:hover, #viewReport a:link, #viewReport a:active, #emailReport a:visited, #emailReport a:hover, #emailReport a:link, #emailReport a:active {
+  font-size: 18px;
+  color: #fff;
+  text-decoration: none; }
+
+.resultsDisplay {
+  display: inline-block;
+  font-size: 14px;
+  /* background-color:#474343; */
+  color: #fff;
+  z-index: 5; }
+
+#resultsSmall {
+  background-color: rgba(0, 0, 0, 0.75);
+  font-size: 18px;
+  color: #fff;
+  z-index: 299;
+  border-top: 1px solid #fff;
+  height: 300px;
+  width: 100%;
+  position: absolute;
+  /*top:213px;*/
+  bottom: 50px;
+  text-align: center; }
+
+.resultsSmall-container {
+  height: 300px; }
+
+#headerBar {
+  height: 50px;
+  width: 100%;
+  background: #474343;
+  z-index: 40;
+  border-bottom: 1px solid #fff; }
+
+#homeButton {
+  border: none !important; }
+
+#currentLoc {
+  border: none !important; }
+
+input#searchBar {
+  padding-top: 8px !important; }
+
+input#searchBar.form-control {
+  margin-top: 0 !important;
+  height: 40px !important; }
+
+#helpMenu a {
+  color: #fff; }
+
+#helpMenu a:hover {
+  color: #000 !important;
+  text-decoration: none; }
+
+#helpImageContainer {
+  display: inline-block; }
+
+.helpImage {
+  width: 50%;
+  float: left; }
+
+.helpImage img {
+  height: 30px;
+  width: auto; }
+
+/* Make text not selectable */
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+
+/* Reference below for clean up and proper _.scss placement */
+.closeSplash, .showReport, #closeResults, #viewReport, #emailReport, #resultsBigClose {
+  cursor: pointer; }
+
+.imgCenter {
+  display: block;
+  margin-left: auto;
+  margin-right: auto; }
+
+.appButton {
+  height: 40px; }
+
+button.menuButton, a.menuButton, ul.dropdown-menu, a.dropdown-menu, #bookmarkLocation {
+  background-color: #474343;
+  color: #fff;
+  border: 1px solid #fff; }
+
+.iconButton {
+  padding-top: 2px !important;
+  padding-bottom: 3px;
+  padding-left: 10px;
+  padding-right: 10px; }
+
+.iconButton img {
+  height: 20px;
+  width: auto; }
+
+.iconLabel {
+  font-size: 12px; }
+
+#viewReport, #emailReport, #closeResults {
+  text-align: right !important;
+  margin-top: 3px;
+  margin-right: 6px; }
+
+#viewReport svg, #emailReport svg, #closeResults svg {
+  padding-top: 5px !important; }
+
+#resultsHisto svg.chart, #sunHrHisto svg.chart {
+  max-width: 100%; }
+
+#resultsHisto img {
+  height: 150px;
+  width: auto;
+  text-align: center; }
+
+/*# sourceMappingURL=main.css.map */

@@ -1,0 +1,83 @@
+/* Make text not selectable */
+.noselect {
+    -webkit-touch-callout:none;
+    -webkit-user-select:none;
+    -khtml-user-select:none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none
+}
+
+
+
+/* Reference below for clean up and proper _.scss placement */
+// helpSplash
+.closeSplash,.showReport, #closeResults, #viewReport, #emailReport, #resultsBigClose{
+    cursor:pointer
+}
+
+// bottomBar
+.imgCenter {
+  display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+// bottomBar
+.appButton {
+    height:40px
+}
+
+// bottomBar, navBar
+button.menuButton,a.menuButton,ul.dropdown-menu,a.dropdown-menu,#bookmarkLocation {
+    background-color:#474343;
+    color:#fff;
+    border:1px solid #fff
+}
+
+// navBar
+.iconButton {
+    padding-top:2px!important;
+    padding-bottom:3px;
+    padding-left:10px;
+    padding-right:10px
+}
+// navBar
+.iconButton img {
+    height:20px;
+    width:auto
+}
+
+// navBar
+.iconLabel {
+    font-size:12px
+}
+
+// resultsSmall
+#closeResults, #viewReport, #emailReport{
+  // text-align: right !important;
+}
+
+// resultsSmall
+#viewReport, #emailReport, #closeResults{
+  text-align: right !important;
+  margin-top:3px;
+  margin-right:6px;
+}
+
+// resultsSmall
+#viewReport svg, #emailReport svg, #closeResults svg{
+  padding-top:5px !important;
+}
+
+// resultsSmall
+#resultsHisto svg.chart,#sunHrHisto svg.chart {
+    max-width:100%;
+}
+
+// resultsSmall
+#resultsHisto img {
+    height:150px;
+    width:auto;
+    text-align:center;
+}

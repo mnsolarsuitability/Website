@@ -5,9 +5,18 @@ define([
 
     'components/navBar/views/navbarView',
     'components/helpSplash/views/helpSplashView',
+    'components/loadSplash/views/loadSplashView',
+    'components/resultsSmall/views/resultsSmallView',
     'components/bottomBar/views/bottomBarView',
 
+    'components/query/controller/queryController',
+
+    'esri/basemaps',
     'esri/config',
+    'esri/layers/ArcGISTiledMapServiceLayer',
+    'esri/layers/ArcGISImageServiceLayer',
+    'esri/layers/ImageServiceParameters',
+    'esri/layers/RasterFunction',
     'esri/map'
 
   ],
@@ -16,9 +25,11 @@ define([
 
     config, Layout,
 
-    Navbar, helpSplash, bottomBar,
+    Navbar, helpSplash, loadSplash, resultsSmall, bottomBar,
 
-    esriConfig, Map
+    query,
+
+    esriBasemaps, esriConfig, TiledLayer, ImageLayer, ImageParams, RasterFunction, Map
 
   ) {
 
@@ -47,25 +58,64 @@ define([
       },
 
       initMap: function() {
+
+        // Setup World Imagery Basemap
+        esriBasemaps.solar = {
+          baseMapLayers: [{
+            id: 'places',
+            opacity: 1,
+            visibility: true,
+            showAttribution: false,
+            url: config.basemapUrl
+          }],
+          title: 'Solar'
+        };
+
         this.map = new Map('mapContainer', {
-          basemap: 'topo',
+          basemap: 'solar',
           center: [config.centerLng, config.centerLat],
           showAttribution: false,
           zoom: 13
-          // extent: new Extent(this.config.extent)
+            // extent: new Extent(this.config.extent)
         });
-        // Setup World Imagery Basemap
-        console.log(esriConfig.defaults);
-        // esriConfig.defaults.map.basemaps.solar = {
-        //   baseMapLayers: [{
-        //     id: 'places',
-        //     opacity: 1,
-        //     visibility: true,
-        //     showAttribution: false,
-        //     url: config.basemapUrl
-        //   }],
-        //   title: 'Solar'
-        // };
+
+        var params = new ImageParams();
+
+        // Direct call to raster function to symbolize imagery with color ramp (setting default was unreliable)
+        var rasterFunction = new RasterFunction();
+        rasterFunction.functionName = 'solarColorRamp';
+        rasterFunction.variableName = 'Raster';
+        params.renderingRule = rasterFunction;
+        params.noData = 0;
+
+        var solarLayer = new ImageLayer(config.solarImageryUrl, {
+          id: 'solar',
+          imageServiceParameters: params,
+          showAttribution: false,
+          opacity: 1.0
+        });
+
+        // Create aerial layer and load hidden
+        var aerialLayer = new TiledLayer(config.imagery, {
+          id: 'aerial'
+        });
+        aerialLayer.hide();
+
+        // Create street layer and load hidden
+        var streetLayer = new TiledLayer(config.streets, {
+          id: 'street'
+        });
+        streetLayer.hide();
+
+        // Add solar to the map
+        this.map.addLayer(solarLayer);
+
+        // Add aerial to the map
+        this.map.addLayer(aerialLayer);
+
+        // Add street to the map
+        this.map.addLayer(streetLayer);
+
 
         // // Read URL Parameters
         // function getParameterByName(name) {
@@ -101,13 +151,13 @@ define([
 
         // } else {
 
-          // Setup solar imageservice layer
-          // var map = new Map('mapContainer', {
-          //   basemap: 'solar',
-          //   center: [-93.243322, 44.971795],
-          //   showAttribution: false,
-          //   zoom: 13
-          // });
+        // Setup solar imageservice layer
+        // var map = new Map('mapContainer', {
+        //   basemap: 'solar',
+        //   center: [-93.243322, 44.971795],
+        //   showAttribution: false,
+        //   zoom: 13
+        // });
         // }
 
 
@@ -127,8 +177,24 @@ define([
           el: this.layout.$el.find('.helpContainer'),
         });
 
+        this.loadSplash = new loadSplash({
+          el: this.layout.$el.find('.loader-container'),
+        });
+
         this.bottomBar = new bottomBar({
           el: this.layout.$el.find('.bottomBar-container'),
+        });
+
+        this.resultsSmall = new resultsSmall({
+          el: this.layout.$el.find('.resultsSmall-container'),
+        });
+
+        this.mapController();
+      },
+
+      mapController: function() {
+        app.map.on('click', function(e) {
+          query.pixelQuery(e);
         });
       }
 

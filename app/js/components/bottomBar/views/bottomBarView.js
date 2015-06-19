@@ -37,7 +37,44 @@ define([
 
       initComponents: function() {
 
-      }
+        var solarLayer = app.map.getLayer('solar');
+        var aerialLayer = app.map.getLayer('aerial');
+        var streetLayer = app.map.getLayer('street');
+
+        // Toggle basemaps
+        $('#solarButton').on('click', function() {
+          buttonClassRemove();
+          $(this).addClass('activeButton');
+          toggleBasemapView();
+          solarLayer.show();
+        });
+
+        $('#aerialButton').on('click', function() {
+          buttonClassRemove();
+          $(this).addClass('activeButton');
+          toggleBasemapView();
+          aerialLayer.show();
+        });
+
+        $('#streetButton').on('click', function() {
+          buttonClassRemove();
+          $(this).addClass('activeButton');
+          toggleBasemapView();
+          streetLayer.show();
+        });
+
+        function buttonClassRemove() {
+          $('#solarButton').removeClass('activeButton');
+          $('#aerialButton').removeClass('activeButton');
+          $('#streetButton').removeClass('activeButton');
+        }
+
+        function toggleBasemapView() {
+          solarLayer.hide();
+          aerialLayer.hide();
+          streetLayer.hide();
+        }
+      },
 
     });
     return bottomBar;

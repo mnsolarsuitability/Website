@@ -1,0 +1,56 @@
+/* global define, app, Backbone, _ */
+define([
+    'app/config',
+
+    'dojo/text!../templates/resultsSmallTemplate.html'
+  ],
+
+  function(
+    config,
+
+    viewTemplate
+
+  ) {
+    var resultsSmall = Backbone.View.extend({
+
+      events: {},
+
+      initialize: function() {
+        this.render();
+      },
+
+      render: function() {
+
+        var template = _.template(viewTemplate);
+        var options = {
+          title: config.applicationTitle
+        };
+
+        this.$el.html(template(options));
+        this.$el.hide();
+        this.startup();
+      },
+
+      startup: function() {
+        this.initComponents();
+      },
+
+      initComponents: function() {
+        // Initalize event to close results with close X div
+        $('#closeResults').on('click',function(){
+          $('#resultsSmall').hide();
+        });
+
+        // Initalize event to toggle results with results ^ div
+        $('#resultsButton').on('click', function(){
+          $('#resultsSmall').toggle();
+        });
+
+        // Old methods for report/email
+        // $('#viewReportLink').html('<a class="fancybox fancybox.iframe" href="' + resultsiFrameURL + '&m=' + JSON.stringify(data) + '">View Report</a>');
+        // $('#emailReportLink').html('<a href="http://solar.maps.umn.edu/share_point.php?x=' + params.PointX + '&y=' + params.PointY + '">Email Report</a>');
+      }
+
+    });
+    return resultsSmall;
+  });
