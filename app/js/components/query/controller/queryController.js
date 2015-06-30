@@ -37,8 +37,14 @@ define([
 
       dataQuery: function(e) {
 
+
         /* NEVER USED */
         var mp = esri.geometry.webMercatorToGeographic(e.mapPoint);
+        app.query.point = mp;
+
+        // removes all previous graphics (previous click)
+        mapController.clearGraphics();
+        mapController.placePoint(app.query.point, app.map);
 
         // Clear results div
         $('#results').html('');
@@ -73,6 +79,12 @@ define([
         BEquery.returnM = false;
         BEquery.f = 'pjson';
 
+        // BEQueryTask.execute(BEquery, BEsuccess, BEfail);
+
+        // function BEsuccess(results){
+          
+        // }
+
         BEQueryTask.execute(BEquery, function(results) {
           var warning;
           var warningMsg;
@@ -82,7 +94,9 @@ define([
 
             var bareEarth = results.features[0].attributes.bare_earth;
             var county = results.features[0].attributes.COUNTYNAME;
-            
+
+            // Store county
+            app.query.county = county;
 
             //then check if clicked point is within a bare earth county, if so add disclaimer
             if (bareEarth === 1) {
@@ -120,6 +134,13 @@ define([
 
               result = '<div><strong>INSOLATION (kWh/m<sup>2</sup>)</strong></div><div class="resultsDisplay" style="display:block">Total per Year: ' + y.toFixed(2) + warning + '<br>Avg per Day: ' + v.toFixed(2) + ' <div class="valueHelp" style="display:inline-block;">(' + quality + ')</div>' + warning + warningMsg + '</div>';
 
+              // Store returned solar values
+              app.query.totalPerYear = y;
+              app.query.averagePerDay = v;
+              app.query.quality = quality;
+              app.query.warning = warning;
+              app.query.warningMessage = warningMsg;
+
               // <div id="questionMark"><img src="/assets/img/help.png" style = "width:20px; height:20px; display:inline"></div>
 
               $('#results').html(result);
@@ -152,6 +173,19 @@ define([
                 var electricCompany = results.features[0].attributes.ELEC_COMP;
                 var zip = results.features[0].attributes.ZIP;
 
+                var utilityCompany = {
+                  fullName: fullName,
+                  city: city,
+                  street: street,
+                  phone: phone,
+                  website: website,
+                  abbreviatedName: electricCompany,
+                  zip: zip.toString()
+                };
+
+                // Store returned utility info
+                app.query.utilityCompany = utilityCompany;
+
                 var utility = encodeURIComponent(fullName + '_' + street + '_' + city + ', MN ' + zip + '_' + phone);
 
                 if (quality === 'Poor') {
@@ -161,7 +195,7 @@ define([
                 }
 
                 result = '<div style="margin-top:5px;"><strong>UTILITY SERVICE PROVIDER</strong></div><div class="resultsDisplay">' + fullName + ' - <a href="tel:+1-' + phone.slice(1, 4) + '-' + phone.slice(6, 14) + '">' + phone + '</a></p>';
-                result = result + '</p><p><a href="http://www.dsireusa.org/solar/incentives/index.cfm?re=1&ee=1&spv=1&st=0&srp=0&state=MN" target="_blank">MN Incentives/Policies for Solar</a></p>' + getStarted + '<p>Report bad data <a href="/bad_data_handler.php?x=' + mp.x + '&y=' + mp.y + ' target="_blank">here</a>.</p>';
+                result = result + '</p><p><a href="http://www.dsireusa.org/solar/incentives/index.cfm?re=1&ee=1&spv=1&st=0&srp=0&state=MN" target="_blank">MN Incentives/Policies for Solar</a></p>' + getStarted + '<p>Report bad data <a href="/bad_data_handler.php?x=' + mp.x + '&y=' + mp.y + ' target="_blank">here</a>.</p><br>Source data collect: <span id="collect"><span>.</p>';
 
                 var resultsDiv = $('#results');
                 resultsDiv.html(resultsDiv.html() + result);
@@ -178,16 +212,6 @@ define([
           }
 
         });
-
-        // removes all previous graphics (previous click)
-        mapController.clearGraphics();
-        mapController.placePoint(e);
-
-        
-
-        // Store point lat/long
-        var ptLong = e.mapPoint.y;
-        var ptLat = e.mapPoint.x;
 
       },
         

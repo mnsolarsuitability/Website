@@ -8,6 +8,30 @@
     user-select:none
 }
 
+/* Custom button style */
+.btn-solar {
+    // args - color, background, border
+    @include button-variant($secondary-color, $primary-color, $secondary-color);
+}
+
+/* force aspect ratio - 8.5x11 */
+.letterSize{
+    @include aspect-ratio(4, 3);
+}
+
+/* remove left/right padding on rows */
+.no-gutter > [class*='col-'] {
+    padding-right:0;
+    padding-left:0;
+}
+
+.textRight {
+    text-align: right;
+}
+
+.indent {
+    margin-left: 3%;
+}
 
 
 /* Reference below for clean up and proper _.scss placement */
@@ -54,12 +78,13 @@ button.menuButton,a.menuButton,ul.dropdown-menu,a.dropdown-menu,#bookmarkLocatio
 }
 
 // resultsSmall
-#closeResults, #viewReport, #emailReport{
-  // text-align: right !important;
+#viewReport, #emailReport, #closeResults{
+  text-align: right !important;
+  margin-top:3px;
 }
 
 // resultsSmall
-#viewReport, #emailReport, #closeResults{
+#closeResults{
   text-align: right !important;
   margin-top:3px;
   margin-right:6px;

@@ -2,11 +2,15 @@
 define([
     'app/config',
 
+    'components/report/controller/reportController',
+
     'dojo/text!../templates/resultsSmallTemplate.html'
   ],
 
   function(
     config,
+
+    reportController,
 
     viewTemplate
 
@@ -44,6 +48,11 @@ define([
         // Initalize event to toggle results with results ^ div
         $('#resultsButton').on('click', function(){
           $('#resultsSmall').toggle();
+        });
+
+        $('#viewReport').on('click', function(){
+          reportController.buildReport();
+          $('#reportModal').modal('show');
         });
 
         // Old methods for report/email

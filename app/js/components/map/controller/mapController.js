@@ -15,11 +15,12 @@ define([
 
   return {
 
-    placePoint: function(e){
+    placePoint: function(e, mapName){
       //  This sets a new graphic using the clicked point and the symbol
-      var point = e.mapPoint;
+      var point = e;
+
       var graphic = new Graphic(point, config.pinSymbol);
-      app.map.graphics.add(graphic);
+      mapName.graphics.add(graphic);
     },
 
     clearGraphics: function(graphicLayers){

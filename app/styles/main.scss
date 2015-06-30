@@ -1,11 +1,12 @@
 // // Bootstrap
-// @import "../bower_components/bootstrap-sass-twbs/assets/stylesheets/_bootstrap";
+@import "bootstrap/bootstrap";
 
 // // FontAwesome
 // @import "../bower_components/fontawesome/scss/font-awesome.scss";
 
 // // Locals
-// @import "variables";
+@import "variables";
+@import "mixins";
 
 // Components imports go here
 
@@ -17,5 +18,5 @@
 @import "layout";
 @import "header";
 @import "general";
+@import "report";
 
-@import "bootstrap/bootstrap"

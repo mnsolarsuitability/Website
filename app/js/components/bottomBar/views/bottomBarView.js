@@ -74,6 +74,11 @@ define([
           aerialLayer.hide();
           streetLayer.hide();
         }
+
+        /* Shortcut to modal */
+        $('#modalTest').on('click', function(){
+          $('#reportModal').modal('show');
+        });
       },
 
     });

@@ -1,4 +1,4 @@
-/* global define, app:true, _ */
+/* global define, app:true*/
 define([
     'app/config',
     'app/views/LayoutView',
@@ -8,6 +8,7 @@ define([
     'components/loadSplash/views/loadSplashView',
     'components/resultsSmall/views/resultsSmallView',
     'components/bottomBar/views/bottomBarView',
+    'components/report/views/reportView',
 
     'components/query/controller/queryController',
 
@@ -25,7 +26,7 @@ define([
 
     config, Layout,
 
-    Navbar, helpSplash, loadSplash, resultsSmall, bottomBar,
+    Navbar, HelpSplash, LoadSplash, ResultsSmall, BottomBar, Report,
 
     query,
 
@@ -165,28 +166,31 @@ define([
       },
 
       initComponents: function() {
+        // Initialize query object to hold data
+        app.query = {};
+
         this.navbar = new Navbar({
           el: this.layout.$el.find('.navbar-container'),
-          // map: this.map,
-          // layerLookup: this.layerLookup,
-          // layerController: this.layerController,
-          // basemap: this.basemap
         });
 
-        this.helpSplash = new helpSplash({
+        this.helpSplash = new HelpSplash({
           el: this.layout.$el.find('.helpContainer'),
         });
 
-        this.loadSplash = new loadSplash({
+        this.loadSplash = new LoadSplash({
           el: this.layout.$el.find('.loader-container'),
         });
 
-        this.bottomBar = new bottomBar({
+        this.bottomBar = new BottomBar({
           el: this.layout.$el.find('.bottomBar-container'),
         });
 
-        this.resultsSmall = new resultsSmall({
+        this.resultsSmall = new ResultsSmall({
           el: this.layout.$el.find('.resultsSmall-container'),
+        });
+
+        this.report = new Report({
+          el: this.layout.$el.find('.report-container'),
         });
 
         this.mapController();
