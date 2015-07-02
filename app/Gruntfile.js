@@ -65,7 +65,8 @@ module.exports = function(grunt) {
               'bower_components/jquery/dist/jquery.min.map',
               'bower_components/modernizr/modernizr.js',
               'bower_components/underscore/underscore-min.js',
-              'bower_components/underscore/underscore-min.map'
+              'bower_components/underscore/underscore-min.map',
+              'bower_components/jspdf/dist/jspdf.min.js'
             ],
             dest: './lib',
             flatten: true
@@ -76,7 +77,10 @@ module.exports = function(grunt) {
             src: [
               'bower_components/d3-tip/index.js'
             ],
-            dest: './lib/d3-tip.js',
+            dest: './lib/',
+            rename: function(dest, src){
+              return dest + src.replace('index.js', 'd3-tip.js');
+            },
             flatten: true
           }
         ]

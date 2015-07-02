@@ -9,7 +9,6 @@
   "private": true,
   "dependencies": {
     "jquery": null,
-    "bootstrap": null,
     "jquery.ui": null,
     "bootstrap-sass-twbs": "~3.3.3",
     "fontawesome": "~4.3.0",
@@ -17,7 +16,8 @@
     "underscore": "~1.8.2",
     "backbone": "~1.1.2",
     "d3": "~3.5.5",
-    "d3-tip": "~0.6.7"
+    "d3-tip": "~0.6.7",
+    "jspdf": "1.0.272"
   },
   "ignore": [
     "**/.*",

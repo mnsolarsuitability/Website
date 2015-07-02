@@ -3,6 +3,7 @@ define([
     'app/config',
 
     'components/report/views/resultsView',
+    'components/report/controller/reportController',
 
     'dojo/text!../templates/reportTemplate.html'
   ],
@@ -10,7 +11,7 @@ define([
   function(
     config,
 
-    Results,
+    Results, reportController,
 
     reportTemplate
 
@@ -46,6 +47,10 @@ define([
 
         $('#siteNotes').on('keyup', function(){
           app.query.siteNotes = $(this).val();
+        });
+
+        $('.printButton').on('click', function(){
+          reportController.printToPdf();
         });
 
         // results template
