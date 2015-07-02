@@ -114,7 +114,7 @@ module.exports = function(grunt) {
           flatten: true
         },
         {
-          cwd: 'bower_components/bootstrap/fonts/',
+          cwd: 'bower_components/bootstrap-sass-twbs/assets/fonts/bootstrap',
           src: ['**'],
           dest: 'assets/fonts',
           expand: true
@@ -125,6 +125,71 @@ module.exports = function(grunt) {
           dest: 'assets/fonts',
           expand: true
         }]
+      },
+
+      git: {
+        files: [
+          {
+            src: [
+              '.gitignore',
+              '.jshintrc',
+              'bower.json',
+              'Gruntfile.js',
+              'index.html',
+              'package.json'
+            ],
+            dest: 'C:/Users/chri7992/Documents/GitHub/Website/app',
+            expand: true
+          },
+          {
+            expand: true,
+            cwd: 'assets',
+            src: ['**'],
+            dest: 'C:/Users/chri7992/Documents/GitHub/Website/app/assets/',
+            flatten: false
+          },
+          {
+            expand: true,
+            cwd: 'js',
+            src: ['**'],
+            dest: 'C:/Users/chri7992/Documents/GitHub/Website/app/js/',
+            flatten: false
+          },
+          {
+            expand: true,
+            cwd: 'lib',
+            src: ['**'],
+            dest: 'C:/Users/chri7992/Documents/GitHub/Website/app/lib/',
+            flatten: false
+          },
+          {
+            expand: true,
+            cwd: 'proxy',
+            src: ['**'],
+            dest: 'C:/Users/chri7992/Documents/GitHub/Website/app/proxy/',
+            flatten: false
+          },
+          {
+            expand: true,
+            cwd: 'styles',
+            src: ['**'],
+            dest: 'C:/Users/chri7992/Documents/GitHub/Website/app/styles/',
+            flatten: false
+          }
+          // {
+          //   cwd: 'bower_components/bootstrap/fonts/',
+          //   src: ['**'],
+          //   dest: 'assets/fonts',
+          //   expand: true
+          // },
+          // {
+          //   cwd: 'bower_components/fontawesome/fonts/',
+          //   src: ['**'],
+          //   dest: 'assets/fonts',
+          //   expand: true
+          // }
+        ]
+
       }
     },
 
@@ -172,4 +237,5 @@ module.exports = function(grunt) {
   grunt.registerTask('init',['clean', 'shell:bowerInstall', 'copy:bower', 'copy:stylesAndFonts', 'copy:initStyles']);
   // grunt.registerTask('build',['clean', 'copy']);
   grunt.registerTask('release', ['clean', 'copy:release']);
+  grunt.registerTask('git', ['copy:git']);
 };
