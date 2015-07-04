@@ -49,8 +49,14 @@ define([
           app.query.siteNotes = $(this).val();
         });
 
+        $('.downloadButton').on('click', function(){
+          var doc = reportController.createPdf();
+          reportController.saveToPdf(doc);
+        });
+
         $('.printButton').on('click', function(){
-          reportController.printToPdf();
+          var doc = reportController.createPdf();
+          reportController.printPdf(doc);
         });
 
         // results template

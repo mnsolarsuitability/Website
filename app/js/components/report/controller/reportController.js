@@ -87,31 +87,29 @@ define([
 
 
 
+    createPdf: function(){
+      function footer(){
+        console.log('footer');
+        doc.setFontSize(8);
+        doc.text(8, 10.75, 'page ' + doc.page);
+        doc.page ++;
+      }
 
 
-
-    printToPdf: function(){
-      console.log('printtopdf');
 
       /* orientation, units, format*/
-      var doc = new jsPDF(undefined, 'in', undefined);
-      // doc.text(20, 20, 'Hello world!');
-      // doc.text(20, 30, 'This is client-side Javascript, pumping out a PDF.');
-      // doc.addPage();
-      // doc.text(20, 20, 'Do you like that?');
-      
-      // // Save the PDF
-      // doc.save('Test.pdf');
-      
+      var doc = new jsPDF('portrait', 'in', 'letter');
+      doc.page = 1;  
+      footer();    
 
-      /* USED TO SKIP A EL */
-      var specialElementHandlers = {
-        // '#skipMe': function(element, renderer){
-        //   return true;
-        // }
-      };
+      /* USED TO SKIP A EL IF DRAWN FROM HTML */
+      // var specialElementHandlers = {
+      //   // '#skipMe': function(element, renderer){
+      //   //   return true;
+      //   // }
+      // };
 
-      var html = $('.modal-content').html();
+      // var html = $('.modal-content').html();
       
       /* NEEDS ADDITIONAL LIBRARIES */
       // doc.addHTML(html, function(){
@@ -130,8 +128,7 @@ define([
       // );
       
       var solarLogo = imageUri.solarLogo;
-      
-      
+            
       doc.addImage(
         solarLogo,    // source
         'JPEG',       // type
@@ -154,15 +151,22 @@ define([
         8.5, 1.5
       );
 
-      // doc.rect(
-      //   0,    // x coord
-      //   5,    // y coord
-      //   8.5,    // width
-      //   0.1   // height
-      //   // style
-      // );
+      
+      return doc;
+    },
 
-      doc.save('test.pdf');
+
+    saveToPdf: function(doc){
+      var docName = 'default.pdf';
+      if (app.query.siteName){
+        docName = app.query.siteName + '.pdf';
+      }
+      doc.save(docName);
+    },
+
+    printPdf: function(doc){
+      console.log('printPDF');
+      // doc.autoPrint();
     }
 
   };
