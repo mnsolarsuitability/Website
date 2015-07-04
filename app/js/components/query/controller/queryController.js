@@ -29,6 +29,7 @@ define([
     return {
 
       pixelQuery: function(e) {
+        $('#resultsSmall').hide();
         loadSplashController.placeLoader();
         loadSplashController.showLoader();
         this.dataQuery(e);
@@ -37,10 +38,12 @@ define([
 
       dataQuery: function(e) {
 
-
+        console.log('e', e.mapPoint);
         /* NEVER USED */
         var mp = esri.geometry.webMercatorToGeographic(e.mapPoint);
         app.query.point = mp;
+
+        console.log('mp', mp);
 
         // removes all previous graphics (previous click)
         mapController.clearGraphics();
@@ -202,6 +205,9 @@ define([
                 point = webMercatorUtils.webMercatorToGeographic(e.mapPoint);
                 var resultsiFrameURL = '/report.php?z=' + zip + '&w=' + website + '&long=' + point.x + '&lat=' + point.y + '&y=' + y.toFixed(2) + '&u=' + utility;
               });
+            }, function(err){
+              console.log('Solar Query Task error');
+              console.log(err);
             });
 
 
@@ -211,7 +217,10 @@ define([
             alert('This location is outside of the study area. Please refine your search to be limited to the state of Minnesota.');
           }
 
-        });
+        }, function(err){
+              console.log('BE Query Task error');
+              console.log(err);
+            });
 
       },
         
@@ -245,7 +254,6 @@ define([
           'File_Name': tile
         };
 
-        console.log(params);
         gp.execute({}, lang.hitch(self, self.displayResults));
         // , self.displayResults);
       },
@@ -259,6 +267,7 @@ define([
         //show results & hide loader
         loadSplashController.hideLoader();
         $('.resultsSmall-container').show();
+        $('#resultsSmall').show();
 
         //parse the results
         var insolResults = results[0].value.split('\n');
