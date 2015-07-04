@@ -18,7 +18,6 @@ define([
     placePoint: function(e, mapName){
       //  This sets a new graphic using the clicked point and the symbol
       var point = e;
-
       var graphic = new Graphic(point, config.pinSymbol);
       mapName.graphics.add(graphic);
     },
