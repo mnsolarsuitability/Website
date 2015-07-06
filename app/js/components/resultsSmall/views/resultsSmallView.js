@@ -3,6 +3,7 @@ define([
     'app/config',
 
     'components/report/controller/reportController',
+    'components/calculator/controller/calculatorController',
 
     'dojo/text!../templates/resultsSmallTemplate.html'
   ],
@@ -10,7 +11,7 @@ define([
   function(
     config,
 
-    reportController,
+    reportController, calculatorController,
 
     viewTemplate
 
@@ -48,6 +49,10 @@ define([
         // Initalize event to toggle results with results ^ div
         $('#resultsButton').on('click', function(){
           $('#resultsSmall').toggle();
+        });
+
+        $('#calculateButton').on('click', function(){
+          calculatorController.toggleCalculator();
         });
 
         $('#viewReport').on('click', function(){

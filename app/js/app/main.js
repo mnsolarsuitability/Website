@@ -9,6 +9,7 @@ define([
     'components/resultsSmall/views/resultsSmallView',
     'components/bottomBar/views/bottomBarView',
     'components/report/views/reportView',
+    'components/calculator/views/calculatorView',
 
     'components/query/controller/queryController',
 
@@ -26,7 +27,7 @@ define([
 
     config, Layout,
 
-    Navbar, HelpSplash, LoadSplash, ResultsSmall, BottomBar, Report,
+    Navbar, HelpSplash, LoadSplash, ResultsSmall, BottomBar, Report, Calculator,
 
     query,
 
@@ -191,6 +192,10 @@ define([
 
         this.report = new Report({
           el: this.layout.$el.find('.report-container'),
+        });
+
+        this.calculator = new Calculator({
+          el: this.layout.$el.find('.calculator-container'),
         });
 
         this.mapController();
