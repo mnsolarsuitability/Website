@@ -197,6 +197,7 @@ define([
       },
 
       mapController: function() {
+        app.map.resize();
         app.map.on('click', function(e) {
           query.pixelQuery(e);
         });

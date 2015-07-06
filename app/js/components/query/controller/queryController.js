@@ -38,15 +38,14 @@ define([
 
       dataQuery: function(e) {
 
-        console.log('e', e.mapPoint);
+        
         /* NEVER USED */
         var mp = esri.geometry.webMercatorToGeographic(e.mapPoint);
-        app.query.point = mp;
-
-        console.log('mp', mp);
+        app.query.point = e.mapPoint;
 
         // removes all previous graphics (previous click)
         mapController.clearGraphics();
+        
         mapController.placePoint(app.query.point, app.map);
 
         // Clear results div
@@ -208,6 +207,7 @@ define([
             }, function(err){
               console.log('Solar Query Task error');
               console.log(err);
+              alert('There was an error with your request.  Please click OK and try again');
             });
 
 
@@ -220,6 +220,7 @@ define([
         }, function(err){
               console.log('BE Query Task error');
               console.log(err);
+              alert('There was an error with your request.  Please click OK and try again');
             });
 
       },
