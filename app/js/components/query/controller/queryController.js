@@ -6,6 +6,8 @@ define([
 
   'components/loadSplash/controller/loadSplashController',
   'components/map/controller/mapController',
+  'components/resultsSmall/controller/resultsSmallController',
+  'components/calculator/controller/calculatorController',
 
   'esri/geometry/webMercatorUtils',
   'esri/tasks/GeometryService',
@@ -19,7 +21,7 @@ define([
   function(
     config, dataHandler,
 
-    loadSplashController, mapController,
+    loadSplashController, mapController, resultsSmallController, calculatorController,
 
     webMercatorUtils, GeometryService, Geoprocessor, Query, QueryTask,
 
@@ -29,7 +31,9 @@ define([
     return {
 
       pixelQuery: function(e) {
-        $('#resultsSmall').hide();
+        // $('#resultsSmall').hide();
+        calculatorController.hideCalculator();
+        resultsSmallController.hideResults();
         loadSplashController.placeLoader();
         loadSplashController.showLoader();
         this.dataQuery(e);
@@ -45,7 +49,6 @@ define([
 
         // removes all previous graphics (previous click)
         mapController.clearGraphics();
-        
         mapController.placePoint(app.query.point, app.map);
 
         // Clear results div
@@ -267,8 +270,9 @@ define([
 
         //show results & hide loader
         loadSplashController.hideLoader();
-        $('.resultsSmall-container').show();
-        $('#resultsSmall').show();
+        resultsSmallController.showResults();
+        // $('.resultsSmall-container').show();
+        // $('#resultsSmall').show();
 
         //parse the results
         var insolResults = results[0].value.split('\n');
@@ -320,7 +324,7 @@ define([
           solarObj.sunTotal = solarObj.sunTotal + sunHrValue[i];
 
           insolList.push(insolValDiv1000);
-          sunHrList.push(sunHrValue[i])
+          sunHrList.push(sunHrValue[i]);
 
           if (insolValDiv1000 > solarObj.maxInsol) {
             solarObj.maxInsol = insolValDiv1000;
