@@ -43,20 +43,20 @@
 // bottomBar
 .imgCenter {
   display: block;
-    margin-left: auto;
-    margin-right: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 // bottomBar
 .appButton {
-    height:40px
+  height:40px
 }
 
 // bottomBar, navBar
 button.menuButton,a.menuButton,ul.dropdown-menu,a.dropdown-menu,#bookmarkLocation {
-    background-color:#474343;
-    color:#fff;
-    border:1px solid #fff
+  background-color:#474343;
+  color:#fff;
+  border:1px solid #fff
 }
 
 // navBar
@@ -76,17 +76,17 @@ button.menuButton,a.menuButton,ul.dropdown-menu,a.dropdown-menu,#bookmarkLocatio
 .iconLabel {
     font-size:12px
 }
-
-// resultsSmall
-#viewReport, #emailReport, #closeResults{
-  text-align: right !important;
-  margin-top:3px;
-}
+ 
+// // resultsSmall
+// #viewReport, #emailReport, #closeResults, #calculateButton{
+//   text-align: right !important;
+//   margin-top:3px;
+// }
 
 // resultsSmall
 #closeResults{
   text-align: right !important;
-  margin-top:3px;
+  // margin-top:3px;
   margin-right:6px;
 }
 
