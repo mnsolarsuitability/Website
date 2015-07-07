@@ -6023,12 +6023,14 @@ button.close {
 #currentLoc {
   border: none !important; }
 
-input#searchBar {
-  padding-top: 8px !important; }
+#searchBar {
+  padding-top: 8px;
+  margin-top: 0px;
+  height: 40px;
+  width: 100%; }
 
-input#searchBar.form-control {
-  margin-top: 0 !important;
-  height: 40px !important; }
+.esriGeocoder {
+  width: 600px !important; }
 
 #helpMenu a {
   color: #fff; }

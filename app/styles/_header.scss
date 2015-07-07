@@ -13,18 +13,29 @@
 }
 
 #currentLoc {
-   border:none!important;
+    border:none!important;
+}
+
+#searchBar {
+  padding-top: 8px;
+  margin-top: 0px;
+  height: 40px;
+  width: 100%;
+}
+
+.esriGeocoder {
+  width:600px!important;
 }
 
 
-input#searchBar {
-    padding-top:8px!important
-}
+// input#searchBar {
+//     padding-top:8px!important
+// }
 
-input#searchBar.form-control {
-    margin-top:0!important;
-    height:40px!important
-}
+// input#searchBar.form-control {
+//     margin-top:0!important;
+//     height:40px!important
+// }
 
 #helpMenu a {
     color:#fff

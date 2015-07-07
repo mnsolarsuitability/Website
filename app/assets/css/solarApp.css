@@ -112,10 +112,6 @@ ul.dropdown-menu li {
     padding:10px 15px
 }
 
-.esriGeocoder {
-    width:100%!important
-}
-
 #search {
     z-index:50;
     width:100%

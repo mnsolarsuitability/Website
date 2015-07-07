@@ -6,7 +6,9 @@ define([
     'dojo/text!../templates/navbarTemplate.html',
 
     'esri/geometry/Point',
-    'esri/map'
+    'esri/map',
+
+    'esri/dijit/Geocoder'
   ],
 
   function(
@@ -14,7 +16,9 @@ define([
 
     viewTemplate,
 
-    Point, Map
+    Point, Map,
+
+    Geocoder
 
   ) {
     var Navbar = Backbone.View.extend({
@@ -89,77 +93,88 @@ define([
 
         // Geolocator
         // ---------------------------------------------------
-        var geocoder;
-        $('#searchBar').keypress(function(e) {
-          //Autocomplete variables
-          var input = document.getElementById('searchBar');
-          var place;
-          var autocomplete = new google.maps.places.Autocomplete(input);
+        var geocoder = new Geocoder({
+          map: app.map,
+          autoComplete: true,
+          autoNavigate: true,
+          arcgisGeocoder: {
+            name: 'Esri World Geocoder',
+            placeholder: 'Search'
+          },
+          highlightLocation: true,
+        },'searchBar');
+        geocoder.startup();
+        // var geocoder;
+        // $('#searchBar').keypress(function(e) {
+        //   //Autocomplete variables
+        //   var input = document.getElementById('searchBar');
+        //   var place;
+        //   var autocomplete = new google.maps.places.Autocomplete(input);
 
-          //Add listener to detect autocomplete selection
-          google.maps.event.addListener(autocomplete, 'place_changed', function() {
-            place = autocomplete.getPlace();
-            autocompleteLng = place.geometry.location.lng();
-            autocompleteLat = place.geometry.location.lat();
-            var pt = new Point(autocompleteLng, autocompleteLat);
-            app.map.centerAndZoom(pt, config.queryZoom);
-            draw.addGraphic(pt);
-          });
+        //   //Add listener to detect autocomplete selection
+        //   google.maps.event.addListener(autocomplete, 'place_changed', function() {
+        //     place = autocomplete.getPlace();
+        //     autocompleteLng = place.geometry.location.lng();
+        //     autocompleteLat = place.geometry.location.lat();
+        //     var pt = new Point(autocompleteLng, autocompleteLat);
+        //     app.map.centerAndZoom(pt, config.queryZoom);
+        //     draw.addGraphic(pt);
+        //   });
 
-          //Reset the inpout box on click
-          input.addEventListener('click', function() {
-            input.value = "";
-          });
+        //   //Reset the inpout box on click
+        //   input.addEventListener('click', function() {
+        //     input.value = "";
+        //   });
 
-          // Go to address if 'enter' is pressed
-          if (e.which == 13) {
-            codeAddress();
-          }
-        });
+        //   // Go to address if 'enter' is pressed
+        //   if (e.which == 13) {
+        //     codeAddress();
+        //   }
+        // });
 
-        // Click Go on search bar
-        $('#searchGo').on('click', function() {
-          codeAddress();
-        });
+        // // Click Go on search bar
+        // $('#searchGo').on('click', function() {
+        //   codeAddress();
+        // });
 
-        function codeAddress() {
-          console.log('codeAddress');
-          swBounds = new google.maps.LatLng({
-            lat: 42,
-            lng: -95
-          });
-          neBounds = new google.maps.LatLng({
-            lat: 46,
-            lng: -91
-          });
-          extent = new google.maps.LatLngBounds(swBounds, neBounds);
+        // function codeAddress() {
+        //   console.log('codeAddress');
+        //   swBounds = new google.maps.LatLng({
+        //     lat: 42,
+        //     lng: -95
+        //   });
+        //   neBounds = new google.maps.LatLng({
+        //     lat: 46,
+        //     lng: -91
+        //   });
+        //   extent = new google.maps.LatLngBounds(swBounds, neBounds);
 
-          geocoder = new google.maps.Geocoder();
-          var address = document.getElementById("searchBar").value;
-          geocoder.geocode({
-            'address': address,
-            'bounds': extent
-          }, function(results, status) {
-            // if (status == google.maps.GeocoderStatus.OK) {
-            //   geocodeLong = results[0].geometry.location.lng();
-            //   geocodeLat = results[0].geometry.location.lat();
-            //   var pt = new Point(geocodeLong, geocodeLat);
-            //   map.centerAndZoom(pt, 18);
-            //   addGraphic(pt);
-            //   console.log(results);
+        //   geocoder = new google.maps.Geocoder();
+        //   var address = document.getElementById("searchBar").value;
+        //   geocoder.geocode({
+        //     'address': address,
+        //     'bounds': extent
+        //   }, function(results, status) {
+        //     // if (status == google.maps.GeocoderStatus.OK) {
+        //     //   geocodeLong = results[0].geometry.location.lng();
+        //     //   geocodeLat = results[0].geometry.location.lat();
+        //     //   var pt = new Point(geocodeLong, geocodeLat);
+        //     //   map.centerAndZoom(pt, 18);
+        //     //   addGraphic(pt);
+        //     //   console.log(results);
 
-            //   // call bare earth query to check in-state status
-            //   beQuery(pt);
-            // } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
-            //   alert('No addresses were found.')
-            // } else if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
-            //   alert('Over query limit (2,500/mo). Please donate or wait till next month.');
+        //     //   // call bare earth query to check in-state status
+        //     //   beQuery(pt);
+        //     // } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
+        //     //   alert('No addresses were found.')
+        //     // } else if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
+        //     //   alert('Over query limit (2,500/mo). Please donate or wait till next month.');
 
-            // } else {
-            //   alert("Geocode was not successful for the following reason: " + status);
-            // }
-          });
-        }
+        //     // } else {
+        //     //   alert("Geocode was not successful for the following reason: " + status);
+        //     // }
+        //   });
+        // }
 
       }
     });
