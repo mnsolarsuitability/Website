@@ -6,7 +6,6 @@ define([],
   return {
 
     showCalculator: function(){
-      console.log('calc');
       $('#calculator').show();
     },
 

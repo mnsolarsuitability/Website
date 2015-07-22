@@ -6050,6 +6050,9 @@ button.close {
   height: 30px;
   width: auto; }
 
+.homeFindButtons {
+  margin-top: 5px; }
+
 /* Make text not selectable */
 .noselect {
   -webkit-touch-callout: none;

@@ -45,7 +45,9 @@ define([
       },
 
       initComponents: function() {
-
+        $('#closeCalculator').on('click', function(){
+          calculatorController.toggleCalculator();
+        });
       },
 
     });
