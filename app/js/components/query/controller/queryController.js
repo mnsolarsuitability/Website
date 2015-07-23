@@ -46,6 +46,7 @@ define([
         /* NEVER USED */
         var mp = esri.geometry.webMercatorToGeographic(e.mapPoint);
         app.query.point = e.mapPoint;
+        app.query.latLngPt = mp;
 
         // removes all previous graphics (previous click)
         mapController.clearGraphics();

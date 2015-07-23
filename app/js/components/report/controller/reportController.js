@@ -5,8 +5,8 @@ define([
   'components/map/controller/mapController',
   'components/report/controller/imageUri',
 
+  'esri/layers/ArcGISImageServiceLayer',
   'esri/map',
-  'esri/basemaps',
 
 ],
 
@@ -15,7 +15,7 @@ define([
 
     mapController, imageUri,
 
-    Map, esriBasemaps
+    ImageLayer, Map
     ) {
 
   return {
@@ -25,8 +25,8 @@ define([
       this.layoutReport();
 
       // set values for lat/lng
-      $('#reportLat').text(app.query.point.y);
-      $('#reportLng').text(app.query.point.x);
+      $('#reportLat').text(app.query.latLngPt.y);
+      $('#reportLng').text(app.query.latLngPt.x);
 
       this.buildResults();
       this.buildMap('reportSolarMap', 'reportSolarMap-container', 'solar');
@@ -60,32 +60,41 @@ define([
 
     buildMap: function(mapName, el, basemap){
 
-      // esriBasemaps.solar = {
-      //     baseMapLayers: [{
-      //       id: 'places',
-      //       opacity: 1,
-      //       visibility: true,
-      //       showAttribution: false,
-      //       url: config.basemapUrl
-      //     }],
-      //     title: 'Solar'
-      //   };
+      var solarLayer = new ImageLayer(config.solarImageryUrl, {
+          id: 'solar',
+          showAttribution: false,
+          opacity: 1.0
+        });
 
-      app[mapName] = new Map(el, {
-        basemap: basemap,
-        center: [app.query.point.x, app.query.point.y],
-        showAttribution: false,
-        zoom: 13
-          // extent: new Extent(this.config.extent)
-      });
+      if (!app[mapName]){
+        app[mapName] = new Map(el, {
+          basemap: basemap,
+          center: [app.query.latLngPt.x, app.query.latLngPt.y],
+          // center: [config.centerLng, config.centerLat],
+          showAttribution: false,
+          zoom: 13
+            // extent: new Extent(this.config.extent)
+        });
 
-      app[mapName].on('load', function(){
-        mapController.placePoint(app.query.point, app[mapName]);
-      });
+        if (mapName === 'reportSolarMap'){
+          app[mapName].addLayer(solarLayer);
+        }
+
+        app[mapName].on('load', function(){
+          mapController.placePoint(app.query.latLngPt, app[mapName]);
+        });
+      } else {
+        console.log('exis');
+        mapController.removePoint(app[mapName]);
+        mapController.centerMap(app.query.latLngPt, app[mapName]);
+        mapController.placePoint(app.query.latLngPt, app[mapName]);
+      }
+      
+      
+
+      
 
     },
-
-
 
     createPdf: function(){
       function footer(){

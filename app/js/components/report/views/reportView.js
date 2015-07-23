@@ -5,6 +5,10 @@ define([
     'components/report/views/resultsView',
     'components/report/controller/reportController',
 
+    'esri/layers/ArcGISImageServiceLayer',
+    // 'esri/layers/ImageServiceParameters',
+    'esri/map',
+
     'dojo/text!../templates/reportTemplate.html'
   ],
 
@@ -12,6 +16,8 @@ define([
     config,
 
     Results, reportController,
+
+    ImageLayer, Map,
 
     reportTemplate
 
@@ -63,6 +69,34 @@ define([
         this.results = new Results({
           el: $('.reportResults-container'),
         });
+
+        // var solarMap = new Map('reportSolarMap-container', {
+        //   basemap: 'solar',
+        //   center: [app.query.point.x, app.query.point.y],
+        //   showAttribution: false,
+        //   zoom: 13
+        //     // extent: new Extent(this.config.extent)
+        // });
+
+        // // var params = new ImageParams();
+
+        // var solarLayer = new ImageLayer(config.solarImageryUrl, {
+        //   id: 'solar',
+        //   // imageServiceParameters: params,
+        //   showAttribution: false,
+        //   opacity: 1.0
+        // });
+
+        // // Add solar to the map
+        // solarMap.addLayer(solarLayer);
+
+        // var aerialMap = new Map('reportAerialMap-container', {
+        //   basemap: 'hybrid',
+        //   center: [config.centerLng, config.centerLat],
+        //   showAttribution: false,
+        //   zoom: 13
+        //     // extent: new Extent(this.config.extent)
+        // });
 
       },
 
