@@ -6029,8 +6029,14 @@ button.close {
   height: 40px;
   width: 100%; }
 
-.esriGeocoder {
+#searchBar_input {
+  width: 90%; }
+
+.esriGeocoder, .esriGeocoderResults {
   width: 600px !important; }
+
+.esriGeocoderContainer {
+  z-index: 100 !important; }
 
 #helpMenu a {
   color: #fff; }
@@ -6186,8 +6192,7 @@ button.menuButton, a.menuButton, ul.dropdown-menu, a.dropdown-menu, #bookmarkLoc
   padding-left: 0px; }
 
 #reportSolarMap-container, #reportAerialMap-container {
-  width: 200px;
-  height: 200px; }
+  margin-top: 20px; }
 
 #calculator {
   background-color: rgba(0, 0, 0, 0.75);

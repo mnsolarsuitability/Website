@@ -23,8 +23,17 @@
   width: 100%;
 }
 
-.esriGeocoder {
+#searchBar_input {
+  width:90%
+  // !important;
+}
+
+.esriGeocoder, .esriGeocoderResults {
   width:600px!important;
+}
+
+.esriGeocoderContainer{
+  z-index:100!important;
 }
 
 
